@@ -50,15 +50,3 @@ variable "key_name" {
   description = "AWS Key Pair name"
   default     = "auto-dis-key"
 }
-
-variable "allowed_ssh_ips" {
-  description = "Allowed SSH IPs"
-  type        = list(string)
-  default     = ["0.0.0.0/0"] # Restrict this IPs in production later if needed
-}
-
-variable "allowed_rds_private_cidrs" {
-  description = "Allowed private subnet CIDR blocks for RDS access"
-  type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]  # Example private subnet CIDRs
-}
