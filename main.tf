@@ -266,7 +266,7 @@ resource "local_file" "auto-dis-key-pri" {
   file_permission = "440"
 }
 # kops public key
-resource "aws_key_pair" "auto-discovery-key-pub" {
+resource "aws_key_pair" "auto-dis-key-pub" {
   key_name   = "${local.name}-pub-key"
   public_key = tls_private_key.auto-dis-key.public_key_openssh
 }
