@@ -136,7 +136,6 @@ resource "aws_kms_key" "vault" {
   deletion_window_in_days = 10
 }
 
-#trivy:ignore:AVD-AWS-0053
 resource "aws_elb" "vault-lb" {
   name               = "vault-lb"
   security_groups    = [aws_security_group.vault.id]

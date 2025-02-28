@@ -1,0 +1,14 @@
+variable "ami_id" {}
+variable "instance_type" {}
+variable "ssh_key_name" {}
+variable "public_subnet_id" {}
+variable "ansible_sg" {}
+variable "stage-playbook" {}
+variable "prod-playbook" {}
+variable "stage-discovery-script" {}
+variable "prod-discovery-script" {}
+variable "private_key" {}
+variable "nexus-ip" {}
+variable "nr-key" {}
+variable "nr-acc-id" {}
+variable "nr-region" {}
