@@ -51,14 +51,12 @@ variable "key_name" {
   default     = "auto-dis-key"
 }
 
-variable "allowed_ssh_ips" {
-  description = "Allowed SSH IPs"
-  type        = list(string)
-  default     = ["0.0.0.0/0"] # Restrict this IPs in production later if needed
-}
-
-variable "allowed_rds_private_cidrs" {
-  description = "Allowed private subnet CIDR blocks for RDS access"
-  type        = list(string)
-  default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]  # Example private subnet CIDRs
-}
+variable "allowed_ssh_ips" {} # Restrict this IPs in production later if needed
+variable "vpc_cidr" {}
+variable "project-name" {}
+variable "asg-port" {}
+variable "nexus-port-1" {}
+variable "nexus-port-2" {}
+variable "sonar-port" {}
+variable "rds-port" {}
+variable "vpc-id" {}

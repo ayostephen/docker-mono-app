@@ -1,21 +1,14 @@
 # Provider configuration
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-    tls = {
-      source  = "hashicorp/tls"
-      version = "~> 4.0"
-    }
-  }
+
+locals {
+  name = "auto-discovery-mono-app"
 }
 
 provider "aws" {
-  region  = "eu-west-2"
-  profile = "petproject"
+  region  = var.region
+  profile = var.profile
 }
+
 terraform {
   backend "s3" {
     bucket         = "auto-discovery-bucket"
@@ -25,6 +18,30 @@ terraform {
     profile        = "petproject"
   }
 }
+
+################################################################
+## Creating a VPC using terraform-aws-modules
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+
+  name = var.vpc_name
+  cidr = var.vpc_cidr
+
+  azs            = var.azs
+  private_subnets = var.private_subnets
+  public_subnets  = var.public_subnets
+  enable_nat_gateway = true
+  enable_vpn_gateway = true
+
+  tags = {
+    Terraform   = "true"
+    Environment = "dev"
+  }
+}
+
+
+
+
 # Security group for Vault
 resource "aws_security_group" "vault" {
   name_prefix = "vault-sg-"
@@ -84,22 +101,73 @@ resource "aws_security_group" "vault" {
   }
 }
 
+# Creating security group for jenkins
+resource "aws_security_group" "jenkins-sg" {
+    name        = "${local.name}-jenkins-sg"
+    vpc_id      = module.vpc.vpc_id
+    description = "security group for jenkins"
+
+    ingress {
+        description = ssh
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_blocks = var.allowed_ssh_ips
+    }
+
+    ingress {
+        description = http
+        from_port   = 8080
+        to_port     = 8080
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    ingress = {
+        description = http
+        from_port   = 80
+        to_port     = 80
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        description = https
+        from_port   = 443
+        to_port     = 443
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+
+    tags = {
+        Name = "${local.name}-jenkins-sg"
+    }
+}
+
+
 # Create a Key Pair to SSH into EC2 instance
 resource "tls_private_key" "vault_key" {
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
-resource "aws_key_pair" "vault_pair" {
-  key_name   = "vault-key"
-  public_key = tls_private_key.vault_key.public_key_openssh
-}
-
 # Store the private key locally
-resource "local_file" "private_key" {
-  filename        = "vault_key_pair.pem"
+resource "local_file" "vault-pri-key" {
+  filename        = "vault-pri-key.pem"
   content         = tls_private_key.vault_key.private_key_pem
   file_permission = "600"
+}
+
+# Store the public key locally
+resource "aws_key_pair" "vault-key-pub" {
+  key_name   = "vault-pub-key"
+  public_key = tls_private_key.vault_key.public_key_openssh
 }
 
 # EC2 instance for Vault
@@ -129,6 +197,34 @@ resource "aws_instance" "vault" {
   }
 }
 
+# Creating Jenkins Server
+resource "aws_instance" "jenkins-server" {
+  ami                         = var.ami-ubuntu
+  instance_type               = "t3.micro"
+  key_name                    = aws_key_pair.vault_pair.key_name
+  vpc_security_group_ids      = [aws_security_group.jenkins-sg.id]
+  associate_public_ip_address = true
+  iam_instance_profile = aws_iam_instance_profile.jenkins-role.id
+  user_data = templatefile("./install_vault.sh", {
+    var2 = aws_kms_key.vault.id,
+    var1 = var.region
+  })
+  metadata_options {
+    http_tokens = "required"
+  } 
+
+  tags = {
+    Name = "jenkins-server"
+  }
+
+  root_block_device {
+    volume_size = 50
+    volume_type = "gp3"
+    encrypted   = "true"
+  }
+}
+
+# Creating Jenkins Iam
 
 resource "aws_kms_key" "vault" {
   description             = "Encryption KMS key for vault"

@@ -1,272 +1,72 @@
 locals {
   name = "auto-discovery-mono-app"
+  vpc_id = ""
+  public_subnet_id-1 = ""
+  public_subnet_id-2 = ""
+  public_subnet_id-3 = ""
+  private_subnet_id-1 = ""
+  private_subnet_id-2 = ""
+  private_subnet_id-3 = ""
 }
 
-provider "aws" {
-  region  = var.aws_region
-  profile = var.profile
+#AWS_VPC 
+data "aws_vpc" "vpc" {
+  id = local.vpc_id
 }
 
-################################################################
-## Creating a VPC using terraform-aws-modules
-module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
-
-  name = var.vpc_name
-  cidr = var.vpc_cidr
-
-  azs            = var.azs
-  private_subnets = var.private_subnets
-  public_subnets  = var.public_subnets
-  enable_nat_gateway = var.enable_nat_gateway
-  enable_vpn_gateway = var.enable_vpn_gateway
-
-  tags = {
-    Terraform   = "true"
-    Environment = "dev"
-  }
+data "aws_subnet" "public-subnet-1" {
+  id = local.public_subnet_id-1
 }
 
-################################################################
-### Security Groups
-## Creating security group for docker, nexus, sonarqube, jenkins and backend services
-
-# Creating security group for docker
-resource "aws_security_group" "docker-sg" {
-  name        = "${local.name}-docker-sg"
-  vpc_id      = module.vpc.vpc_id
-  description = "security group for docker"
-
-  ingress {
-    description = ssh
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = var.allowed_ssh_ips
-  }
-
-    ingress {
-    description = ssh
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-    ingress {
-    description = http
-        from_port   = 80
-        to_port     = 80
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    ingress {
-        description = https
-        from_port   = 443
-        to_port     = 443
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-        }
-    
-    egress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    tags = {
-        Name = "${local.name}-docker-sg"
-    }
+data "aws_subnet" "public-subnet-2" {
+  id = local.public_subnet_id-2
 }
 
-# Creating security group for nexus
-resource "aws_security_group" "nexus-sg" {
-    name        = "${local.name}-nexus-sg"
-    vpc_id      = module.vpc.vpc_id
-    description = "security group for nexus"
-
-    ingress {
-        description = ssh
-        from_port   = 22
-        to_port     = 22
-        protocol    = "tcp"
-        cidr_blocks = var.allowed_ssh_ips
-    }
-
-    ingress {
-        description = http
-        from_port   = 8081
-        to_port     = 8081
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    ingress {
-        description = http
-        from_port   = 8085
-        to_port     = 8085
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    ingress {
-        description = https
-        from_port   = 443
-        to_port     = 443
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    egress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    tags = {
-        Name = "${local.name}-nexus-sg"
-    }
+data "aws_subnet" "public_subnet-3" {
+  id = local.public_subnet_id-3
 }
 
-# Creating security group for sonarqube
-resource "aws_security_group" "sonarqube-sg" {
-    name        = "${local.name}-sonarqube-sg"
-    vpc_id      = module.vpc.vpc_id
-    description = "security group for sonarqube"
-
-    ingress {
-        description = ssh
-        from_port   = 22
-        to_port     = 22
-        protocol    = "tcp"
-        cidr_blocks = var.allowed_ssh_ips
-    }
-
-    ingress {
-        description = http
-        from_port   = 9000
-        to_port     = 9000
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    } 
-
-    ingress {
-        description = https
-        from_port   = 443
-        to_port     = 443
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    egress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    tags = {
-        Name = "${local.name}-sonarqube-sg"
-    }
+data "aws_subnet" "private-subnet-1" {
+  id = local.private_subnet_id-1
 }
 
-# Creating security group for jenkins
-resource "aws_security_group" "jenkins-sg" {
-    name        = "${local.name}-jenkins-sg"
-    vpc_id      = module.vpc.vpc_id
-    description = "security group for jenkins"
-
-    ingress {
-        description = ssh
-        from_port   = 22
-        to_port     = 22
-        protocol    = "tcp"
-        cidr_blocks = var.allowed_ssh_ips
-    }
-
-    ingress {
-        description = http
-        from_port   = 8080
-        to_port     = 8080
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    ingress = {
-        description = http
-        from_port   = 80
-        to_port     = 80
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-    ingress {
-        description = https
-        from_port   = 443
-        to_port     = 443
-        protocol    = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    egress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    tags = {
-        Name = "${local.name}-jenkins-sg"
-    }
+data "aws_subnet" "private-subnet-2" {
+  id = local.private_subnet_id-2
 }
 
-## Creating security group for RDS
-resource "aws_security_group" "rds-sg" {
-    name        = "${local.name}-rds-sg"
-    vpc_id      = module.vpc.vpc_id
-    description = "security group for RDS"
+data "aws_subnet" "private-subnet-3" {
+  id = local.private_subnet_id-3
+}
 
-    dynamic "ingress" {
-    for_each = var.allowed_rds_private_cidrs  # Loop over the CIDR list
-    content {
-      description = "MySQL access"
-      from_port   = 3306
-      to_port     = 3306
-      protocol    = "tcp"
-      cidr_blocks = [ingress.value]
-    }
-  }
-
-    egress {
-        from_port   = 0
-        to_port     = 0
-        protocol    = "-1"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
-
-    tags = {
-        Name = "${local.name}-rds-sg"
-    }
+module "security-groups" {
+  source          = "./modules/security-groups"
+  vpc-id          = data.aws_vpc.vpc.id
+  allowed_ssh_ips = var.allowed_ssh_ips
+  vpc_cidr        = var.vpc_cidr
+  project-name    = var.project-name
+  asg-port        = var.asg-port 
+  nexus-port-1    = var.nexus-port-1
+  nexus-port-2    = var.nexus-port-2
+  sonar-port      = var.sonar-port
+  rds-port        = var.rds-port
 }
 
 
+module "jenkins-vault-server" {
+  source   = "./jenkins-vault_server"
+  vpc_name = var.vpc_name
+  vpc_cidr = var.vpc_cidr
+}
 
-################################################################
-# Creating an AWS Key Pair using tls
-resource "tls_private_key" "auto-dis-key" {
-  algorithm = "RSA"
-  rsa_bits  = 4096
+module "nexus-server" {
+  source    = "./modules/nexus-server"
+  subnet_id = module.vault-server.public_subnet_ids[0]
+  vpc_id    = module.vault-server.vpc_id
 }
-#kops private key
-resource "local_file" "auto-dis-key-pri" {
-  content         = tls_private_key.auto-dis-key.private_key_pem
-  filename        = "${local.name}-key.pem"
-  file_permission = "440"
+
+module "bastion-host" {
+  source    = "./modules/bastion-host"
+  subnet_id = module.vault-server.public_subnet_ids[0]  # Bastion should be in public subnet
+  vpc_id    = module.vault-server.vpc_id
 }
-# kops public key
-resource "aws_key_pair" "auto-discovery-key-pub" {
-  key_name   = "${local.name}-pub-key"
-  public_key = tls_private_key.auto-dis-key.public_key_openssh
-}
+
