@@ -1,4 +1,4 @@
-variable "ami_id" {}
+variable "redhat-ami_id" {}
 variable "instance_type" {}
 variable "ssh_key_name" {}
 variable "public_subnet_id" {}

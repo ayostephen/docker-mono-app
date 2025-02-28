@@ -8,3 +8,4 @@ variable "nexus-port-2" {}
 variable "sonar-port" {}
 variable "rds-port" {}
 variable "vpc-id" {}
+variable "jenkins-master-sg" {}
