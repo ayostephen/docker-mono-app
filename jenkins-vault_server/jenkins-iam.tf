@@ -1,15 +1,12 @@
 data "aws_iam_policy_document" "jenkins-ec2-policy" {
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": "sts:AssumeRole",
-            "Sid": "",
-            "Principal": {
-                "Service": "ec2.amazonaws.com"
-            }
-        }
-    ]
+    statement {
+    effect  = "Allow"
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
 }
 
 resource "aws_iam_role" "jenkins-ec2-role" {
