@@ -1,5 +1,5 @@
 resource "aws_instance" "sonarqube_instance" {
-  ami                    = var.ami_id
+  ami                    = var.ubuntu-ami_id
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
   key_name               = var.key_name
@@ -20,34 +20,34 @@ resource "aws_instance" "sonarqube_instance" {
 }
 
 
-# Create a new load balancer
-resource "aws_elb" "elb-sonar" {
-  name            = "elb-sonar"
-  subnets         = var.elb-subnets
-  security_groups = [var.sonarqube-sg]
-  listener {
-    instance_port      = 9000
-    instance_protocol  = "http"
-    lb_port            = 443
-    lb_protocol        = "https"
-    ssl_certificate_id = var.cert-arn
-  }
+# # Create a new load balancer
+# resource "aws_elb" "elb-sonar" {
+#   name            = "elb-sonar"
+#   subnets         = var.elb-subnets
+#   security_groups = [var.sonarqube-sg]
+#   listener {
+#     instance_port      = 9000
+#     instance_protocol  = "http"
+#     lb_port            = 443
+#     lb_protocol        = "https"
+#     ssl_certificate_id = var.cert-arn
+#   }
 
-  health_check {
-    healthy_threshold   = 2
-    unhealthy_threshold = 2
-    timeout             = 3
-    target              = "TCP:9000"
-    interval            = 30
-  }
+#   health_check {
+#     healthy_threshold   = 2
+#     unhealthy_threshold = 2
+#     timeout             = 3
+#     target              = "TCP:9000"
+#     interval            = 30
+#   }
 
-  instances                   = [aws_instance.sonarqube_instance.id]
-  cross_zone_load_balancing   = true
-  idle_timeout                = 400
-  connection_draining         = true
-  connection_draining_timeout = 400
+#   instances                   = [aws_instance.sonarqube_instance.id]
+#   cross_zone_load_balancing   = true
+#   idle_timeout                = 400
+#   connection_draining         = true
+#   connection_draining_timeout = 400
 
-  tags = {
-    Name = "sonar-elb"
-  }
-}
+#   tags = {
+#     Name = "sonar-elb"
+#   }
+# }

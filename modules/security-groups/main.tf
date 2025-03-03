@@ -162,3 +162,71 @@ resource "aws_security_group" "rds-sg" {
         Name = "${var.project-name}-rds-sg"
     }
 }
+
+# Creating security group for Ansible and Bastion Host
+resource "aws_security_group" "ansible-bastion-sg" {
+    name        = "${var.project-name}-ansible-sg"
+    vpc_id      = var.vpc-id
+    description = "security group for ansible and bastion host"
+
+    ingress {
+        description = "allow ssh access"
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_blocks = var.allowed_ssh_ips
+    }
+
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0./0"]
+    }
+
+    tags = {
+        Name = "${var.project-name}-ansible-sg"
+    }
+}
+
+
+## Creating security group jenkins-docker server
+resource "aws_security_group" "jenkins-docker-sg" {
+    name        = "${var.project-name}-jenkins-sg"
+    vpc_id      = var.vpc-id
+    description = "security group for jenkins-docker"
+
+    ingress {
+        description = "allow ssh access"
+        from_port   = 22
+        to_port     = 22
+        protocol    = "tcp"
+        cidr_blocks = var.allowed_ssh_ips
+    }
+
+    ingress {
+        description = "allow http access"
+        from_port   = 4243
+        to_port     = 4243
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+        security_groups = [ var.jenkins-master-sg ]
+    }
+
+    ingress {
+        description = "allow http access"
+        from_port   = 32768
+        to_port     = 60999
+        protocol    = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+        security_groups = [ var.jenkins-master-sg ]
+    }
+
+    egress {
+        from_port   = 0
+        to_port     = 0
+        protocol    = "-1"
+        cidr_blocks = ["0.0.0.0/0"]
+        security_groups = [ var.jenkins-master-sg ]
+    }
+}
