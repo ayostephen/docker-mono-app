@@ -5,7 +5,7 @@ variable "aws_region" {
 
 variable "profile" {
   description = "AWS Profile"
-//profile = "default" // Uncomment this line when named profile is available to use
+  //profile = "default" // Uncomment this line when named profile is available to use
 }
 
 variable "vpc_name" {
@@ -91,10 +91,10 @@ variable "count" {}
 variable "instance_type" {}
 # Not sure if we need both!
 variable "private_key" {}
-variable "key_name" {} 
+variable "key_name" {}
 variable "instance_name" {}
- # To be created in the default VPC and Subnet
-variable "subnet_id" {}      
+# To be created in the default VPC and Subnet
+variable "subnet_id" {}
 variable "jenkins_sg" {}
 variable "nexus-ip" {}
 variable "nr-region" {}
@@ -135,12 +135,12 @@ variable "ubuntu-ami_id" {}
 variable "instance_type" {}
 variable "key_name" {}
 variable "instance_name" {}
-variable "subnet_id" {}      
+variable "subnet_id" {}
 variable "sonarqube-sg" {}
 variable "nr-key" {}
 variable "nr-acc-id" {}
 variable "nr-region" {}
 variable "elb-subnets" {}
 variable "cert-arn" {}
-variable "sonar-postgress-pwd" {}  
+variable "sonar-postgress-pwd" {}
 variable "sonar-psqldb-pwd" {}

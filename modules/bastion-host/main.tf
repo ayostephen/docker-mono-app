@@ -7,7 +7,7 @@ resource "aws_instance" "bastion-host" {
   associate_public_ip_address = true
   user_data_base64            = local.user_data
 
-  tags = { 
-    Name = "Bastion-Host" 
-    }
+  tags = {
+    Name = "Bastion-Host"
+  }
 }

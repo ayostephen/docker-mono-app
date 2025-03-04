@@ -5,16 +5,13 @@ output "vault_public_ip" {
 
 output "jenkins_public_ip" {
   description = "Public IP of the jenkins host"
-  value       = aws_instance.jenkins.public_ip
+  value       = aws_instance.jenkins-server.public_ip
 }
 
 output "jenkins-sg-id" {
-  value = aws_security_group.jenkins-sg.id 
+  value = aws_security_group.jenkins-sg.id
 }
 
-output "jenkins-key" {
-  value = aws_key_pair.vault_pair.key_name
-}
 
 ####################
 output "vpc_id" {
@@ -24,30 +21,30 @@ output "vpc_id" {
 
 output "public_subnet_id-1" {
   description = "List of public subnet IDs"
-  value       = module.vpc.public_subnet_ids[0]
+  value       = module.vpc.public_subnets[0]
 }
 
 output "public_subnet_id-2" {
   description = "List of public subnet IDs"
-  value       = module.vpc.public_subnet_ids[1]
+  value       = module.vpc.public_subnets[1]
 }
 
 output "public_subnet_id-3" {
   description = "List of public subnet IDs"
-  value       = module.vpc.public_subnet_ids[2]
+  value       = module.vpc.public_subnets[2]
 }
 
 output "private_subnet_id-1" {
   description = "List of private subnet IDs"
-  value       = module.vpc.private_subnet_ids[0]
+  value       = module.vpc.private_subnets[0]
 }
 
 output "private_subnet_id-2" {
   description = "List of private subnet IDs"
-  value       = module.vpc.private_subnet_ids[1]
+  value       = module.vpc.private_subnets[1]
 }
 
 output "private_subnet_id-3" {
   description = "List of private subnet IDs"
-  value       = module.vpc.private_subnet_ids[2]
+  value       = module.vpc.private_subnets[2]
 }

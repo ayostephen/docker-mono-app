@@ -1,5 +1,5 @@
 data "aws_iam_policy_document" "jenkins-ec2-policy" {
-    statement {
+  statement {
     effect  = "Allow"
     actions = ["sts:AssumeRole"]
     principals {
@@ -17,7 +17,7 @@ resource "aws_iam_role" "jenkins-ec2-role" {
 resource "aws_iam_role_policy_attachment" "jenkins-ec2-role-policy" {
   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
   role       = aws_iam_role.jenkins-ec2-role.name
-} 
+}
 
 resource "aws_iam_instance_profile" "jenkins-role" {
   name = "jenkins-profile"
