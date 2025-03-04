@@ -36,21 +36,9 @@ variable "private_subnets" {
   default     = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
 }
 
-variable "enable_nat_gateway" {
-  description = "Enable NAT Gateway"
-  default     = true
-}
-
-variable "enable_vpn_gateway" {
-  description = "Enable VPN Gateway"
-  default     = true
-}
-
-variable "key_name" {
-  description = "AWS Key Pair name"
-  default     = "auto-dis-key"
-}
-
+variable "enable_nat_gateway" {}
+variable "enable_vpn_gateway" {}
+variable "key_name" {}
 variable "allowed_ssh_ips" {} # Restrict this IPs in production later if needed
 variable "vpc_cidr" {}
 variable "project-name" {}
