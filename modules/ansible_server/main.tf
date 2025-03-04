@@ -13,7 +13,7 @@ resource "aws_instance" "ansible_server" {
   root_block_device {
     volume_size = 40
     volume_type = "gp3"
-    encrypted = "true"
+    encrypted   = "true"
   }
   tags = {
     Name = "AnsibleServer"

@@ -6,7 +6,7 @@ resource "aws_instance" "nexus-server" {
   vpc_security_group_ids      = var.nexus-sg-id
   associate_public_ip_address = true
   user_data                   = local.user_data
-  
+
   tags = {
     Name = "Nexus-Server"
   }
