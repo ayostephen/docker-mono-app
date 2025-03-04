@@ -19,6 +19,7 @@ terraform {
   }
 }
 
+
 ################################################################
 ## Creating a VPC using terraform-aws-modules
 module "vpc" {
@@ -40,9 +41,7 @@ module "vpc" {
 }
 
 
-
-
-# Security group for Vault
+# Security group for Vault 
 resource "aws_security_group" "vault" {
   name_prefix = "vault-sg-"
   vpc_id = module.vpc.vpc_id

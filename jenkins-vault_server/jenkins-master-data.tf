@@ -4,7 +4,7 @@ locals {
   jenkinscript = <<-EOF
 #!/bin/bash
 sudo yum update -y
-sudo yum install git -y
+sudo yum install git wget -y
 sudo yum install maven -y
 sudo yum install wget -y
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
