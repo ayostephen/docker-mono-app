@@ -76,12 +76,13 @@ module "keypair" {
 module "jenkins-slaves" {
   source        = "./modules/jenkins_servers"
   ami_id = var.ami_id
-  # ami_ubuntu = var.ami_ubuntu
+  ami_ubuntu = var.ami_ubuntu
   # domain-name   = var.domain-name
   instance_type = var.instance_type
   key_name      = module.keypair.infra-pub-key
   subnet_id     = data.aws_subnet.public-subnet-1.id
-  jenkins_sg = data.aws_security_group.jenkins-sg
+  jenkins_sg = data.aws_security_group.jenkins-sg.id
+  jenkins-cloud-sg = module.security-groups.jenkins_docker_sg_id
   # nexus-ip = var.nexus-ip
   nr-region = var.nr-region
   nr-acc-id = var.nr-acc-id
