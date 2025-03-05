@@ -109,34 +109,6 @@ resource "aws_security_group" "nexus-sg" {
   }
 }
 
-
-# Creating security group for Ansible and Bastion Host
-resource "aws_security_group" "ansible-bastion-sg" {
-  name        = "${var.project-name}-ansible-sg"
-  vpc_id      = var.vpc-id
-  description = "security group for ansible and bastion host"
-
-  ingress {
-    description = "allow ssh access"
-    from_port   = 22
-    to_port     = 22
-    protocol    = "tcp"
-    cidr_blocks = var.allowed_ssh_ips
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0./0"]
-  }
-
-  tags = {
-    Name = "${var.project-name}-ansible-sg"
-  }
-}
-
-
 ## Creating security group for RDS
 resource "aws_security_group" "rds-sg" {
   name        = "${var.project-name}-rds-sg"
@@ -148,7 +120,7 @@ resource "aws_security_group" "rds-sg" {
     from_port       = var.rds-port
     to_port         = var.rds-port
     protocol        = "tcp"
-    security_groups = [aws_security_group.asg-sg.id, aws_security_group.ansible-bastion.id]
+    security_groups = [aws_security_group.asg-sg.id, aws_security_group.ansible-bastion-sg.id]
   }
 
   egress {
@@ -181,7 +153,7 @@ resource "aws_security_group" "ansible-bastion-sg" {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = ["0.0.0.0./0"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
