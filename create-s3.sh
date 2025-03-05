@@ -38,3 +38,10 @@ aws dynamodb create-table \
     --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
     --region "$AWS_REGION" --profile "$AWS_PROFILE"
 check_success "DynamoDB table creation"
+
+## Create a Jenkins server
+cd ./jenkins-vault_server
+terraform init
+terraform fmt --recursive
+terraform validate
+terraform apply -auto-approve

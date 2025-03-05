@@ -11,9 +11,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "auto-discovery-bucket"
+    bucket         = "auto-discovery-mono-app-s3"
     key            = "vault-remote/tfstate"
-    dynamodb_table = "AutoDiscoveryTable"
+    dynamodb_table = "auto-discovery-mono-app-dynamodb"
     region         = "eu-west-2"
     profile        = "petproject"
   }
@@ -44,7 +44,7 @@ module "vpc" {
 # Security group for Vault 
 resource "aws_security_group" "vault" {
   name_prefix = "vault-sg-"
-  vpc_id = module.vpc.vpc_id
+  vpc_id      = module.vpc.vpc_id
   description = "Security group for Vault server"
 
   # Vault API
@@ -173,11 +173,11 @@ resource "aws_key_pair" "vault-key-pub" {
 # EC2 instance for Vault
 resource "aws_instance" "vault" {
   ami                         = var.ami-ubuntu
-  instance_type               = "t3.micro"
+  instance_type               = var.instance_type
   key_name                    = aws_key_pair.vault-key-pub.key_name
   vpc_security_group_ids      = [aws_security_group.vault.id]
   associate_public_ip_address = true
-  subnet_id = module.vpc.public_subnets[2]
+  subnet_id                   = module.vpc.public_subnets[2]
   iam_instance_profile        = aws_iam_instance_profile.vault_kms_profile.id
   user_data = templatefile("./vault_server_script.sh", {
     var2      = aws_kms_key.vault.id,
@@ -203,12 +203,12 @@ resource "aws_instance" "vault" {
 
 # Creating Jenkins Server
 resource "aws_instance" "jenkins-server" {
-  ami                         = var.ami-ubuntu
-  instance_type               = "t3.medium"
+  ami                         = var.ami_id
+  instance_type               = var.instance_type
   key_name                    = aws_key_pair.vault-key-pub.key_name
   vpc_security_group_ids      = [aws_security_group.jenkins-sg.id]
   associate_public_ip_address = true
-  subnet_id = module.vpc.public_subnets[0]
+  subnet_id                   = module.vpc.public_subnets[0]
   iam_instance_profile        = aws_iam_instance_profile.jenkins-role.id
   user_data                   = local.jenkinscript
   metadata_options {
