@@ -4,3 +4,6 @@ variable "key-name" {}
 variable "bastion-subnet" {}
 variable "bastion-sg" {}
 variable "private_key_name" {}
+variable "nr-region" {}
+variable "nr-key" {}
+variable "nr-acc-id" {}

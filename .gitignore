@@ -4,6 +4,7 @@
 # .tfstate files
 *.tfstate
 *.tfstate.*
+**/.pem
 
 
 # Crash log files
@@ -32,4 +33,4 @@ override.tf.json
 
 # Ignore CLI configuration files
 .terraformrc
-terraform.rc
+terraform.rc.DS_Store

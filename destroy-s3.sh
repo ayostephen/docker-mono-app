@@ -1,5 +1,9 @@
 #!/bin/bash
 
+## Destroy a Jenkins server
+cd ./jenkins-vault_server
+terraform destroy -auto-approve
+
 # Defining a local name
 LOCAL_NAME="auto-discovery-mono-app"
 
@@ -31,3 +35,4 @@ check_success "S3 bucket deletion"
 
 # Final success message
 echo "All AWS resources deleted successfully."
+

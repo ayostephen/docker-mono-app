@@ -1,0 +1,1537 @@
+
+
+       _               _              
+   ___| |__   ___  ___| | _______   __
+  / __| '_ \ / _ \/ __| |/ / _ \ \ / /
+ | (__| | | |  __/ (__|   < (_) \ V / 
+  \___|_| |_|\___|\___|_|\_\___/ \_/  
+                                      
+By Prisma Cloud | version: 3.2.310 
+Update available 3.2.310 -> 3.2.381
+Run pip3 install -U checkov to update 
+
+
+terraform scan results:
+
+Passed checks: 99, Failed checks: 38, Skipped checks: 0
+
+Check: CKV_AWS_274: "Disallow IAM roles, users, and groups from using the AWS AdministratorAccess policy"
+	PASSED for resource: aws_iam_role.jenkins-ec2-role
+	File: /jenkins-vault_server/jenkins-iam.tf:12-15
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-274
+Check: CKV_AWS_61: "Ensure AWS IAM policy does not allow assume role permission across all services"
+	PASSED for resource: aws_iam_role.jenkins-ec2-role
+	File: /jenkins-vault_server/jenkins-iam.tf:12-15
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-45
+Check: CKV_AWS_60: "Ensure IAM role allows only specific services or principals to assume it"
+	PASSED for resource: aws_iam_role.jenkins-ec2-role
+	File: /jenkins-vault_server/jenkins-iam.tf:12-15
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-44
+Check: CKV_AWS_358: "Ensure GitHub Actions OIDC trust policies only allows actions from a specific known organization"
+	PASSED for resource: aws_iam_policy_document.jenkins-ec2-policy
+	File: /jenkins-vault_server/jenkins-iam.tf:1-10
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-358
+Check: CKV_AWS_108: "Ensure IAM policies does not allow data exfiltration"
+	PASSED for resource: aws_iam_policy_document.jenkins-ec2-policy
+	File: /jenkins-vault_server/jenkins-iam.tf:1-10
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-data-exfiltration
+Check: CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+	PASSED for resource: aws_iam_policy_document.jenkins-ec2-policy
+	File: /jenkins-vault_server/jenkins-iam.tf:1-10
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-write-access-without-constraint
+Check: CKV_AWS_49: "Ensure no IAM policies documents allow "*" as a statement's actions"
+	PASSED for resource: aws_iam_policy_document.jenkins-ec2-policy
+	File: /jenkins-vault_server/jenkins-iam.tf:1-10
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-43
+Check: CKV_AWS_107: "Ensure IAM policies does not allow credentials exposure"
+	PASSED for resource: aws_iam_policy_document.jenkins-ec2-policy
+	File: /jenkins-vault_server/jenkins-iam.tf:1-10
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-credentials-exposure
+Check: CKV_AWS_356: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
+	PASSED for resource: aws_iam_policy_document.jenkins-ec2-policy
+	File: /jenkins-vault_server/jenkins-iam.tf:1-10
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-356
+Check: CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+	PASSED for resource: aws_iam_policy_document.jenkins-ec2-policy
+	File: /jenkins-vault_server/jenkins-iam.tf:1-10
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-permissions-management-resource-exposure-without-constraint
+Check: CKV_AWS_283: "Ensure no IAM policies documents allow ALL or any AWS principal permissions to the resource"
+	PASSED for resource: aws_iam_policy_document.jenkins-ec2-policy
+	File: /jenkins-vault_server/jenkins-iam.tf:1-10
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-283
+Check: CKV_AWS_1: "Ensure IAM policies that allow full "*-*" administrative privileges are not created"
+	PASSED for resource: aws_iam_policy_document.jenkins-ec2-policy
+	File: /jenkins-vault_server/jenkins-iam.tf:1-10
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-23
+Check: CKV_AWS_110: "Ensure IAM policies does not allow privilege escalation"
+	PASSED for resource: aws_iam_policy_document.jenkins-ec2-policy
+	File: /jenkins-vault_server/jenkins-iam.tf:1-10
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-does-not-allow-privilege-escalation
+Check: CKV_AWS_41: "Ensure no hard coded AWS access key and secret key exists in provider"
+	PASSED for resource: aws.default
+	File: /jenkins-vault_server/main.tf:7-10
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/secrets-policies/bc-aws-secrets-5
+Check: CKV_AWS_24: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+	PASSED for resource: aws_security_group.vault
+	File: /jenkins-vault_server/main.tf:45-102
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security
+Check: CKV_AWS_23: "Ensure every security group and rule has a description"
+	PASSED for resource: aws_security_group.vault
+	File: /jenkins-vault_server/main.tf:45-102
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31
+Check: CKV_AWS_277: "Ensure no security groups allow ingress from 0.0.0.0:0 to port -1"
+	PASSED for resource: aws_security_group.vault
+	File: /jenkins-vault_server/main.tf:45-102
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-group-does-not-allow-all-traffic-on-all-ports
+Check: CKV_AWS_25: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389"
+	PASSED for resource: aws_security_group.vault
+	File: /jenkins-vault_server/main.tf:45-102
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2
+Check: CKV_AWS_24: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+	PASSED for resource: aws_security_group.jenkins-sg
+	File: /jenkins-vault_server/main.tf:105-151
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security
+Check: CKV_AWS_277: "Ensure no security groups allow ingress from 0.0.0.0:0 to port -1"
+	PASSED for resource: aws_security_group.jenkins-sg
+	File: /jenkins-vault_server/main.tf:105-151
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-group-does-not-allow-all-traffic-on-all-ports
+Check: CKV_AWS_25: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389"
+	PASSED for resource: aws_security_group.jenkins-sg
+	File: /jenkins-vault_server/main.tf:105-151
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2
+Check: CKV_AWS_79: "Ensure Instance Metadata Service Version 1 is not enabled"
+	PASSED for resource: aws_instance.vault
+	File: /jenkins-vault_server/main.tf:174-202
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31
+Check: CKV_AWS_46: "Ensure no hard-coded secrets exist in EC2 user data"
+	PASSED for resource: aws_instance.vault
+	File: /jenkins-vault_server/main.tf:174-202
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/secrets-policies/bc-aws-secrets-1
+Check: CKV_AWS_8: "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted"
+	PASSED for resource: aws_instance.vault
+	File: /jenkins-vault_server/main.tf:174-202
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13
+Check: CKV_AWS_79: "Ensure Instance Metadata Service Version 1 is not enabled"
+	PASSED for resource: aws_instance.jenkins-server
+	File: /jenkins-vault_server/main.tf:205-227
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31
+Check: CKV_AWS_46: "Ensure no hard-coded secrets exist in EC2 user data"
+	PASSED for resource: aws_instance.jenkins-server
+	File: /jenkins-vault_server/main.tf:205-227
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/secrets-policies/bc-aws-secrets-1
+Check: CKV_AWS_8: "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted"
+	PASSED for resource: aws_instance.jenkins-server
+	File: /jenkins-vault_server/main.tf:205-227
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13
+Check: CKV_AWS_227: "Ensure KMS key is enabled"
+	PASSED for resource: aws_kms_key.vault
+	File: /jenkins-vault_server/main.tf:231-235
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-aws-key-management-service-kms-key-is-enabled
+Check: CKV_AWS_33: "Ensure KMS key policy does not contain wildcard (*) principal"
+	PASSED for resource: aws_kms_key.vault
+	File: /jenkins-vault_server/main.tf:231-235
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-kms-key-policy-does-not-contain-wildcard-principal
+Check: CKV_AWS_7: "Ensure rotation for customer created CMKs is enabled"
+	PASSED for resource: aws_kms_key.vault
+	File: /jenkins-vault_server/main.tf:231-235
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/logging-8
+Check: CKV_AWS_274: "Disallow IAM roles, users, and groups from using the AWS AdministratorAccess policy"
+	PASSED for resource: aws_iam_role.vault_kms_unseal
+	File: /jenkins-vault_server/vault_iam.tf:29-32
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-274
+Check: CKV_AWS_61: "Ensure AWS IAM policy does not allow assume role permission across all services"
+	PASSED for resource: aws_iam_role.vault_kms_unseal
+	File: /jenkins-vault_server/vault_iam.tf:29-32
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-45
+Check: CKV_AWS_60: "Ensure IAM role allows only specific services or principals to assume it"
+	PASSED for resource: aws_iam_role.vault_kms_unseal
+	File: /jenkins-vault_server/vault_iam.tf:29-32
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-44
+Check: CKV_AWS_63: "Ensure no IAM policies documents allow "*" as a statement's actions"
+	PASSED for resource: aws_iam_role_policy.vault_kms_unseal
+	File: /jenkins-vault_server/vault_iam.tf:34-38
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-48
+Check: CKV_AWS_62: "Ensure IAM policies that allow full "*-*" administrative privileges are not created"
+	PASSED for resource: aws_iam_role_policy.vault_kms_unseal
+	File: /jenkins-vault_server/vault_iam.tf:34-38
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-45
+Check: CKV_AWS_358: "Ensure GitHub Actions OIDC trust policies only allows actions from a specific known organization"
+	PASSED for resource: aws_iam_policy_document.assume_role
+	File: /jenkins-vault_server/vault_iam.tf:2-11
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-358
+Check: CKV_AWS_108: "Ensure IAM policies does not allow data exfiltration"
+	PASSED for resource: aws_iam_policy_document.assume_role
+	File: /jenkins-vault_server/vault_iam.tf:2-11
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-data-exfiltration
+Check: CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+	PASSED for resource: aws_iam_policy_document.assume_role
+	File: /jenkins-vault_server/vault_iam.tf:2-11
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-write-access-without-constraint
+Check: CKV_AWS_49: "Ensure no IAM policies documents allow "*" as a statement's actions"
+	PASSED for resource: aws_iam_policy_document.assume_role
+	File: /jenkins-vault_server/vault_iam.tf:2-11
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-43
+Check: CKV_AWS_107: "Ensure IAM policies does not allow credentials exposure"
+	PASSED for resource: aws_iam_policy_document.assume_role
+	File: /jenkins-vault_server/vault_iam.tf:2-11
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-credentials-exposure
+Check: CKV_AWS_356: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
+	PASSED for resource: aws_iam_policy_document.assume_role
+	File: /jenkins-vault_server/vault_iam.tf:2-11
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-356
+Check: CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+	PASSED for resource: aws_iam_policy_document.assume_role
+	File: /jenkins-vault_server/vault_iam.tf:2-11
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-permissions-management-resource-exposure-without-constraint
+Check: CKV_AWS_283: "Ensure no IAM policies documents allow ALL or any AWS principal permissions to the resource"
+	PASSED for resource: aws_iam_policy_document.assume_role
+	File: /jenkins-vault_server/vault_iam.tf:2-11
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-283
+Check: CKV_AWS_1: "Ensure IAM policies that allow full "*-*" administrative privileges are not created"
+	PASSED for resource: aws_iam_policy_document.assume_role
+	File: /jenkins-vault_server/vault_iam.tf:2-11
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-23
+Check: CKV_AWS_110: "Ensure IAM policies does not allow privilege escalation"
+	PASSED for resource: aws_iam_policy_document.assume_role
+	File: /jenkins-vault_server/vault_iam.tf:2-11
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-does-not-allow-privilege-escalation
+Check: CKV_AWS_358: "Ensure GitHub Actions OIDC trust policies only allows actions from a specific known organization"
+	PASSED for resource: aws_iam_policy_document.vault_iam_policy
+	File: /jenkins-vault_server/vault_iam.tf:13-27
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-358
+Check: CKV_AWS_108: "Ensure IAM policies does not allow data exfiltration"
+	PASSED for resource: aws_iam_policy_document.vault_iam_policy
+	File: /jenkins-vault_server/vault_iam.tf:13-27
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-data-exfiltration
+Check: CKV_AWS_111: "Ensure IAM policies does not allow write access without constraints"
+	PASSED for resource: aws_iam_policy_document.vault_iam_policy
+	File: /jenkins-vault_server/vault_iam.tf:13-27
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-write-access-without-constraint
+Check: CKV_AWS_49: "Ensure no IAM policies documents allow "*" as a statement's actions"
+	PASSED for resource: aws_iam_policy_document.vault_iam_policy
+	File: /jenkins-vault_server/vault_iam.tf:13-27
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-iam-43
+Check: CKV_AWS_107: "Ensure IAM policies does not allow credentials exposure"
+	PASSED for resource: aws_iam_policy_document.vault_iam_policy
+	File: /jenkins-vault_server/vault_iam.tf:13-27
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-credentials-exposure
+Check: CKV_AWS_356: "Ensure no IAM policies documents allow "*" as a statement's resource for restrictable actions"
+	PASSED for resource: aws_iam_policy_document.vault_iam_policy
+	File: /jenkins-vault_server/vault_iam.tf:13-27
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-356
+Check: CKV_AWS_109: "Ensure IAM policies does not allow permissions management / resource exposure without constraints"
+	PASSED for resource: aws_iam_policy_document.vault_iam_policy
+	File: /jenkins-vault_server/vault_iam.tf:13-27
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-do-not-allow-permissions-management-resource-exposure-without-constraint
+Check: CKV_AWS_283: "Ensure no IAM policies documents allow ALL or any AWS principal permissions to the resource"
+	PASSED for resource: aws_iam_policy_document.vault_iam_policy
+	File: /jenkins-vault_server/vault_iam.tf:13-27
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-283
+Check: CKV_AWS_1: "Ensure IAM policies that allow full "*-*" administrative privileges are not created"
+	PASSED for resource: aws_iam_policy_document.vault_iam_policy
+	File: /jenkins-vault_server/vault_iam.tf:13-27
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/iam-23
+Check: CKV_AWS_110: "Ensure IAM policies does not allow privilege escalation"
+	PASSED for resource: aws_iam_policy_document.vault_iam_policy
+	File: /jenkins-vault_server/vault_iam.tf:13-27
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-iam-policies-does-not-allow-privilege-escalation
+Check: CKV_AWS_348: "Ensure IAM root user doesnt have Access keys"
+	PASSED for resource: aws_iam_access_key.ansible_user_key
+	File: /modules/ansible_server/ansible-iam.tf:7-9
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-348
+Check: CKV_AWS_274: "Disallow IAM roles, users, and groups from using the AWS AdministratorAccess policy"
+	PASSED for resource: aws_iam_group_policy_attachment.ansible_policy
+	File: /modules/ansible_server/ansible-iam.tf:21-24
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-274
+Check: CKV_AWS_79: "Ensure Instance Metadata Service Version 1 is not enabled"
+	PASSED for resource: aws_instance.ansible_server
+	File: /modules/ansible_server/main.tf:2-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31
+Check: CKV_AWS_88: "EC2 instance should not have public IP."
+	PASSED for resource: aws_instance.ansible_server
+	File: /modules/ansible_server/main.tf:2-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12
+Check: CKV_AWS_46: "Ensure no hard-coded secrets exist in EC2 user data"
+	PASSED for resource: aws_instance.ansible_server
+	File: /modules/ansible_server/main.tf:2-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/secrets-policies/bc-aws-secrets-1
+Check: CKV_AWS_8: "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted"
+	PASSED for resource: aws_instance.ansible_server
+	File: /modules/ansible_server/main.tf:2-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13
+Check: CKV_AWS_79: "Ensure Instance Metadata Service Version 1 is not enabled"
+	PASSED for resource: aws_instance.bastion-host
+	File: /modules/bastion-host/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31
+Check: CKV_AWS_46: "Ensure no hard-coded secrets exist in EC2 user data"
+	PASSED for resource: aws_instance.bastion-host
+	File: /modules/bastion-host/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/secrets-policies/bc-aws-secrets-1
+Check: CKV_AWS_8: "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted"
+	PASSED for resource: aws_instance.bastion-host
+	File: /modules/bastion-host/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13
+Check: CKV_AWS_79: "Ensure Instance Metadata Service Version 1 is not enabled"
+	PASSED for resource: module.jenkins-slaves.aws_instance.jenkins-slave-node
+	File: /modules/jenkins_servers/main.tf:1-19
+	Calling File: /main.tf:75-88
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31
+Check: CKV_AWS_88: "EC2 instance should not have public IP."
+	PASSED for resource: module.jenkins-slaves.aws_instance.jenkins-slave-node
+	File: /modules/jenkins_servers/main.tf:1-19
+	Calling File: /main.tf:75-88
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12
+Check: CKV_AWS_46: "Ensure no hard-coded secrets exist in EC2 user data"
+	PASSED for resource: module.jenkins-slaves.aws_instance.jenkins-slave-node
+	File: /modules/jenkins_servers/main.tf:1-19
+	Calling File: /main.tf:75-88
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/secrets-policies/bc-aws-secrets-1
+Check: CKV_AWS_8: "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted"
+	PASSED for resource: module.jenkins-slaves.aws_instance.jenkins-slave-node
+	File: /modules/jenkins_servers/main.tf:1-19
+	Calling File: /main.tf:75-88
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13
+Check: CKV_AWS_79: "Ensure Instance Metadata Service Version 1 is not enabled"
+	PASSED for resource: aws_instance.nexus-server
+	File: /modules/nexus-server/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31
+Check: CKV_AWS_46: "Ensure no hard-coded secrets exist in EC2 user data"
+	PASSED for resource: aws_instance.nexus-server
+	File: /modules/nexus-server/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/secrets-policies/bc-aws-secrets-1
+Check: CKV_AWS_8: "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted"
+	PASSED for resource: aws_instance.nexus-server
+	File: /modules/nexus-server/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13
+Check: CKV_AWS_133: "Ensure that RDS instances has backup policy"
+	PASSED for resource: aws_db_instance.rds-instance
+	File: /modules/rds-database/main.tf:13-34
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-rds-instances-have-backup-policy
+Check: CKV_AWS_17: "Ensure all data stored in RDS is not publicly accessible"
+	PASSED for resource: aws_db_instance.rds-instance
+	File: /modules/rds-database/main.tf:13-34
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-2
+Check: CKV_AWS_211: "Ensure RDS uses a modern CaCert"
+	PASSED for resource: aws_db_instance.rds-instance
+	File: /modules/rds-database/main.tf:13-34
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-aws-rds-uses-a-modern-cacert
+Check: CKV_AWS_16: "Ensure all data stored in the RDS is securely encrypted at rest"
+	PASSED for resource: aws_db_instance.rds-instance
+	File: /modules/rds-database/main.tf:13-34
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-4
+Check: CKV_AWS_24: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+	PASSED for resource: module.security-groups.aws_security_group.asg-sg
+	File: /modules/security-groups/main.tf:3-51
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security
+Check: CKV_AWS_23: "Ensure every security group and rule has a description"
+	PASSED for resource: module.security-groups.aws_security_group.asg-sg
+	File: /modules/security-groups/main.tf:3-51
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31
+Check: CKV_AWS_277: "Ensure no security groups allow ingress from 0.0.0.0:0 to port -1"
+	PASSED for resource: module.security-groups.aws_security_group.asg-sg
+	File: /modules/security-groups/main.tf:3-51
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-group-does-not-allow-all-traffic-on-all-ports
+Check: CKV_AWS_25: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389"
+	PASSED for resource: module.security-groups.aws_security_group.asg-sg
+	File: /modules/security-groups/main.tf:3-51
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2
+Check: CKV_AWS_260: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
+	PASSED for resource: module.security-groups.aws_security_group.nexus-sg
+	File: /modules/security-groups/main.tf:54-110
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80
+Check: CKV_AWS_24: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+	PASSED for resource: module.security-groups.aws_security_group.nexus-sg
+	File: /modules/security-groups/main.tf:54-110
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security
+Check: CKV_AWS_277: "Ensure no security groups allow ingress from 0.0.0.0:0 to port -1"
+	PASSED for resource: module.security-groups.aws_security_group.nexus-sg
+	File: /modules/security-groups/main.tf:54-110
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-group-does-not-allow-all-traffic-on-all-ports
+Check: CKV_AWS_25: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389"
+	PASSED for resource: module.security-groups.aws_security_group.nexus-sg
+	File: /modules/security-groups/main.tf:54-110
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2
+Check: CKV_AWS_260: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
+	PASSED for resource: module.security-groups.aws_security_group.rds-sg
+	File: /modules/security-groups/main.tf:113-136
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80
+Check: CKV_AWS_24: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+	PASSED for resource: module.security-groups.aws_security_group.rds-sg
+	File: /modules/security-groups/main.tf:113-136
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security
+Check: CKV_AWS_277: "Ensure no security groups allow ingress from 0.0.0.0:0 to port -1"
+	PASSED for resource: module.security-groups.aws_security_group.rds-sg
+	File: /modules/security-groups/main.tf:113-136
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-group-does-not-allow-all-traffic-on-all-ports
+Check: CKV_AWS_25: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389"
+	PASSED for resource: module.security-groups.aws_security_group.rds-sg
+	File: /modules/security-groups/main.tf:113-136
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2
+Check: CKV_AWS_260: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
+	PASSED for resource: module.security-groups.aws_security_group.ansible-bastion-sg
+	File: /modules/security-groups/main.tf:139-162
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80
+Check: CKV_AWS_24: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+	PASSED for resource: module.security-groups.aws_security_group.ansible-bastion-sg
+	File: /modules/security-groups/main.tf:139-162
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security
+Check: CKV_AWS_277: "Ensure no security groups allow ingress from 0.0.0.0:0 to port -1"
+	PASSED for resource: module.security-groups.aws_security_group.ansible-bastion-sg
+	File: /modules/security-groups/main.tf:139-162
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-group-does-not-allow-all-traffic-on-all-ports
+Check: CKV_AWS_25: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389"
+	PASSED for resource: module.security-groups.aws_security_group.ansible-bastion-sg
+	File: /modules/security-groups/main.tf:139-162
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2
+Check: CKV_AWS_260: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
+	PASSED for resource: module.security-groups.aws_security_group.jenkins-docker-sg
+	File: /modules/security-groups/main.tf:166-204
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80
+Check: CKV_AWS_24: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 22"
+	PASSED for resource: module.security-groups.aws_security_group.jenkins-docker-sg
+	File: /modules/security-groups/main.tf:166-204
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-1-port-security
+Check: CKV_AWS_277: "Ensure no security groups allow ingress from 0.0.0.0:0 to port -1"
+	PASSED for resource: module.security-groups.aws_security_group.jenkins-docker-sg
+	File: /modules/security-groups/main.tf:166-204
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-group-does-not-allow-all-traffic-on-all-ports
+Check: CKV_AWS_25: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 3389"
+	PASSED for resource: module.security-groups.aws_security_group.jenkins-docker-sg
+	File: /modules/security-groups/main.tf:166-204
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-2
+Check: CKV_AWS_79: "Ensure Instance Metadata Service Version 1 is not enabled"
+	PASSED for resource: aws_instance.sonarqube_instance
+	File: /modules/sonarqube_server/main.tf:1-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-general-31
+Check: CKV_AWS_46: "Ensure no hard-coded secrets exist in EC2 user data"
+	PASSED for resource: aws_instance.sonarqube_instance
+	File: /modules/sonarqube_server/main.tf:1-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/secrets-policies/bc-aws-secrets-1
+Check: CKV_AWS_8: "Ensure all data stored in the Launch configuration or instance Elastic Blocks Store is securely encrypted"
+	PASSED for resource: aws_instance.sonarqube_instance
+	File: /modules/sonarqube_server/main.tf:1-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-13
+Check: CKV_AWS_41: "Ensure no hard coded AWS access key and secret key exists in provider"
+	PASSED for resource: aws.default
+	File: /provider.tf:1-4
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/secrets-policies/bc-aws-secrets-5
+Check: CKV_AWS_274: "Disallow IAM roles, users, and groups from using the AWS AdministratorAccess policy"
+	FAILED for resource: aws_iam_role_policy_attachment.jenkins-ec2-role-policy
+	File: /jenkins-vault_server/jenkins-iam.tf:17-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-274
+
+		17 | resource "aws_iam_role_policy_attachment" "jenkins-ec2-role-policy" {
+		18 |   policy_arn = "arn:aws:iam::aws:policy/AdministratorAccess"
+		19 |   role       = aws_iam_role.jenkins-ec2-role.name
+		20 | }
+
+Check: CKV_AWS_260: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
+	FAILED for resource: aws_security_group.vault
+	File: /jenkins-vault_server/main.tf:45-102
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80
+
+		Code lines for this resource are too many. Please use IDE of your choice to review the file.
+Check: CKV_AWS_260: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
+	FAILED for resource: aws_security_group.jenkins-sg
+	File: /jenkins-vault_server/main.tf:105-151
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80
+
+		105 | resource "aws_security_group" "jenkins-sg" {
+		106 |   name        = "${local.name}-jenkins-sg"
+		107 |   vpc_id      = module.vpc.vpc_id
+		108 |   description = "security group for jenkins"
+		109 | 
+		110 |   ingress {
+		111 |     description = "ssh"
+		112 |     from_port   = 22
+		113 |     to_port     = 22
+		114 |     protocol    = "tcp"
+		115 |     cidr_blocks = var.allowed_ssh_ips
+		116 |   }
+		117 | 
+		118 |   ingress {
+		119 |     description = "jenkins port"
+		120 |     from_port   = 8080
+		121 |     to_port     = 8080
+		122 |     protocol    = "tcp"
+		123 |     cidr_blocks = ["0.0.0.0/0"]
+		124 |   }
+		125 | 
+		126 |   ingress {
+		127 |     description = "http"
+		128 |     from_port   = 80
+		129 |     to_port     = 80
+		130 |     protocol    = "tcp"
+		131 |     cidr_blocks = ["0.0.0.0/0"]
+		132 |   }
+		133 |   ingress {
+		134 |     description = "https"
+		135 |     from_port   = 443
+		136 |     to_port     = 443
+		137 |     protocol    = "tcp"
+		138 |     cidr_blocks = ["0.0.0.0/0"]
+		139 |   }
+		140 | 
+		141 |   egress {
+		142 |     from_port   = 0
+		143 |     to_port     = 0
+		144 |     protocol    = "-1"
+		145 |     cidr_blocks = ["0.0.0.0/0"]
+		146 |   }
+		147 | 
+		148 |   tags = {
+		149 |     Name = "${local.name}-jenkins-sg"
+		150 |   }
+		151 | }
+
+Check: CKV_AWS_23: "Ensure every security group and rule has a description"
+	FAILED for resource: aws_security_group.jenkins-sg
+	File: /jenkins-vault_server/main.tf:105-151
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31
+
+		105 | resource "aws_security_group" "jenkins-sg" {
+		106 |   name        = "${local.name}-jenkins-sg"
+		107 |   vpc_id      = module.vpc.vpc_id
+		108 |   description = "security group for jenkins"
+		109 | 
+		110 |   ingress {
+		111 |     description = "ssh"
+		112 |     from_port   = 22
+		113 |     to_port     = 22
+		114 |     protocol    = "tcp"
+		115 |     cidr_blocks = var.allowed_ssh_ips
+		116 |   }
+		117 | 
+		118 |   ingress {
+		119 |     description = "jenkins port"
+		120 |     from_port   = 8080
+		121 |     to_port     = 8080
+		122 |     protocol    = "tcp"
+		123 |     cidr_blocks = ["0.0.0.0/0"]
+		124 |   }
+		125 | 
+		126 |   ingress {
+		127 |     description = "http"
+		128 |     from_port   = 80
+		129 |     to_port     = 80
+		130 |     protocol    = "tcp"
+		131 |     cidr_blocks = ["0.0.0.0/0"]
+		132 |   }
+		133 |   ingress {
+		134 |     description = "https"
+		135 |     from_port   = 443
+		136 |     to_port     = 443
+		137 |     protocol    = "tcp"
+		138 |     cidr_blocks = ["0.0.0.0/0"]
+		139 |   }
+		140 | 
+		141 |   egress {
+		142 |     from_port   = 0
+		143 |     to_port     = 0
+		144 |     protocol    = "-1"
+		145 |     cidr_blocks = ["0.0.0.0/0"]
+		146 |   }
+		147 | 
+		148 |   tags = {
+		149 |     Name = "${local.name}-jenkins-sg"
+		150 |   }
+		151 | }
+
+Check: CKV_AWS_88: "EC2 instance should not have public IP."
+	FAILED for resource: aws_instance.vault
+	File: /jenkins-vault_server/main.tf:174-202
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12
+
+		174 | resource "aws_instance" "vault" {
+		175 |   ami                         = var.ami-ubuntu
+		176 |   instance_type               = var.instance_type
+		177 |   key_name                    = aws_key_pair.vault-key-pub.key_name
+		178 |   vpc_security_group_ids      = [aws_security_group.vault.id]
+		179 |   associate_public_ip_address = true
+		180 |   subnet_id                   = module.vpc.public_subnets[2]
+		181 |   iam_instance_profile        = aws_iam_instance_profile.vault_kms_profile.id
+		182 |   user_data = templatefile("./vault_server_script.sh", {
+		183 |     var2      = aws_kms_key.vault.id,
+		184 |     var1      = var.region,
+		185 |     nr-acc-id = var.nr-acc-id,
+		186 |     nr-key    = var.nr-key,
+		187 |     nr-region = var.nr-region
+		188 |   })
+		189 |   metadata_options {
+		190 |     http_tokens = "required"
+		191 |   }
+		192 | 
+		193 |   tags = {
+		194 |     Name = "vault-server"
+		195 |   }
+		196 | 
+		197 |   root_block_device {
+		198 |     volume_size = 20
+		199 |     volume_type = "gp3"
+		200 |     encrypted   = "true"
+		201 |   }
+		202 | }
+
+Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instances"
+	FAILED for resource: aws_instance.vault
+	File: /jenkins-vault_server/main.tf:174-202
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances
+
+		174 | resource "aws_instance" "vault" {
+		175 |   ami                         = var.ami-ubuntu
+		176 |   instance_type               = var.instance_type
+		177 |   key_name                    = aws_key_pair.vault-key-pub.key_name
+		178 |   vpc_security_group_ids      = [aws_security_group.vault.id]
+		179 |   associate_public_ip_address = true
+		180 |   subnet_id                   = module.vpc.public_subnets[2]
+		181 |   iam_instance_profile        = aws_iam_instance_profile.vault_kms_profile.id
+		182 |   user_data = templatefile("./vault_server_script.sh", {
+		183 |     var2      = aws_kms_key.vault.id,
+		184 |     var1      = var.region,
+		185 |     nr-acc-id = var.nr-acc-id,
+		186 |     nr-key    = var.nr-key,
+		187 |     nr-region = var.nr-region
+		188 |   })
+		189 |   metadata_options {
+		190 |     http_tokens = "required"
+		191 |   }
+		192 | 
+		193 |   tags = {
+		194 |     Name = "vault-server"
+		195 |   }
+		196 | 
+		197 |   root_block_device {
+		198 |     volume_size = 20
+		199 |     volume_type = "gp3"
+		200 |     encrypted   = "true"
+		201 |   }
+		202 | }
+
+Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
+	FAILED for resource: aws_instance.vault
+	File: /jenkins-vault_server/main.tf:174-202
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized
+
+		174 | resource "aws_instance" "vault" {
+		175 |   ami                         = var.ami-ubuntu
+		176 |   instance_type               = var.instance_type
+		177 |   key_name                    = aws_key_pair.vault-key-pub.key_name
+		178 |   vpc_security_group_ids      = [aws_security_group.vault.id]
+		179 |   associate_public_ip_address = true
+		180 |   subnet_id                   = module.vpc.public_subnets[2]
+		181 |   iam_instance_profile        = aws_iam_instance_profile.vault_kms_profile.id
+		182 |   user_data = templatefile("./vault_server_script.sh", {
+		183 |     var2      = aws_kms_key.vault.id,
+		184 |     var1      = var.region,
+		185 |     nr-acc-id = var.nr-acc-id,
+		186 |     nr-key    = var.nr-key,
+		187 |     nr-region = var.nr-region
+		188 |   })
+		189 |   metadata_options {
+		190 |     http_tokens = "required"
+		191 |   }
+		192 | 
+		193 |   tags = {
+		194 |     Name = "vault-server"
+		195 |   }
+		196 | 
+		197 |   root_block_device {
+		198 |     volume_size = 20
+		199 |     volume_type = "gp3"
+		200 |     encrypted   = "true"
+		201 |   }
+		202 | }
+
+Check: CKV_AWS_88: "EC2 instance should not have public IP."
+	FAILED for resource: aws_instance.jenkins-server
+	File: /jenkins-vault_server/main.tf:205-227
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12
+
+		205 | resource "aws_instance" "jenkins-server" {
+		206 |   ami                         = var.ami_id
+		207 |   instance_type               = var.instance_type
+		208 |   key_name                    = aws_key_pair.vault-key-pub.key_name
+		209 |   vpc_security_group_ids      = [aws_security_group.jenkins-sg.id]
+		210 |   associate_public_ip_address = true
+		211 |   subnet_id                   = module.vpc.public_subnets[0]
+		212 |   iam_instance_profile        = aws_iam_instance_profile.jenkins-role.id
+		213 |   user_data                   = local.jenkinscript
+		214 |   metadata_options {
+		215 |     http_tokens = "required"
+		216 |   }
+		217 | 
+		218 |   tags = {
+		219 |     Name = "jenkins-server"
+		220 |   }
+		221 | 
+		222 |   root_block_device {
+		223 |     volume_size = 50
+		224 |     volume_type = "gp3"
+		225 |     encrypted   = "true"
+		226 |   }
+		227 | }
+
+Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instances"
+	FAILED for resource: aws_instance.jenkins-server
+	File: /jenkins-vault_server/main.tf:205-227
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances
+
+		205 | resource "aws_instance" "jenkins-server" {
+		206 |   ami                         = var.ami_id
+		207 |   instance_type               = var.instance_type
+		208 |   key_name                    = aws_key_pair.vault-key-pub.key_name
+		209 |   vpc_security_group_ids      = [aws_security_group.jenkins-sg.id]
+		210 |   associate_public_ip_address = true
+		211 |   subnet_id                   = module.vpc.public_subnets[0]
+		212 |   iam_instance_profile        = aws_iam_instance_profile.jenkins-role.id
+		213 |   user_data                   = local.jenkinscript
+		214 |   metadata_options {
+		215 |     http_tokens = "required"
+		216 |   }
+		217 | 
+		218 |   tags = {
+		219 |     Name = "jenkins-server"
+		220 |   }
+		221 | 
+		222 |   root_block_device {
+		223 |     volume_size = 50
+		224 |     volume_type = "gp3"
+		225 |     encrypted   = "true"
+		226 |   }
+		227 | }
+
+Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
+	FAILED for resource: aws_instance.jenkins-server
+	File: /jenkins-vault_server/main.tf:205-227
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized
+
+		205 | resource "aws_instance" "jenkins-server" {
+		206 |   ami                         = var.ami_id
+		207 |   instance_type               = var.instance_type
+		208 |   key_name                    = aws_key_pair.vault-key-pub.key_name
+		209 |   vpc_security_group_ids      = [aws_security_group.jenkins-sg.id]
+		210 |   associate_public_ip_address = true
+		211 |   subnet_id                   = module.vpc.public_subnets[0]
+		212 |   iam_instance_profile        = aws_iam_instance_profile.jenkins-role.id
+		213 |   user_data                   = local.jenkinscript
+		214 |   metadata_options {
+		215 |     http_tokens = "required"
+		216 |   }
+		217 | 
+		218 |   tags = {
+		219 |     Name = "jenkins-server"
+		220 |   }
+		221 | 
+		222 |   root_block_device {
+		223 |     volume_size = 50
+		224 |     volume_type = "gp3"
+		225 |     encrypted   = "true"
+		226 |   }
+		227 | }
+
+Check: CKV_TF_1: "Ensure Terraform module sources use a commit hash"
+	FAILED for resource: vpc
+	File: /jenkins-vault_server/main.tf:25-41
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/supply-chain-policies/terraform-policies/ensure-terraform-module-sources-use-git-url-with-commit-hash-revision
+
+		25 | module "vpc" {
+		26 |   source = "terraform-aws-modules/vpc/aws"
+		27 | 
+		28 |   name = var.vpc_name
+		29 |   cidr = var.vpc_cidr
+		30 | 
+		31 |   azs                = var.azs
+		32 |   private_subnets    = var.private_subnets
+		33 |   public_subnets     = var.public_subnets
+		34 |   enable_nat_gateway = true
+		35 |   enable_vpn_gateway = true
+		36 | 
+		37 |   tags = {
+		38 |     Terraform   = "true"
+		39 |     Environment = "dev"
+		40 |   }
+		41 | }
+
+Check: CKV_TF_2: "Ensure Terraform module sources use a tag with a version number"
+	FAILED for resource: vpc
+	File: /jenkins-vault_server/main.tf:25-41
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/supply-chain-policies/terraform-policies/ensure-terraform-module-sources-use-tag
+
+		25 | module "vpc" {
+		26 |   source = "terraform-aws-modules/vpc/aws"
+		27 | 
+		28 |   name = var.vpc_name
+		29 |   cidr = var.vpc_cidr
+		30 | 
+		31 |   azs                = var.azs
+		32 |   private_subnets    = var.private_subnets
+		33 |   public_subnets     = var.public_subnets
+		34 |   enable_nat_gateway = true
+		35 |   enable_vpn_gateway = true
+		36 | 
+		37 |   tags = {
+		38 |     Terraform   = "true"
+		39 |     Environment = "dev"
+		40 |   }
+		41 | }
+
+Check: CKV_AWS_273: "Ensure access is controlled through SSO and not AWS IAM defined users"
+	FAILED for resource: aws_iam_user.ansible_user
+	File: /modules/ansible_server/ansible-iam.tf:2-4
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/bc-aws-273
+
+		2 | resource "aws_iam_user" "ansible_user" {
+		3 |   name = "ansible_user"
+		4 | }
+
+Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instances"
+	FAILED for resource: aws_instance.ansible_server
+	File: /modules/ansible_server/main.tf:2-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances
+
+		2  | resource "aws_instance" "ansible_server" {
+		3  |   ami                    = var.redhat-ami_id
+		4  |   instance_type          = var.instance_type
+		5  |   key_name               = var.ssh_key_name
+		6  |   vpc_security_group_ids = [var.ansible_sg]
+		7  |   subnet_id              = var.public_subnet_id
+		8  | 
+		9  |   user_data = local.ansible-user-data
+		10 |   metadata_options {
+		11 |     http_tokens = "required"
+		12 |   }
+		13 |   root_block_device {
+		14 |     volume_size = 40
+		15 |     volume_type = "gp3"
+		16 |     encrypted   = "true"
+		17 |   }
+		18 |   tags = {
+		19 |     Name = "AnsibleServer"
+		20 |   }
+		21 | }
+
+Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
+	FAILED for resource: aws_instance.ansible_server
+	File: /modules/ansible_server/main.tf:2-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized
+
+		2  | resource "aws_instance" "ansible_server" {
+		3  |   ami                    = var.redhat-ami_id
+		4  |   instance_type          = var.instance_type
+		5  |   key_name               = var.ssh_key_name
+		6  |   vpc_security_group_ids = [var.ansible_sg]
+		7  |   subnet_id              = var.public_subnet_id
+		8  | 
+		9  |   user_data = local.ansible-user-data
+		10 |   metadata_options {
+		11 |     http_tokens = "required"
+		12 |   }
+		13 |   root_block_device {
+		14 |     volume_size = 40
+		15 |     volume_type = "gp3"
+		16 |     encrypted   = "true"
+		17 |   }
+		18 |   tags = {
+		19 |     Name = "AnsibleServer"
+		20 |   }
+		21 | }
+
+Check: CKV_AWS_88: "EC2 instance should not have public IP."
+	FAILED for resource: aws_instance.bastion-host
+	File: /modules/bastion-host/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12
+
+		1  | resource "aws_instance" "bastion-host" {
+		2  |   ami                         = var.redhat-ami-id
+		3  |   instance_type               = var.instance-type
+		4  |   key_name                    = var.key-name
+		5  |   vpc_security_group_ids      = var.bastion-sg
+		6  |   subnet_id                   = var.bastion-subnet
+		7  |   associate_public_ip_address = true
+		8  |   user_data_base64            = local.user_data
+		9  |   metadata_options {
+		10 |     http_tokens = "required"
+		11 |   }
+		12 |   root_block_device {
+		13 |     volume_size = 20
+		14 |     volume_type = "gp3"
+		15 |     encrypted   = "true"
+		16 |   }
+		17 |   tags = {
+		18 |     Name = "Bastion-Host"
+		19 |   }
+		20 | }
+
+Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instances"
+	FAILED for resource: aws_instance.bastion-host
+	File: /modules/bastion-host/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances
+
+		1  | resource "aws_instance" "bastion-host" {
+		2  |   ami                         = var.redhat-ami-id
+		3  |   instance_type               = var.instance-type
+		4  |   key_name                    = var.key-name
+		5  |   vpc_security_group_ids      = var.bastion-sg
+		6  |   subnet_id                   = var.bastion-subnet
+		7  |   associate_public_ip_address = true
+		8  |   user_data_base64            = local.user_data
+		9  |   metadata_options {
+		10 |     http_tokens = "required"
+		11 |   }
+		12 |   root_block_device {
+		13 |     volume_size = 20
+		14 |     volume_type = "gp3"
+		15 |     encrypted   = "true"
+		16 |   }
+		17 |   tags = {
+		18 |     Name = "Bastion-Host"
+		19 |   }
+		20 | }
+
+Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
+	FAILED for resource: aws_instance.bastion-host
+	File: /modules/bastion-host/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized
+
+		1  | resource "aws_instance" "bastion-host" {
+		2  |   ami                         = var.redhat-ami-id
+		3  |   instance_type               = var.instance-type
+		4  |   key_name                    = var.key-name
+		5  |   vpc_security_group_ids      = var.bastion-sg
+		6  |   subnet_id                   = var.bastion-subnet
+		7  |   associate_public_ip_address = true
+		8  |   user_data_base64            = local.user_data
+		9  |   metadata_options {
+		10 |     http_tokens = "required"
+		11 |   }
+		12 |   root_block_device {
+		13 |     volume_size = 20
+		14 |     volume_type = "gp3"
+		15 |     encrypted   = "true"
+		16 |   }
+		17 |   tags = {
+		18 |     Name = "Bastion-Host"
+		19 |   }
+		20 | }
+
+Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instances"
+	FAILED for resource: module.jenkins-slaves.aws_instance.jenkins-slave-node
+	File: /modules/jenkins_servers/main.tf:1-19
+	Calling File: /main.tf:75-88
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances
+
+		1  | resource "aws_instance" "jenkins-slave-node" {
+		2  |   ami                    = var.ami_id
+		3  |   instance_type          = var.instance_type
+		4  |   subnet_id              = var.subnet_id
+		5  |   key_name               = var.key_name
+		6  |   vpc_security_group_ids = [var.jenkins_sg]
+		7  |   user_data              = local.jenkinscript
+		8  |   metadata_options {
+		9  |     http_tokens = "required"
+		10 |   }
+		11 |   root_block_device {
+		12 |     volume_size = 50
+		13 |     volume_type = "gp3"
+		14 |     encrypted   = "true"
+		15 |   }
+		16 |   tags = {
+		17 |     Name = "jenkins-slave-node"
+		18 |   }
+		19 | }
+
+Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
+	FAILED for resource: module.jenkins-slaves.aws_instance.jenkins-slave-node
+	File: /modules/jenkins_servers/main.tf:1-19
+	Calling File: /main.tf:75-88
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized
+
+		1  | resource "aws_instance" "jenkins-slave-node" {
+		2  |   ami                    = var.ami_id
+		3  |   instance_type          = var.instance_type
+		4  |   subnet_id              = var.subnet_id
+		5  |   key_name               = var.key_name
+		6  |   vpc_security_group_ids = [var.jenkins_sg]
+		7  |   user_data              = local.jenkinscript
+		8  |   metadata_options {
+		9  |     http_tokens = "required"
+		10 |   }
+		11 |   root_block_device {
+		12 |     volume_size = 50
+		13 |     volume_type = "gp3"
+		14 |     encrypted   = "true"
+		15 |   }
+		16 |   tags = {
+		17 |     Name = "jenkins-slave-node"
+		18 |   }
+		19 | }
+
+Check: CKV_AWS_88: "EC2 instance should not have public IP."
+	FAILED for resource: aws_instance.nexus-server
+	File: /modules/nexus-server/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12
+
+		1  | resource "aws_instance" "nexus-server" {
+		2  |   ami                         = var.redhat-ami-id
+		3  |   instance_type               = var.instance-type
+		4  |   key_name                    = var.key-name
+		5  |   subnet_id                   = var.subnet-id
+		6  |   vpc_security_group_ids      = var.nexus-sg-id
+		7  |   associate_public_ip_address = true
+		8  |   user_data                   = local.user_data
+		9  |     metadata_options {
+		10 |       http_tokens = "required"
+		11 |     }
+		12 |     root_block_device {
+		13 |       volume_size = 50
+		14 |       volume_type = "gp3"
+		15 |       encrypted   = "true"
+		16 |     }
+		17 |   tags = {
+		18 |     Name = "Nexus-Server"
+		19 |   }
+		20 | }
+
+Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instances"
+	FAILED for resource: aws_instance.nexus-server
+	File: /modules/nexus-server/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances
+
+		1  | resource "aws_instance" "nexus-server" {
+		2  |   ami                         = var.redhat-ami-id
+		3  |   instance_type               = var.instance-type
+		4  |   key_name                    = var.key-name
+		5  |   subnet_id                   = var.subnet-id
+		6  |   vpc_security_group_ids      = var.nexus-sg-id
+		7  |   associate_public_ip_address = true
+		8  |   user_data                   = local.user_data
+		9  |     metadata_options {
+		10 |       http_tokens = "required"
+		11 |     }
+		12 |     root_block_device {
+		13 |       volume_size = 50
+		14 |       volume_type = "gp3"
+		15 |       encrypted   = "true"
+		16 |     }
+		17 |   tags = {
+		18 |     Name = "Nexus-Server"
+		19 |   }
+		20 | }
+
+Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
+	FAILED for resource: aws_instance.nexus-server
+	File: /modules/nexus-server/main.tf:1-20
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized
+
+		1  | resource "aws_instance" "nexus-server" {
+		2  |   ami                         = var.redhat-ami-id
+		3  |   instance_type               = var.instance-type
+		4  |   key_name                    = var.key-name
+		5  |   subnet_id                   = var.subnet-id
+		6  |   vpc_security_group_ids      = var.nexus-sg-id
+		7  |   associate_public_ip_address = true
+		8  |   user_data                   = local.user_data
+		9  |     metadata_options {
+		10 |       http_tokens = "required"
+		11 |     }
+		12 |     root_block_device {
+		13 |       volume_size = 50
+		14 |       volume_type = "gp3"
+		15 |       encrypted   = "true"
+		16 |     }
+		17 |   tags = {
+		18 |     Name = "Nexus-Server"
+		19 |   }
+		20 | }
+
+Check: CKV_AWS_161: "Ensure RDS database has IAM authentication enabled"
+	FAILED for resource: aws_db_instance.rds-instance
+	File: /modules/rds-database/main.tf:13-34
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-rds-database-has-iam-authentication-enabled
+
+		13 | resource "aws_db_instance" "rds-instance" {
+		14 |   identifier             = "petclinic"
+		15 |   allocated_storage      = 20
+		16 |   engine                 = "mysql"       # Change to "postgres", "mariadb", etc. if needed
+		17 |   engine_version         = "5.7"         # Change version based on requirements
+		18 |   instance_class         = "db.t3.micro" # Modify as needed
+		19 |   db_name                = var.db-name
+		20 |   username               = var.db-username
+		21 |   password               = var********** # Use AWS Secrets Manager instead of hardcoding!
+		22 |   parameter_group_name   = "default.mysql5.7"
+		23 |   multi_az               = false
+		24 |   publicly_accessible    = false
+		25 |   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
+		26 |   vpc_security_group_ids = var.vpc-sg-id # References our SG module
+		27 |   storage_encrypted      = true
+		28 |   skip_final_snapshot    = true
+		29 | 
+		30 |   tags = {
+		31 |     Name        = "rds-instance"
+		32 |     Environment = "dev"
+		33 |   }
+		34 | }
+
+Check: CKV_AWS_354: "Ensure RDS Performance Insights are encrypted using KMS CMKs"
+	FAILED for resource: aws_db_instance.rds-instance
+	File: /modules/rds-database/main.tf:13-34
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-354
+
+		13 | resource "aws_db_instance" "rds-instance" {
+		14 |   identifier             = "petclinic"
+		15 |   allocated_storage      = 20
+		16 |   engine                 = "mysql"       # Change to "postgres", "mariadb", etc. if needed
+		17 |   engine_version         = "5.7"         # Change version based on requirements
+		18 |   instance_class         = "db.t3.micro" # Modify as needed
+		19 |   db_name                = var.db-name
+		20 |   username               = var.db-username
+		21 |   password               = var********** # Use AWS Secrets Manager instead of hardcoding!
+		22 |   parameter_group_name   = "default.mysql5.7"
+		23 |   multi_az               = false
+		24 |   publicly_accessible    = false
+		25 |   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
+		26 |   vpc_security_group_ids = var.vpc-sg-id # References our SG module
+		27 |   storage_encrypted      = true
+		28 |   skip_final_snapshot    = true
+		29 | 
+		30 |   tags = {
+		31 |     Name        = "rds-instance"
+		32 |     Environment = "dev"
+		33 |   }
+		34 | }
+
+Check: CKV_AWS_293: "Ensure that AWS database instances have deletion protection enabled"
+	FAILED for resource: aws_db_instance.rds-instance
+	File: /modules/rds-database/main.tf:13-34
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/bc-aws-293
+
+		13 | resource "aws_db_instance" "rds-instance" {
+		14 |   identifier             = "petclinic"
+		15 |   allocated_storage      = 20
+		16 |   engine                 = "mysql"       # Change to "postgres", "mariadb", etc. if needed
+		17 |   engine_version         = "5.7"         # Change version based on requirements
+		18 |   instance_class         = "db.t3.micro" # Modify as needed
+		19 |   db_name                = var.db-name
+		20 |   username               = var.db-username
+		21 |   password               = var********** # Use AWS Secrets Manager instead of hardcoding!
+		22 |   parameter_group_name   = "default.mysql5.7"
+		23 |   multi_az               = false
+		24 |   publicly_accessible    = false
+		25 |   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
+		26 |   vpc_security_group_ids = var.vpc-sg-id # References our SG module
+		27 |   storage_encrypted      = true
+		28 |   skip_final_snapshot    = true
+		29 | 
+		30 |   tags = {
+		31 |     Name        = "rds-instance"
+		32 |     Environment = "dev"
+		33 |   }
+		34 | }
+
+Check: CKV_AWS_157: "Ensure that RDS instances have Multi-AZ enabled"
+	FAILED for resource: aws_db_instance.rds-instance
+	File: /modules/rds-database/main.tf:13-34
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/general-73
+
+		13 | resource "aws_db_instance" "rds-instance" {
+		14 |   identifier             = "petclinic"
+		15 |   allocated_storage      = 20
+		16 |   engine                 = "mysql"       # Change to "postgres", "mariadb", etc. if needed
+		17 |   engine_version         = "5.7"         # Change version based on requirements
+		18 |   instance_class         = "db.t3.micro" # Modify as needed
+		19 |   db_name                = var.db-name
+		20 |   username               = var.db-username
+		21 |   password               = var********** # Use AWS Secrets Manager instead of hardcoding!
+		22 |   parameter_group_name   = "default.mysql5.7"
+		23 |   multi_az               = false
+		24 |   publicly_accessible    = false
+		25 |   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
+		26 |   vpc_security_group_ids = var.vpc-sg-id # References our SG module
+		27 |   storage_encrypted      = true
+		28 |   skip_final_snapshot    = true
+		29 | 
+		30 |   tags = {
+		31 |     Name        = "rds-instance"
+		32 |     Environment = "dev"
+		33 |   }
+		34 | }
+
+Check: CKV_AWS_129: "Ensure that respective logs of Amazon Relational Database Service (Amazon RDS) are enabled"
+	FAILED for resource: aws_db_instance.rds-instance
+	File: /modules/rds-database/main.tf:13-34
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-iam-policies/ensure-that-respective-logs-of-amazon-relational-database-service-amazon-rds-are-enabled
+
+		13 | resource "aws_db_instance" "rds-instance" {
+		14 |   identifier             = "petclinic"
+		15 |   allocated_storage      = 20
+		16 |   engine                 = "mysql"       # Change to "postgres", "mariadb", etc. if needed
+		17 |   engine_version         = "5.7"         # Change version based on requirements
+		18 |   instance_class         = "db.t3.micro" # Modify as needed
+		19 |   db_name                = var.db-name
+		20 |   username               = var.db-username
+		21 |   password               = var********** # Use AWS Secrets Manager instead of hardcoding!
+		22 |   parameter_group_name   = "default.mysql5.7"
+		23 |   multi_az               = false
+		24 |   publicly_accessible    = false
+		25 |   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
+		26 |   vpc_security_group_ids = var.vpc-sg-id # References our SG module
+		27 |   storage_encrypted      = true
+		28 |   skip_final_snapshot    = true
+		29 | 
+		30 |   tags = {
+		31 |     Name        = "rds-instance"
+		32 |     Environment = "dev"
+		33 |   }
+		34 | }
+
+Check: CKV_AWS_226: "Ensure DB instance gets all minor upgrades automatically"
+	FAILED for resource: aws_db_instance.rds-instance
+	File: /modules/rds-database/main.tf:13-34
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-aws-db-instance-gets-all-minor-upgrades-automatically
+
+		13 | resource "aws_db_instance" "rds-instance" {
+		14 |   identifier             = "petclinic"
+		15 |   allocated_storage      = 20
+		16 |   engine                 = "mysql"       # Change to "postgres", "mariadb", etc. if needed
+		17 |   engine_version         = "5.7"         # Change version based on requirements
+		18 |   instance_class         = "db.t3.micro" # Modify as needed
+		19 |   db_name                = var.db-name
+		20 |   username               = var.db-username
+		21 |   password               = var********** # Use AWS Secrets Manager instead of hardcoding!
+		22 |   parameter_group_name   = "default.mysql5.7"
+		23 |   multi_az               = false
+		24 |   publicly_accessible    = false
+		25 |   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
+		26 |   vpc_security_group_ids = var.vpc-sg-id # References our SG module
+		27 |   storage_encrypted      = true
+		28 |   skip_final_snapshot    = true
+		29 | 
+		30 |   tags = {
+		31 |     Name        = "rds-instance"
+		32 |     Environment = "dev"
+		33 |   }
+		34 | }
+
+Check: CKV_AWS_118: "Ensure that enhanced monitoring is enabled for Amazon RDS instances"
+	FAILED for resource: aws_db_instance.rds-instance
+	File: /modules/rds-database/main.tf:13-34
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-enhanced-monitoring-is-enabled-for-amazon-rds-instances
+
+		13 | resource "aws_db_instance" "rds-instance" {
+		14 |   identifier             = "petclinic"
+		15 |   allocated_storage      = 20
+		16 |   engine                 = "mysql"       # Change to "postgres", "mariadb", etc. if needed
+		17 |   engine_version         = "5.7"         # Change version based on requirements
+		18 |   instance_class         = "db.t3.micro" # Modify as needed
+		19 |   db_name                = var.db-name
+		20 |   username               = var.db-username
+		21 |   password               = var********** # Use AWS Secrets Manager instead of hardcoding!
+		22 |   parameter_group_name   = "default.mysql5.7"
+		23 |   multi_az               = false
+		24 |   publicly_accessible    = false
+		25 |   db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
+		26 |   vpc_security_group_ids = var.vpc-sg-id # References our SG module
+		27 |   storage_encrypted      = true
+		28 |   skip_final_snapshot    = true
+		29 | 
+		30 |   tags = {
+		31 |     Name        = "rds-instance"
+		32 |     Environment = "dev"
+		33 |   }
+		34 | }
+
+Check: CKV_AWS_260: "Ensure no security groups allow ingress from 0.0.0.0:0 to port 80"
+	FAILED for resource: module.security-groups.aws_security_group.asg-sg
+	File: /modules/security-groups/main.tf:3-51
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/ensure-aws-security-groups-do-not-allow-ingress-from-00000-to-port-80
+
+		3  | resource "aws_security_group" "asg-sg" {
+		4  |   name        = "${var.project-name}-asg-sg"
+		5  |   vpc_id      = var.vpc-id
+		6  |   description = "security group for asg"
+		7  | 
+		8  |   ingress {
+		9  |     description = "allow ssh access"
+		10 |     from_port   = 22
+		11 |     to_port     = 22
+		12 |     protocol    = "tcp"
+		13 |     cidr_blocks = var.allowed_ssh_ips
+		14 |   }
+		15 | 
+		16 |   ingress {
+		17 |     description = "allow asg-port access"
+		18 |     from_port   = var.asg-port
+		19 |     to_port     = var.asg-port
+		20 |     protocol    = "tcp"
+		21 |     cidr_blocks = ["0.0.0.0/0"]
+		22 |   }
+		23 | 
+		24 |   ingress {
+		25 |     description = "allow http access"
+		26 |     from_port   = 80
+		27 |     to_port     = 80
+		28 |     protocol    = "tcp"
+		29 |     cidr_blocks = ["0.0.0.0/0"]
+		30 |   }
+		31 | 
+		32 |   ingress {
+		33 |     description = "allow https access"
+		34 |     from_port   = 443
+		35 |     to_port     = 443
+		36 |     protocol    = "tcp"
+		37 |     cidr_blocks = ["0.0.0.0/0"]
+		38 |   }
+		39 | 
+		40 |   egress {
+		41 |     description = "Allow all traffic out"
+		42 |     from_port   = 0
+		43 |     to_port     = 0
+		44 |     protocol    = "-1"
+		45 |     cidr_blocks = ["0.0.0.0/0"]
+		46 |   }
+		47 | 
+		48 |   tags = {
+		49 |     Name = "${var.project-name}-asg-sg"
+		50 |   }
+		51 | }
+
+Check: CKV_AWS_23: "Ensure every security group and rule has a description"
+	FAILED for resource: module.security-groups.aws_security_group.nexus-sg
+	File: /modules/security-groups/main.tf:54-110
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31
+
+		Code lines for this resource are too many. Please use IDE of your choice to review the file.
+Check: CKV_AWS_23: "Ensure every security group and rule has a description"
+	FAILED for resource: module.security-groups.aws_security_group.rds-sg
+	File: /modules/security-groups/main.tf:113-136
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31
+
+		113 | resource "aws_security_group" "rds-sg" {
+		114 |   name        = "${var.project-name}-rds-sg"
+		115 |   vpc_id      = var.vpc-id
+		116 |   description = "security group for RDS"
+		117 | 
+		118 |   ingress {
+		119 |     description     = "MySQL access"
+		120 |     from_port       = var.rds-port
+		121 |     to_port         = var.rds-port
+		122 |     protocol        = "tcp"
+		123 |     security_groups = [aws_security_group.asg-sg.id, aws_security_group.ansible-bastion-sg.id]
+		124 |   }
+		125 | 
+		126 |   egress {
+		127 |     from_port   = 0
+		128 |     to_port     = 0
+		129 |     protocol    = "-1"
+		130 |     cidr_blocks = ["0.0.0.0/0"]
+		131 |   }
+		132 | 
+		133 |   tags = {
+		134 |     Name = "${var.project-name}-rds-sg"
+		135 |   }
+		136 | }
+
+Check: CKV_AWS_23: "Ensure every security group and rule has a description"
+	FAILED for resource: module.security-groups.aws_security_group.ansible-bastion-sg
+	File: /modules/security-groups/main.tf:139-162
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31
+
+		139 | resource "aws_security_group" "ansible-bastion-sg" {
+		140 |   name        = "${var.project-name}-ansible-sg"
+		141 |   vpc_id      = var.vpc-id
+		142 |   description = "security group for ansible and bastion host"
+		143 | 
+		144 |   ingress {
+		145 |     description = "allow ssh access"
+		146 |     from_port   = 22
+		147 |     to_port     = 22
+		148 |     protocol    = "tcp"
+		149 |     cidr_blocks = var.allowed_ssh_ips
+		150 |   }
+		151 | 
+		152 |   egress {
+		153 |     from_port   = 0
+		154 |     to_port     = 0
+		155 |     protocol    = "-1"
+		156 |     cidr_blocks = ["0.0.0.0/0"]
+		157 |   }
+		158 | 
+		159 |   tags = {
+		160 |     Name = "${var.project-name}-ansible-sg"
+		161 |   }
+		162 | }
+
+Check: CKV_AWS_23: "Ensure every security group and rule has a description"
+	FAILED for resource: module.security-groups.aws_security_group.jenkins-docker-sg
+	File: /modules/security-groups/main.tf:166-204
+	Calling File: /main.tf:58-69
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-networking-policies/networking-31
+
+		166 | resource "aws_security_group" "jenkins-docker-sg" {
+		167 |   name        = "${var.project-name}-jenkins-sg"
+		168 |   vpc_id      = var.vpc-id
+		169 |   description = "security group for jenkins-docker"
+		170 | 
+		171 |   ingress {
+		172 |     description = "allow ssh access"
+		173 |     from_port   = 22
+		174 |     to_port     = 22
+		175 |     protocol    = "tcp"
+		176 |     cidr_blocks = var.allowed_ssh_ips
+		177 |   }
+		178 | 
+		179 |   ingress {
+		180 |     description     = "allow http access"
+		181 |     from_port       = 4243
+		182 |     to_port         = 4243
+		183 |     protocol        = "tcp"
+		184 |     cidr_blocks     = ["0.0.0.0/0"]
+		185 |     security_groups = [var.jenkins-master-sg]
+		186 |   }
+		187 | 
+		188 |   ingress {
+		189 |     description     = "allow http access"
+		190 |     from_port       = 32768
+		191 |     to_port         = 60999
+		192 |     protocol        = "tcp"
+		193 |     cidr_blocks     = ["0.0.0.0/0"]
+		194 |     security_groups = [var.jenkins-master-sg]
+		195 |   }
+		196 | 
+		197 |   egress {
+		198 |     from_port       = 0
+		199 |     to_port         = 0
+		200 |     protocol        = "-1"
+		201 |     cidr_blocks     = ["0.0.0.0/0"]
+		202 |     security_groups = [var.jenkins-master-sg]
+		203 |   }
+		204 | }
+Check: CKV_AWS_88: "EC2 instance should not have public IP."
+	FAILED for resource: aws_instance.sonarqube_instance
+	File: /modules/sonarqube_server/main.tf:1-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/public-policies/public-12
+
+		1  | resource "aws_instance" "sonarqube_instance" {
+		2  |   ami                         = var.ubuntu-ami_id
+		3  |   instance_type               = var.instance_type
+		4  |   subnet_id                   = var.subnet_id
+		5  |   key_name                    = var.key_name
+		6  |   vpc_security_group_ids      = [var.sonarqube-sg]
+		7  |   associate_public_ip_address = true
+		8  |   user_data                   = local.sonarqube_user_data
+		9  | 
+		10 |     metadata_options {
+		11 |       http_tokens = "required"
+		12 |     }
+		13 |     root_block_device {
+		14 |       volume_size = 50
+		15 |       volume_type = "gp3"
+		16 |       encrypted   = "true"
+		17 |     }
+		18 |   tags = {
+		19 |     Name = "sonarqube_instance"
+		20 |   }
+		21 | }
+
+Check: CKV_AWS_126: "Ensure that detailed monitoring is enabled for EC2 instances"
+	FAILED for resource: aws_instance.sonarqube_instance
+	File: /modules/sonarqube_server/main.tf:1-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-logging-policies/ensure-that-detailed-monitoring-is-enabled-for-ec2-instances
+
+		1  | resource "aws_instance" "sonarqube_instance" {
+		2  |   ami                         = var.ubuntu-ami_id
+		3  |   instance_type               = var.instance_type
+		4  |   subnet_id                   = var.subnet_id
+		5  |   key_name                    = var.key_name
+		6  |   vpc_security_group_ids      = [var.sonarqube-sg]
+		7  |   associate_public_ip_address = true
+		8  |   user_data                   = local.sonarqube_user_data
+		9  | 
+		10 |     metadata_options {
+		11 |       http_tokens = "required"
+		12 |     }
+		13 |     root_block_device {
+		14 |       volume_size = 50
+		15 |       volume_type = "gp3"
+		16 |       encrypted   = "true"
+		17 |     }
+		18 |   tags = {
+		19 |     Name = "sonarqube_instance"
+		20 |   }
+		21 | }
+
+Check: CKV_AWS_135: "Ensure that EC2 is EBS optimized"
+	FAILED for resource: aws_instance.sonarqube_instance
+	File: /modules/sonarqube_server/main.tf:1-21
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/aws-policies/aws-general-policies/ensure-that-ec2-is-ebs-optimized
+
+		1  | resource "aws_instance" "sonarqube_instance" {
+		2  |   ami                         = var.ubuntu-ami_id
+		3  |   instance_type               = var.instance_type
+		4  |   subnet_id                   = var.subnet_id
+		5  |   key_name                    = var.key_name
+		6  |   vpc_security_group_ids      = [var.sonarqube-sg]
+		7  |   associate_public_ip_address = true
+		8  |   user_data                   = local.sonarqube_user_data
+		9  | 
+		10 |     metadata_options {
+		11 |       http_tokens = "required"
+		12 |     }
+		13 |     root_block_device {
+		14 |       volume_size = 50
+		15 |       volume_type = "gp3"
+		16 |       encrypted   = "true"
+		17 |     }
+		18 |   tags = {
+		19 |     Name = "sonarqube_instance"
+		20 |   }
+		21 | }
+
+terraform_plan scan results:
+
+Passed checks: 0, Failed checks: 0, Skipped checks: 0, Parsing errors: 1
+
+Error parsing file ./Auto-discovery-scan-result.jsonֿ
+secrets scan results:
+
+Passed checks: 0, Failed checks: 2, Skipped checks: 0
+
+Check: CKV_SECRET_6: "Base64 High Entropy String"
+	FAILED for resource: ab54373c32541e91c3d68492f32b458916e7a963
+	File: /modules/ansible_server/prod-playbook.yaml:17-18
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/secrets-policies/secrets-policy-index/git-secrets-6
+
+		17 |      shell: |
+
+Check: CKV_SECRET_6: "Base64 High Entropy String"
+	FAILED for resource: ab54373c32541e91c3d68492f32b458916e7a963
+	File: /modules/ansible_server/stage-playbook.yaml:17-18
+	Guide: https://docs.prismacloud.io/en/enterprise-edition/policy-reference/secrets-policies/secrets-policy-index/git-secrets-6
+
+		17 |      shell: |
+
+

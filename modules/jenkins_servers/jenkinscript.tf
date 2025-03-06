@@ -24,15 +24,26 @@ sudo systemctl enable docker
 sudo usermod -aG docker ec2-user
 sudo usermod -aG docker jenkins
 sudo chmod 777 /var/run/docker.sock
-sudo cat <<EOT>> /etc/docker/daemon.json
-{
-  "insecure-registries" : ["${var.nexus-ip}:8085"]
-}
-EOT
+
 sudo systemctl restart docker
+
+sudo mkdir /opt/build
+sudo chmod 777 /opt/build
+
+curl -sO http://18.171.168.230:8080/jnlpJars/agent.jar
+sudo mv ~/agent.jar /opt && cd /opt
+java -jar agent.jar -url http://18.171.168.230:8080/ -secret c03e4ada38fff6b6433fc542dc1a28eadba77d4499f3940d4bf44d215a3bbb5d -name "jenkins-slave-node" -webSocket -workDir "/opt/build"
 
 curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo NEW_RELIC_API_KEY="${var.nr-key}" NEW_RELIC_ACCOUNT_ID="${var.nr-acc-id}" NEW_RELIC_REGION="${var.nr-region}" /usr/local/bin/newrelic install -y
 
 sudo hostnamectl set-hostname jenkins
 EOF  
 }
+
+
+######
+# sudo cat <<EOT>> /etc/docker/daemon.json
+# {
+#   "insecure-registries" : ["${var.nexus-ip}:8085"]
+# }
+# EOT
