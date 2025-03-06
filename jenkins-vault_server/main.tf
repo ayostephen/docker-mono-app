@@ -11,14 +11,13 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "auto-discovery-mono-app-s3"
+    bucket         = "auto-discovery-bucket"
     key            = "vault-remote/tfstate"
-    dynamodb_table = "auto-discovery-mono-app-dynamodb"
+    dynamodb_table = "AutoDiscoveryTable"
     region         = "eu-west-2"
     profile        = "petproject"
   }
 }
-
 
 ################################################################
 ## Creating a VPC using terraform-aws-modules
@@ -41,7 +40,9 @@ module "vpc" {
 }
 
 
-# Security group for Vault 
+
+
+# Security group for Vault
 resource "aws_security_group" "vault" {
   name_prefix = "vault-sg-"
   vpc_id      = module.vpc.vpc_id
@@ -114,30 +115,24 @@ resource "aws_security_group" "jenkins-sg" {
     protocol    = "tcp"
     cidr_blocks = var.allowed_ssh_ips
   }
-
   ingress {
-    description = "jenkins port"
-    from_port   = 8080
-    to_port     = 8080
+    description = "allow http access"
+    from_port   = 32768
+    to_port     = 60999
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  ingress {
-    description = "http"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+  dynamic "ingress" {
+    for_each = [80, 8080, 443, 4243]
+    iterator = port
+    content {
+      description = "TLS from VPC"
+      from_port   = port.value
+      to_port     = port.value
+      protocol    = "tcp"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
   }
-  ingress {
-    description = "https"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
   egress {
     from_port   = 0
     to_port     = 0
@@ -173,7 +168,7 @@ resource "aws_key_pair" "vault-key-pub" {
 # EC2 instance for Vault
 resource "aws_instance" "vault" {
   ami                         = var.ami-ubuntu
-  instance_type               = var.instance_type
+  instance_type               = "t3.micro"
   key_name                    = aws_key_pair.vault-key-pub.key_name
   vpc_security_group_ids      = [aws_security_group.vault.id]
   associate_public_ip_address = true
@@ -203,8 +198,8 @@ resource "aws_instance" "vault" {
 
 # Creating Jenkins Server
 resource "aws_instance" "jenkins-server" {
-  ami                         = var.ami_id
-  instance_type               = var.instance_type
+  ami                         = var.ami-ubuntu
+  instance_type               = "t3.medium"
   key_name                    = aws_key_pair.vault-key-pub.key_name
   vpc_security_group_ids      = [aws_security_group.jenkins-sg.id]
   associate_public_ip_address = true

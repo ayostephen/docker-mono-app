@@ -10,7 +10,9 @@ resource "aws_instance" "jenkins-slave-node" {
     http_tokens = "required"
   }
   root_block_device {
-    encrypted = true
+    volume_size = 50
+    volume_type = "gp3"
+    encrypted   = "true"
   }
   tags = {
     Name = "jenkins-slave-node"
@@ -22,7 +24,7 @@ resource "aws_instance" "jenkins-slave-cloud" {
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
   key_name               = var.key_name
-  vpc_security_group_ids = [var.jenkins-cloud-sg]
+  vpc_security_group_ids = [var.jenkins_sg]
   user_data              = local.jenkins-docker-script
   associate_public_ip_address = true
   metadata_options {
