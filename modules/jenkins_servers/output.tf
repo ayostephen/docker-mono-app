@@ -1,6 +1,11 @@
-output "jenkins_private_ip" {
-  description = "Private IP of the jenkins Slaves"
+output "jenkins_public_ip" {
+  description = "public ip of the jenkins-slave-node"
   value       = aws_instance.jenkins-slave-node.public_ip # Another option is to duplicate this block and remove the count.index
+}
+
+output "jenkins-docker-public_ip" {
+  description = "public IP of the jenkins-docker-slaves"
+  value       = aws_instance.jenkins-slave-cloud.public_ip # Another option is to duplicate this block and remove the count.index
 }
 
 # output "jenkins_instance_id" {

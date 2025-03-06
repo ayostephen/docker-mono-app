@@ -1,13 +1,14 @@
 locals {
   name                = "auto-discovery-mono-app"
-  jenkins-sg-id = "sg-0e6636f5d66483535"
-  private_subnet_id-1 = "subnet-0318b572cc17a51ec"
-  private_subnet_id-2 = "subnet-01b511fda853de029"
-  private_subnet_id-3 = "subnet-0e828da1d12fb6493"
-  public_subnet_id-1 = "subnet-04b262777d7de1586"
-  public_subnet_id-2 = "subnet-0e2c944c40b75ebdf"
-  public_subnet_id-3 = "subnet-064e3eea6bee4d804"
-  vpc_id = "vpc-081c48d656eafbe6b"
+  jenkins-sg-id = "sg-02feeec609851974f"
+  private_subnet_id-1 = "subnet-0380ee8d1db718525"
+  private_subnet_id-2 = "subnet-02db131f4dfac74aa"
+  private_subnet_id-3 = "subnet-02eaf5ea9ee71adb7"
+  public_subnet_id-1 = "subnet-0f3c321ac7b712b3d"
+  public_subnet_id-2 = "subnet-06c955e4e0c46f848"
+  public_subnet_id-3 = "subnet-028d6db4f7fc70a4a"
+  vpc_id = "vpc-03ec9da065a33138a"
+  
   # vpc_id              = ""
   # public_subnet_id-1  = ""
   # public_subnet_id-2  = ""
@@ -75,12 +76,13 @@ module "keypair" {
 module "jenkins-slaves" {
   source        = "./modules/jenkins_servers"
   ami_id = var.ami_id
-  # ami_ubuntu = var.ami_ubuntu
+  ami_ubuntu = var.ami_ubuntu
   # domain-name   = var.domain-name
   instance_type = var.instance_type
   key_name      = module.keypair.infra-pub-key
   subnet_id     = data.aws_subnet.public-subnet-1.id
-  jenkins_sg = data.aws_security_group.jenkins-sg
+  jenkins_sg = data.aws_security_group.jenkins-sg.id
+  jenkins-cloud-sg = module.security-groups.jenkins_docker_sg_id
   # nexus-ip = var.nexus-ip
   nr-region = var.nr-region
   nr-acc-id = var.nr-acc-id

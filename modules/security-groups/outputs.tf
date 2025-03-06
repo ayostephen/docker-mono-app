@@ -43,13 +43,13 @@
 #   value       = aws_security_group.rds-sg.name
 # }
 
-# # Output for Jenkins-Docker Security Group
-# output "jenkins_docker_sg_id" {
-#   description = "Security Group ID for Jenkins-Docker"
-#   value       = aws_security_group.jenkins-docker-sg.id
-# }
+# Output for Jenkins-Docker Security Group
+output "jenkins_docker_sg_id" {
+  description = "Security Group ID for Jenkins-Docker"
+  value       = aws_security_group.jenkins-docker-sg.id
+}
 
-# output "jenkins_docker_sg_name" {
-#   description = "Security Group Name for Jenkins-Docker"
+# output "jenkins-node-sg" {
+#   description = "Security Group Name for Jenkins-slave-node"
 #   value       = aws_security_group.jenkins-docker-sg.name
 # }
