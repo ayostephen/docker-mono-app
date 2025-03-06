@@ -6,7 +6,14 @@ resource "aws_instance" "bastion-host" {
   subnet_id                   = var.bastion-subnet
   associate_public_ip_address = true
   user_data_base64            = local.user_data
-
+  metadata_options {
+    http_tokens = "required"
+  }
+  root_block_device {
+    volume_size = 20
+    volume_type = "gp3"
+    encrypted   = "true"
+  }
   tags = {
     Name = "Bastion-Host"
   }

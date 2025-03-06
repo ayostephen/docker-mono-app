@@ -9,7 +9,9 @@ resource "aws_instance" "jenkins-slave-node" {
     http_tokens = "required"
   }
   root_block_device {
-    encrypted = true
+    volume_size = 50
+    volume_type = "gp3"
+    encrypted   = "true"
   }
   tags = {
     Name = "jenkins-slave-node"
@@ -23,12 +25,14 @@ resource "aws_instance" "jenkins-slave-node" {
 #   key_name               = var.key_name
 #   vpc_security_group_ids = [var.jenkins_sg]
 #   user_data_base64       = local.jenkins-docker-script
-#   metadata_options {
-#     http_tokens = "required"
-#   }
-#   root_block_device {
-#     encrypted = true
-#   }
+    # metadata_options {
+    #   http_tokens = "required"
+    # }
+    # root_block_device {
+    #   volume_size = 50
+    #   volume_type = "gp3"
+    #   encrypted   = "true"
+    # }
 #   user_data = local.jenkinscript
 #   tags = {
 #     Name = "jenkins-slave-cloud"
