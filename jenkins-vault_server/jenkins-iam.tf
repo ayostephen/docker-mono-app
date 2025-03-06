@@ -20,6 +20,6 @@ resource "aws_iam_role_policy_attachment" "jenkins-ec2-role-policy" {
 }
 
 resource "aws_iam_instance_profile" "jenkins-role" {
-  name = "jenkins-profile"
+  name = "jenkins-profile-2"
   role = aws_iam_role.jenkins-ec2-role.name
 }
