@@ -34,7 +34,7 @@ curl -sO http://18.171.168.230:8080/jnlpJars/agent.jar
 sudo mv ~/agent.jar /opt && cd /opt
 java -jar agent.jar -url http://18.171.168.230:8080/ -secret c03e4ada38fff6b6433fc542dc1a28eadba77d4499f3940d4bf44d215a3bbb5d -name "jenkins-slave-node" -webSocket -workDir "/opt/build"
 
-# curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo NEW_RELIC_API_KEY="${var.nr-key}" NEW_RELIC_ACCOUNT_ID="${var.nr-acc-id}" NEW_RELIC_REGION="${var.nr-region}" /usr/local/bin/newrelic install -y
+curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo NEW_RELIC_API_KEY="${var.nr-key}" NEW_RELIC_ACCOUNT_ID="${var.nr-acc-id}" NEW_RELIC_REGION="${var.nr-region}" /usr/local/bin/newrelic install -y
 
 sudo hostnamectl set-hostname jenkins
 EOF  

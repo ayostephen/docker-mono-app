@@ -12,6 +12,3 @@ variable "nr-acc-id" {}
 # variable "subnet-elb" {}
 # variable "cert-arn" {}
 variable "ami_ubuntu" {}
-variable "jenkins-cloud-sg" {}
-
-

@@ -5,7 +5,7 @@ resource "aws_instance" "nexus-server" {
   subnet_id                   = var.subnet-id
   vpc_security_group_ids      = var.nexus-sg-id
   associate_public_ip_address = true
-  user_data                   = local.user_data
+  user_data                   = local.nexuscript
     metadata_options {
       http_tokens = "required"
     }

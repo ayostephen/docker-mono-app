@@ -82,7 +82,6 @@ module "jenkins-slaves" {
   key_name      = module.keypair.infra-pub-key
   subnet_id     = data.aws_subnet.public-subnet-1.id
   jenkins_sg = data.aws_security_group.jenkins-sg.id
-  jenkins-cloud-sg = module.security-groups.jenkins_docker_sg_id
   # nexus-ip = var.nexus-ip
   nr-region = var.nr-region
   nr-acc-id = var.nr-acc-id

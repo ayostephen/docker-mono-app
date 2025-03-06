@@ -4,3 +4,6 @@ variable "instance-type" {}
 variable "key-name" {}
 variable "subnet-id" {}
 variable "nexus-sg-id" {}
+variable "nr-region" {}
+variable "nr-key" {}
+variable "nr-acc-id" {}
