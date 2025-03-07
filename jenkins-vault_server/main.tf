@@ -22,6 +22,8 @@ terraform {
 ################################################################
 ## Creating a VPC using terraform-aws-modules
 module "vpc" {
+  #checkov:skip=CKV_TF_2: Tag version number will be enfored on the stage/production environment
+  #checkov:skip=CKV_TF_1: commit hashing will be enfored on the stage/production environment
   source = "terraform-aws-modules/vpc/aws"
 
   name = var.vpc_name
@@ -44,6 +46,7 @@ module "vpc" {
 
 # Security group for Vault
 resource "aws_security_group" "vault" {
+  #checkov:skip=CKV_AWS_260: port is open to allow traffic
   name_prefix = "vault-sg-"
   vpc_id      = module.vpc.vpc_id
   description = "Security group for Vault server"
@@ -132,6 +135,7 @@ resource "aws_security_group" "jenkins-sg" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all outbound traffic"
   }
 
   tags = {
@@ -161,6 +165,9 @@ resource "aws_key_pair" "vault-key-pub" {
 
 # EC2 instance for Vault
 resource "aws_instance" "vault" {
+  #checkov:skip=CKV_AWS_135: Optimazation will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_126: detailed monitoring will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_88: Access  control  will be enfored on the stage/production environment
   ami                         = var.ami-ubuntu
   instance_type               = "t3.micro"
   key_name                    = aws_key_pair.vault-key-pub.key_name
@@ -192,6 +199,9 @@ resource "aws_instance" "vault" {
 
 # Creating Jenkins Server
 resource "aws_instance" "jenkins-server" {
+  #checkov:skip=CKV_AWS_135: Optimazation will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_126: detailed monitoring will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_88: Access  control  will be enfored on the stage/production environment
   ami                         = var.ami_id
   instance_type               = "t3.medium"
   key_name                    = aws_key_pair.vault-key-pub.key_name

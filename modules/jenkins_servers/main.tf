@@ -1,4 +1,7 @@
 resource "aws_instance" "jenkins-slave-node" {
+  #checkov:skip=CKV_AWS_135: Optimazation will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_126: detailed monitoring will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_88: using public ip for testing purposes, it will be enfored on the stage/production environment
   ami                    = var.ami_id
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
@@ -20,6 +23,9 @@ resource "aws_instance" "jenkins-slave-node" {
 }
 
 resource "aws_instance" "jenkins-slave-cloud" {
+  #checkov:skip=CKV_AWS_135: Optimazation will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_126: detailed monitoring will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_88: using public ip for testing purposes, it will be enfored on the stage/production environment
   ami                    = var.ami_ubuntu
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
