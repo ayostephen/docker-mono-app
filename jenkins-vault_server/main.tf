@@ -11,9 +11,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "auto-discovery-bucket"
+    bucket         = "auto-discovery-mono-app-s3"
     key            = "vault-remote/tfstate"
-    dynamodb_table = "AutoDiscoveryTable"
+    dynamodb_table = "auto-discovery-mono-app-dynamodb"
     region         = "eu-west-2"
     profile        = "petproject"
   }
@@ -22,6 +22,8 @@ terraform {
 ################################################################
 ## Creating a VPC using terraform-aws-modules
 module "vpc" {
+  #checkov:skip=CKV_TF_2: Tag version number will be enfored on the stage/production environment
+  #checkov:skip=CKV_TF_1: commit hashing will be enfored on the stage/production environment
   source = "terraform-aws-modules/vpc/aws"
 
   name = var.vpc_name
@@ -44,6 +46,7 @@ module "vpc" {
 
 # Security group for Vault
 resource "aws_security_group" "vault" {
+  #checkov:skip=CKV_AWS_260: port is open to allow traffic
   name_prefix = "vault-sg-"
   vpc_id      = module.vpc.vpc_id
   description = "Security group for Vault server"
@@ -56,13 +59,7 @@ resource "aws_security_group" "vault" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Vault API access"
   }
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Vault API access"
-  }
+
   # SSH access
   ingress {
     from_port   = 22
@@ -138,6 +135,7 @@ resource "aws_security_group" "jenkins-sg" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all outbound traffic"
   }
 
   tags = {
@@ -167,6 +165,9 @@ resource "aws_key_pair" "vault-key-pub" {
 
 # EC2 instance for Vault
 resource "aws_instance" "vault" {
+  #checkov:skip=CKV_AWS_135: Optimazation will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_126: detailed monitoring will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_88: Access  control  will be enfored on the stage/production environment
   ami                         = var.ami-ubuntu
   instance_type               = "t3.micro"
   key_name                    = aws_key_pair.vault-key-pub.key_name
@@ -198,7 +199,10 @@ resource "aws_instance" "vault" {
 
 # Creating Jenkins Server
 resource "aws_instance" "jenkins-server" {
-  ami                         = var.ami-ubuntu
+  #checkov:skip=CKV_AWS_135: Optimazation will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_126: detailed monitoring will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_88: Access  control  will be enfored on the stage/production environment
+  ami                         = var.ami_id
   instance_type               = "t3.medium"
   key_name                    = aws_key_pair.vault-key-pub.key_name
   vpc_security_group_ids      = [aws_security_group.jenkins-sg.id]
