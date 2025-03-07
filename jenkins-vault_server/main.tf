@@ -11,9 +11,9 @@ provider "aws" {
 
 terraform {
   backend "s3" {
-    bucket         = "auto-discovery-bucket"
+    bucket         = "auto-discovery-mono-app-s3"
     key            = "vault-remote/tfstate"
-    dynamodb_table = "AutoDiscoveryTable"
+    dynamodb_table = "auto-discovery-mono-app-dynamodb"
     region         = "eu-west-2"
     profile        = "petproject"
   }
@@ -56,13 +56,7 @@ resource "aws_security_group" "vault" {
     cidr_blocks = ["0.0.0.0/0"]
     description = "Vault API access"
   }
-  ingress {
-    from_port   = 8080
-    to_port     = 8080
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "Vault API access"
-  }
+
   # SSH access
   ingress {
     from_port   = 22
@@ -198,7 +192,7 @@ resource "aws_instance" "vault" {
 
 # Creating Jenkins Server
 resource "aws_instance" "jenkins-server" {
-  ami                         = var.ami-ubuntu
+  ami                         = var.ami_id
   instance_type               = "t3.medium"
   key_name                    = aws_key_pair.vault-key-pub.key_name
   vpc_security_group_ids      = [aws_security_group.jenkins-sg.id]
