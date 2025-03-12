@@ -1,4 +1,7 @@
 resource "aws_instance" "sonarqube_instance" {
+  #checkov:skip=CKV_AWS_135: Optimazation will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_126: detailed monitoring will be enfored on the stage/production environment
+  #checkov:skip=CKV_AWS_88: using public ip for testing purposes, it will be enfored on the stage/production environment
   ami                         = var.ubuntu-ami-id
   instance_type               = var.instance-type
   subnet_id                   = var.subnet-id

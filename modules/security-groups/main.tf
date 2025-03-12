@@ -1,6 +1,7 @@
 ##Security Gropus
 # Creating security group for asg
 resource "aws_security_group" "asg-sg" {
+  #checkov:skip=CKV_AWS_260: port is open to allow traffic
   name        = "${var.project-name}-asg-sg"
   vpc_id      = var.vpc-id
   description = "security group for asg"
@@ -52,6 +53,7 @@ resource "aws_security_group" "asg-sg" {
 
 # Creating security group for nexus
 resource "aws_security_group" "nexus-sg" {
+  #checkov:skip=CKV_AWS_260: port is open to allow traffic
   name        = "${var.project-name}-nexus-sg"
   vpc_id      = var.vpc-id
   description = "security group for nexus"
@@ -98,6 +100,7 @@ resource "aws_security_group" "nexus-sg" {
   }
 
   egress {
+    description = "Allow all traffic out"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -128,6 +131,7 @@ resource "aws_security_group" "rds-sg" {
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    description = "Allow all traffic out"
   }
 
   tags = {
@@ -150,6 +154,7 @@ resource "aws_security_group" "ansible-bastion-sg" {
   }
 
   egress {
+    description = "Allow all traffic out"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
