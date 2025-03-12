@@ -48,3 +48,8 @@ output "private_subnet_id-3" {
   description = "List of private subnet IDs"
   value       = module.vpc.private_subnets[2]
 }
+
+output "cert-arn" {
+  description = "value"
+  value = aws_acm_certificate.cert.arn
+}

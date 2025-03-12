@@ -29,12 +29,10 @@ variable "nr-region" {}
 variable "nr-key" {}
 variable "nr-acc-id" {}
 
-
 #############
 variable "db-name" {}
 variable "db-username" {}
 variable "db-password" {}
-
 
 ## bastion-host
 variable "instance-type" {}
@@ -51,7 +49,6 @@ variable "stage-playbook" {}
 variable "prod-playbook" {}
 variable "stage-discovery-script" {}
 variable "prod-discovery-script" {}
-
 
 ### RDS
 variable "db-subnet-id" {}

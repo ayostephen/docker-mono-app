@@ -11,3 +11,4 @@ variable "elb-subnets" {}
 variable "cert-arn" {}
 variable "sonar-postgress-pwd" {}
 variable "sonar-psqldb-pwd" {}
+variable "public-subnets" {}

@@ -18,3 +18,36 @@ resource "aws_instance" "nexus-server" {
     Name = "Nexus-Server"
   }
 }
+
+# Creating elb for nexus server
+resource "aws_elb" "nexus-server-elb" {
+  name               = "nexus-server-elb"
+  security_groups    = var.nexus-sg-id
+  subnets            = var.public-subnets 
+  listener {
+    instance_port      = 8081
+    instance_protocol  = "http"
+    lb_port            = 443
+    lb_protocol        = "https"
+    ssl_certificate_id = var.ssl-cert-id
+  }
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "TCP:8081"
+    interval            = 30
+  }
+
+  instances                   = [aws_instance.nexus-server.id]
+  cross_zone_load_balancing   = true
+  idle_timeout                = 400
+  connection_draining         = true
+  connection_draining_timeout = 400
+
+  tags = {
+    Name = "nexus-server-elb"
+  }
+
+}

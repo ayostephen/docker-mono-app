@@ -10,6 +10,7 @@ locals {
     public_subnet_id-3 = "subnet-0234c04380cceefa4"
     vault_public_ip = "13.40.46.166"
     vpc_id = "vpc-01257239fdc2048e7"
+    cert-arn = ""
 }
 
 # AWS_VPC 
@@ -45,6 +46,10 @@ data "aws_security_group" "jenkins-sg" {
   id = local.jenkins-sg-id
 }
 
+data "aws_acm_certificate" "cert-arn" {
+  arn = local.cert-arn
+}
+
 # data "aws_security_group" "bastion-sg" {
 #   id = local.bastion_sg
 # }
@@ -67,7 +72,7 @@ module "keypair" {
 }
 
 module "jenkins-slaves" {
-  source          = "./modules/jenkins_servers"
+  source          = "./modules/jenkins-servers"
   redhat-ami-id   = var.redhat-ami-id
   ubuntu-ami-id   = var.ubuntu-ami-id
   instance-type   = var.instance-type
@@ -93,6 +98,7 @@ module "nexus-server" {
   nr-acc-id       = var.nr-acc-id
   nr-key          = var.nr-key
   nexus-ip        = var.nexus-ip
+  ssl-cert-id     = 
 }
 
 module "bastion-host" {
@@ -115,10 +121,10 @@ module "ansible-server" {
   ssh-key-name           = var.ssh-key-name
   public_subnet_id       = data.aws_subnet.private-subnet-1.id
   ansible_sg             = module.security-groups.ansible-sg-id
-  stage-playbook         = var.stage-playbook
-  prod-playbook          = var.prod-playbook
-  stage-discovery-script = var.stage-discovery-script
-  prod-discovery-script  = var.prod-discovery-script
+  stage-playbook         = "${path.root}/modules/ansible-server/stage-playbook.yaml"
+  prod-playbook          = "${path.root}/modules/ansible-server/prod-playbook.yaml"
+  stage-discovery-script = "${path.root}/modules/ansible-server/stage-autodiscovery.sh"
+  prod-discovery-script  = "${path.root}/modules/ansible-server/prod-autodiscovery.sh"
   private-key            = var.private-key
   nexus-ip               = module.nexus-server.public_ip
   nr-key                 = var.nr-key
@@ -149,4 +155,22 @@ module "sonarqube-server" {
   cert-arn            = var.cert-arn
   sonar-postgress-pwd = var.sonar-postgress-pwd
   sonar-psqldb-pwd    = var.sonar-psqldb-pwd
+}
+
+module "stage-alb" {
+  source = "./modules/stage-alb"
+  alb-name-stage = "${local.name}-stage-alb"
+  asg-sg =  module.security-groups.asg-sg-id
+  public-subnets = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
+  cert-arn = var.cert-arn
+  vpc-id = data.aws_vpc.vpc
+}
+
+module "prod-alb" {
+  source = "./modules/prod-alb"
+  alb-name-prod = "${local.name}-prod-alb"
+  asg-sg =  module.security-groups.asg-sg-id
+  public-subnets = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
+  cert-arn = var.cert-arn
+  vpc-id = data.aws_vpc.vpc
 }
