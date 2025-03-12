@@ -1,5 +1,5 @@
 # 🔹 RDS Subnet Group
-resource "aws_db_subnet_group" "rds_subnet_group" {
+resource "aws_db_subnet_group" "rds-subnet-group" {
   name        = "multi-az-rds-subnet-group"
   subnet_ids  = var.db-subnet-id # Use private subnets for security
   description = "Subnet group for Multi-AZ RDS deployment"
@@ -22,7 +22,7 @@ resource "aws_db_instance" "rds-instance" {
   parameter_group_name   = "default.mysql5.7"
   multi_az               = false
   publicly_accessible    = false
-  db_subnet_group_name   = aws_db_subnet_group.rds_subnet_group.name
+  db_subnet_group_name   = aws_db_subnet_group.rds-subnet-group.name
   vpc_security_group_ids = var.vpc-sg-id # References our SG module
   storage_encrypted      = true
   skip_final_snapshot    = true

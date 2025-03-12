@@ -1,5 +1,5 @@
 
-variable "allowed_ssh_ips" {} # Restrict this IPs in production later if needed
+variable "allowed-ssh-ips" {} # Restrict this IPs in production later if needed
 variable "project-name" {}
 variable "asg-port" {}
 variable "nexus-port-1" {}

@@ -32,7 +32,7 @@ sudo echo "${file(var.stage-playbook)}" >> /etc/ansible/stage-playbook.yml
 sudo echo "${file(var.stage-discovery-script)}" >> /etc/ansible/stage-bash-script.sh
 sudo echo "${file(var.prod-playbook)}" >> /etc/ansible/prod-playbook.yml
 sudo echo "${file(var.prod-discovery-script)}" >> /etc/ansible/prod-bash-script.sh 
-sudo echo "${var.private_key}" >> /home/ec2-user/.ssh/id_rsa
+sudo echo "${var.private-key}" >> /home/ec2-user/.ssh/id_rsa
 sudo bash -c 'echo "NEXUS_IP: ${var.nexus-ip}:8085" > /etc/ansible/ansible_vars_file.yml'
 
 # Give the right permissions to the files copied from the local machine into the ansible server
