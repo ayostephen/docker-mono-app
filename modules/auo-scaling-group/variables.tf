@@ -1,0 +1,1 @@
+variable "asg-name-stage" {}
