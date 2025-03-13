@@ -11,7 +11,7 @@ resource "aws_security_group" "asg-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.allowed_ssh_ips
+    cidr_blocks = var.allowed-ssh-ips
   }
 
   ingress {
@@ -63,7 +63,7 @@ resource "aws_security_group" "nexus-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.allowed_ssh_ips
+    cidr_blocks = var.allowed-ssh-ips
   }
 
   ingress {
@@ -71,7 +71,7 @@ resource "aws_security_group" "nexus-sg" {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
-    cidr_blocks = var.allowed_ssh_ips
+    cidr_blocks = var.allowed-ssh-ips
   }
 
 
@@ -150,7 +150,7 @@ resource "aws_security_group" "ansible-bastion-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.allowed_ssh_ips
+    cidr_blocks = var.allowed-ssh-ips
   }
 
   egress {

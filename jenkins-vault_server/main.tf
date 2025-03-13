@@ -226,92 +226,135 @@ resource "aws_instance" "jenkins-server" {
 }
 
 # Creating Jenkins Iam
-
 resource "aws_kms_key" "vault" {
   description             = "Encryption KMS key for vault"
   enable_key_rotation     = true
   deletion_window_in_days = 10
 }
 
-# resource "aws_elb" "vault-lb" {
-#   name               = "vault-lb"
-#   security_groups    = [aws_security_group.vault.id]
-#   availability_zones = ["eu-west-2a", "eu-west-2b"]
-#   listener {
-#     instance_port      = 8200
-#     instance_protocol  = "http"
-#     lb_port            = 443
-#     lb_protocol        = "https"
-#     ssl_certificate_id = aws_acm_certificate.cert.arn
-#   }
+resource "aws_elb" "vault-elb" {
+  name               = "vault-lb"
+  security_groups    = [aws_security_group.vault.id]
+  availability_zones = ["eu-west-2a", "eu-west-2b"]
+  listener {
+    instance_port      = 8200
+    instance_protocol  = "http"
+    lb_port            = 443
+    lb_protocol        = "https"
+    ssl_certificate_id = aws_acm_certificate.cert.arn
+  }
 
-#   health_check {
-#     healthy_threshold   = 2
-#     unhealthy_threshold = 2
-#     timeout             = 3
-#     target              = "TCP:8200"
-#     interval            = 30
-#   }
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "TCP:8200"
+    interval            = 30
+  }
 
-#   instances                   = [aws_instance.vault.id]
-#   cross_zone_load_balancing   = true
-#   idle_timeout                = 400
-#   connection_draining         = true
-#   connection_draining_timeout = 400
+  instances                   = [aws_instance.vault.id]
+  cross_zone_load_balancing   = true
+  idle_timeout                = 400
+  connection_draining         = true
+  connection_draining_timeout = 400
 
-#   tags = {
-#     Name = "vault-elb"
-#   }
+  tags = {
+    Name = "vault-elb"
+  }
 
-# }
+}
 
-# data "aws_route53_zone" "route53_zone" {
-#   name         = var.domain-name
-#   private_zone = false
-# }
+resource "aws_elb" "jenkins-server-elb" {
+  name               = "jenkins-server-elb"
+  security_groups    = [aws_security_group.jenkins-sg.id]
+  availability_zones = ["eu-west-2a", "eu-west-2b"]
+  listener {
+    instance_port      = 8080
+    instance_protocol  = "http"
+    lb_port            = 443
+    lb_protocol        = "https"
+    ssl_certificate_id = aws_acm_certificate.cert.arn
+  }
 
-# resource "aws_route53_record" "vault_record" {
-#   zone_id = data.aws_route53_zone.route53_zone.zone_id
-#   name    = var.vault-domain-name
-#   type    = "A"
-#   alias {
-#     name                   = aws_elb.vault-lb.dns_name
-#     zone_id                = aws_elb.vault-lb.zone_id
-#     evaluate_target_health = true
-#   }
-# }
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "TCP:8080"
+    interval            = 30
+  }
 
-# # CREATE CERTIFICATE WHICH IS DEPENDENT ON HAVING A DOMAIN NAME
-# resource "aws_acm_certificate" "cert" {
-#   domain_name               = var.domain-name
-#   subject_alternative_names = [var.domain-names]
-#   validation_method         = "DNS"
+  instances                   = [aws_instance.jenkins-server.id]
+  cross_zone_load_balancing   = true
+  idle_timeout                = 400
+  connection_draining         = true
+  connection_draining_timeout = 400
 
-#   lifecycle {
-#     create_before_destroy = true
-#   }
-# }
+  tags = {
+    Name = "jenkins-server-elb"
+  }
 
-# # ATTACHING ROUTE53 AND THE CERTFIFCATE- CONNECTING ROUTE 53 TO THE CERTIFICATE
-# resource "aws_route53_record" "cert-record" {
-#   for_each = {
-#     for anybody in aws_acm_certificate.cert.domain_validation_options : anybody.domain_name => {
-#       name   = anybody.resource_record_name
-#       record = anybody.resource_record_value
-#       type   = anybody.resource_record_type
-#     }
-#   }
+}
 
-#   allow_overwrite = true
-#   name            = each.value.name
-#   records         = [each.value.record]
-#   ttl             = 60
-#   type            = each.value.type
-#   zone_id         = data.aws_route53_zone.route53_zone.zone_id
-# }
 
-# # SIGN THE CERTIFICATE
-# resource "aws_acm_certificate_validation" "sign_cert" {
-#   certificate_arn         = aws_acm_certificate.cert.arn
-#   validation_record_fqdns = [for record in aws_route53_record.cert-record : record.fqdn]
-# }
+data "aws_route53_zone" "route53_zone" {
+  name         = var.domain-name
+  private_zone = false
+}
+
+resource "aws_route53_record" "vault_record" {
+  zone_id = data.aws_route53_zone.route53_zone.zone_id
+  name    = var.vault-domain-name
+  type    = "A"
+  alias {
+    name                   = aws_elb.vault-elb.dns_name
+    zone_id                = aws_elb.vault-elb.zone_id
+    evaluate_target_health = true
+  }
+}
+
+resource "aws_route53_record" "jenkins_record" {
+  zone_id = data.aws_route53_zone.route53_zone.zone_id
+  name    = var.jenkins-domain-name
+  type    = "A"
+  alias {
+    name                   = aws_elb.jenkins-server-elb.dns_name
+    zone_id                = aws_elb.jenkins-server-elb.zone_id
+    evaluate_target_health = true
+  }
+}
+
+# CREATE CERTIFICATE WHICH IS DEPENDENT ON HAVING A DOMAIN NAME
+resource "aws_acm_certificate" "cert" {
+  domain_name               = var.domain-name
+  subject_alternative_names = [var.domain-names]
+  validation_method         = "DNS"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# ATTACHING ROUTE53 AND THE CERTFIFCATE- CONNECTING ROUTE 53 TO THE CERTIFICATE
+resource "aws_route53_record" "cert-record" {
+  for_each = {
+    for anybody in aws_acm_certificate.cert.domain_validation_options : anybody.domain_name => {
+      name   = anybody.resource_record_name
+      record = anybody.resource_record_value
+      type   = anybody.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = data.aws_route53_zone.route53_zone.zone_id
+}
+
+# SIGN THE CERTIFICATE
+resource "aws_acm_certificate_validation" "sign_cert" {
+  certificate_arn         = aws_acm_certificate.cert.arn
+  validation_record_fqdns = [for record in aws_route53_record.cert-record : record.fqdn]
+}

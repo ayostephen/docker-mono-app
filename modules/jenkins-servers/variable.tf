@@ -1,14 +1,13 @@
-variable "ami_id" {}
-variable "instance_type" {}
-# Not sure if we need both!
-variable "key_name" {}
+variable "redhat-ami-id" {}
+variable "ubuntu-ami-id" {}
+variable "instance-type" {}
+variable "key-name" {}
 # To be created in the default VPC and Subnet
-variable "subnet_id" {}
-variable "jenkins_sg" {}
+variable "subnet-id" {}
+variable "jenkins-sg" {}
 # variable "nexus-ip" {}
 variable "nr-region" {}
 variable "nr-key" {}
 variable "nr-acc-id" {}
 # variable "subnet-elb" {}
 # variable "cert-arn" {}
-variable "ami_ubuntu" {}
