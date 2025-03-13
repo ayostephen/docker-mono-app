@@ -194,3 +194,32 @@ module "records" {
   nexus-dns-name = var.nexus-dns-name
   nexus-zone-id = var.nexus-zone-id
 }
+
+
+module "prod-asg" {
+  source              = "./modules/prod-asg"
+  pub-key             = module.networking.public_key
+  nexus-ip-prd        = module.nexus.nexus_public_ip
+  nr-acc-id           = var.nr-acc-id
+  nr-key              = var.nr-key
+  nr-region           = var.nr-region
+  asg-prd-name        = "${local.name}-prod-asg"
+  vpc-zone-identifier = [module.networking.private_sub1, module.networking.private_sub2]
+  tg-prod             = module.prod-lb.prod-tg
+  redhat              = var.redhat-ami-id
+  prod-sg             = [module.security.asg-sg]
+}
+
+module "stage-asg" {
+  source              = "./modules/stage-asg"
+  pub-key             = module.networking.public_key
+  nexus-ip-stage      = module.nexus.nexus_public_ip
+  nr-acc-id           = var.nr-acc-id
+  nr-key              = var.nr-key
+  nr-region           = var.nr-region
+  asg-stage-name      = "${local.name}-stage-asg"
+  vpc-zone-identifier = [module.networking.private_sub1, module.networking.private_sub2]
+  tg-stage            = module.stage-lb.stage-tg
+  redhat              = var.redhat-ami-id
+  stage-sg            = [module.security.asg-sg]
+}
