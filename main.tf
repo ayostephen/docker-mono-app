@@ -89,6 +89,7 @@ module "jenkins-slaves" {
 module "nexus-server" {
   source          = "./modules/nexus-server"
   redhat-ami-id   = var.redhat-ami-id
+  public-subnets  = var.public-subnets
   domain-name     = var.domain-name
   instance-type   = var.instance-type
   key-name        = var.key-name
@@ -98,7 +99,7 @@ module "nexus-server" {
   nr-acc-id       = var.nr-acc-id
   nr-key          = var.nr-key
   nexus-ip        = var.nexus-ip
-  ssl-cert-id     = 
+  # ssl-cert-id     = var.ssl-cert-id 
 }
 
 module "bastion-host" {
@@ -119,8 +120,8 @@ module "ansible-server" {
   redhat-ami-id          = var.redhat-ami-id
   instance-type          = var.instance-type
   ssh-key-name           = var.ssh-key-name
-  public_subnet_id       = data.aws_subnet.private-subnet-1.id
-  ansible_sg             = module.security-groups.ansible-sg-id
+  public-subnet-id       = data.aws_subnet.private-subnet-1.id
+  ansible-sg             = module.security-groups.ansible-sg-id
   stage-playbook         = "${path.root}/modules/ansible-server/stage-playbook.yaml"
   prod-playbook          = "${path.root}/modules/ansible-server/prod-playbook.yaml"
   stage-discovery-script = "${path.root}/modules/ansible-server/stage-autodiscovery.sh"
@@ -131,6 +132,7 @@ module "ansible-server" {
   nr-acc-id              = var.nr-acc-id
   nr-region              = var.nr-region
 }
+
 
 module "rds-database" {
   source       = "./modules/rds-database"
@@ -144,6 +146,7 @@ module "rds-database" {
 module "sonarqube-server" {
   source              = "./modules/sonarqube-server"
   ubuntu-ami-id       = var.ubuntu-ami-id
+  public-subnets      = var.public-subnets
   instance-type       = var.instance-type
   key-name            = var.key-name
   subnet-id           = data.aws_subnet.public-subnet-3.id
@@ -173,4 +176,21 @@ module "prod-alb" {
   public-subnets = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
   cert-arn = var.cert-arn
   vpc-id = data.aws_vpc.vpc
+}
+
+module "records" {
+  source = "./modules/records"
+  domain-name = var.domain-name
+  prod-domain-name = var.prod-domain-name
+  prod-dns-name = var.prod-dns-name
+  prod-zone-id = var.prod-zone-id
+  stage-domain-name = var.stage-domain-name
+  stage-dns-name = var.stage-dns-name
+  stage-zone-id = var.stage-zone-id
+  sonarqube-domain-name = var.sonarqube-domain-name
+  sonarqube-dns-name = var.sonarqube-dns-name
+  sonarqube-zone-id = var.sonarqube-zone-id
+  nexus-domain-name = var.nexus-domain-name
+  nexus-dns-name = var.nexus-dns-name
+  nexus-zone-id = var.nexus-zone-id
 }

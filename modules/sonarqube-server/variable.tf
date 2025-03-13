@@ -1,7 +1,6 @@
 variable "ubuntu-ami-id" {}
 variable "instance-type" {}
 variable "key-name" {}
-variable "instance_name" {}
 variable "subnet-id" {}
 variable "sonarqube-sg" {}
 variable "nr-key" {}
