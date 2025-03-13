@@ -23,7 +23,7 @@ variable "ubuntu-ami-id" {}
 # # nexus-server
 variable "nexus-sg-id" {}
 variable "nexus-ip" {}
-variable "ssl-cert-id " {}
+variable "ssl-cert-id" {}
 
 ## New Relic
 variable "nr-region" {}
