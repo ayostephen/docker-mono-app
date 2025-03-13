@@ -20,9 +20,10 @@ variable "rds-port" {}
 variable "redhat-ami-id" {}
 variable "ubuntu-ami-id" {}
 
-# # nexus server
+# # nexus-server
 variable "nexus-sg-id" {}
 variable "nexus-ip" {}
+variable "ssl-cert-id " {}
 
 ## New Relic
 variable "nr-region" {}
@@ -41,7 +42,7 @@ variable "bastion-subnet" {}
 variable "bastion-sg" {}
 variable "private-key-name" {}
 
-#ansible_server
+#ansible-server
 variable "ssh-key-name" {}
 variable "public-subnet-id" {}
 variable "ansible-sg" {}
@@ -49,15 +50,33 @@ variable "stage-playbook" {}
 variable "prod-playbook" {}
 variable "stage-discovery-script" {}
 variable "prod-discovery-script" {}
+variable "private-key" {}
 
 ### RDS
 variable "db-subnet-id" {}
 variable "vpc-sg-id" {}
 
-## sonarqube server
+## sonarqube-server
 variable "subnet-id" {}
 variable "sonarqube-sg" {}
 variable "elb-subnets" {}
 variable "cert-arn" {}
 variable "sonar-postgress-pwd" {}
 variable "sonar-psqldb-pwd" {}
+variable "public-subnets" {}
+
+################
+## records
+variable "domain-name" {}
+variable "prod-domain-name" {}
+variable "prod-dns-name" {}
+variable "prod-zone-id" {}
+variable "stage-domain-name" {}
+variable "stage-dns-name" {}
+variable "stage-zone-id" {}
+variable "sonarqube-domain-name" {}
+variable "sonarqube-dns-name" {}
+variable "sonarqube-zone-id" {}
+variable "nexus-domain-name" {}
+variable "nexus-dns-name" {}
+variable "nexus-zone-id" {}
