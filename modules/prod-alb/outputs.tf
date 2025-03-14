@@ -10,5 +10,5 @@ output "prod_lb_zone_id" {
 
 output "prod-tg-arn" {
   description = "value"
-  value = aws_lb_target_group.prod-alb-target-group.arn
+  value       = aws_lb_target_group.prod-alb-target-group.arn
 }

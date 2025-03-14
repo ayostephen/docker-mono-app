@@ -9,14 +9,14 @@ resource "aws_instance" "nexus-server" {
   vpc_security_group_ids      = var.nexus-sg-id
   associate_public_ip_address = true
   user_data                   = local.nexuscript
-    metadata_options {
-      http_tokens = "required"
-    }
-    root_block_device {
-      volume_size = 50
-      volume_type = "gp3"
-      encrypted   = "true"
-    }
+  metadata_options {
+    http_tokens = "required"
+  }
+  root_block_device {
+    volume_size = 50
+    volume_type = "gp3"
+    encrypted   = "true"
+  }
   tags = {
     Name = "Nexus-Server"
   }
@@ -24,9 +24,9 @@ resource "aws_instance" "nexus-server" {
 
 # Creating elb for nexus server
 resource "aws_elb" "nexus-server-elb" {
-  name               = "nexus-server-elb"
-  security_groups    = var.nexus-sg-id
-  subnets            = var.public-subnets 
+  name            = "nexus-server-elb"
+  security_groups = var.nexus-sg-id
+  subnets         = var.public-subnets
   listener {
     instance_port      = 8081
     instance_protocol  = "http"

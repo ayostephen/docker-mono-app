@@ -1,5 +1,5 @@
 locals {
-    nexuscript = <<-EOF
+  nexuscript = <<-EOF
 #!/bin/bash
 sudo yum update -y
 sudo yum install wget -y

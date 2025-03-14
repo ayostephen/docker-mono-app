@@ -10,5 +10,5 @@ output "stage_lb_zone_id" {
 
 output "stage-tg-arn" {
   description = "value"
-  value = aws_lb_target_group.stage-alb-target-group.arn
+  value       = aws_lb_target_group.stage-alb-target-group.arn
 }

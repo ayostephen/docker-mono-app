@@ -43,3 +43,7 @@ output "rds-sg-name" {
   value       = aws_security_group.rds-sg.name
 }
 
+output "sonarqube-id" {
+  description = "Security Group ID for ASG"
+  value       = aws_security_group.sonarqube-sg.id
+}

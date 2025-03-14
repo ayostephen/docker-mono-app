@@ -15,7 +15,7 @@ resource "aws_iam_group" "ansible-group" {
 # ansible user to ansible group
 resource "aws_iam_user_group_membership" "ansible_group_membership" {
   user   = aws_iam_user.ansible-user.name
-  groups = [aws_iam_group.ansible_group.name]
+  groups = [aws_iam_group.ansible-group.name]
 }
 
 resource "aws_iam_group_policy_attachment" "ansible_policy" {

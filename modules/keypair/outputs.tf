@@ -3,5 +3,5 @@ output "infra-private-key" {
 }
 
 output "infra-pub-key" {
-  value =  aws_key_pair.infra-key-pub.id
+  value = aws_key_pair.infra-key-pub.id
 }
