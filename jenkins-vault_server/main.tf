@@ -249,7 +249,7 @@ resource "aws_elb" "vault-elb" {
     interval            = 30
   }
 
-  instances                   = [aws_instance.vault.id]
+  instances                   = [aws_instance.vault-server.id]
   cross_zone_load_balancing   = true
   idle_timeout                = 400
   connection_draining         = true

@@ -165,3 +165,55 @@ resource "aws_security_group" "ansible-bastion-sg" {
     Name = "${var.project-name}-ansible-sg"
   }
 }
+# Creating security group for sonarqube
+resource "aws_security_group" "sonarqube-sg" {
+  #checkov:skip=CKV_AWS_260: port is open to allow traffic
+  name        = "${var.project-name}-sonarqube-sg"
+  vpc_id      = var.vpc-id
+  description = "security group for sonarqube"
+
+  ingress {
+    description = "allow ssh access"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.allowed-ssh-ips
+  }
+
+  ingress {
+    description = "allow http access"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = var.allowed-ssh-ips
+  }
+
+
+  ingress {
+    description = "sonarqube-port 1" #to access sonarqube UI
+    from_port   = var.sonar-port
+    to_port     = var.sonar-port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "allow https access"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    description = "Allow all traffic out"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "${var.project-name}-sonarqube-sg"
+  }
+}
