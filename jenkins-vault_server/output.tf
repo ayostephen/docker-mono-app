@@ -51,5 +51,5 @@ output "private_subnet_id-3" {
 
 output "cert-arn" {
   description = "value"
-  value = aws_acm_certificate.cert.arn
+  value       = aws_acm_certificate.cert.arn
 }

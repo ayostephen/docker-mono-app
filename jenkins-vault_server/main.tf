@@ -233,9 +233,9 @@ resource "aws_kms_key" "vault" {
 }
 
 resource "aws_elb" "vault-elb" {
-  name               = "vault-lb"
-  security_groups    = [aws_security_group.vault.id]
-  availability_zones = ["eu-west-2a", "eu-west-2b"]
+  name            = "vault-lb"
+  security_groups = [aws_security_group.vault.id]
+  subnets         = [module.vpc.public_subnets[2], module.vpc.public_subnets[1]]
   listener {
     instance_port      = 8200
     instance_protocol  = "http"
@@ -265,9 +265,9 @@ resource "aws_elb" "vault-elb" {
 }
 
 resource "aws_elb" "jenkins-server-elb" {
-  name               = "jenkins-server-elb"
-  security_groups    = [aws_security_group.jenkins-sg.id]
-  availability_zones = ["eu-west-2a", "eu-west-2b"]
+  name            = "jenkins-server-elb"
+  security_groups = [aws_security_group.jenkins-sg.id]
+  subnets         = [module.vpc.public_subnets[0], module.vpc.public_subnets[1]]
   listener {
     instance_port      = 8080
     instance_protocol  = "http"

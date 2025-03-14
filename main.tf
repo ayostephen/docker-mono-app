@@ -1,16 +1,16 @@
 locals {
   name                    = "auto-discovery-mono-app"
-    jenkins-sg-id         = "sg-084f1c96d276ca271"
-    jenkins_public_ip     = "18.130.58.97"
-    private_subnet_id-1   = "subnet-061d6de26b1036ea9"
-    private_subnet_id-2   = "subnet-0d36b97fa34e9faa6"
-    private_subnet_id-3   = "subnet-0fb822845ea552573"
-    public_subnet_id-1    = "subnet-02a68e9f1ba404241"
-    public_subnet_id-2    = "subnet-030192940885e76fe"
-    public_subnet_id-3    = "subnet-0234c04380cceefa4"
-    vault_public_ip       = "13.40.46.166"
-    vpc_id                = "vpc-01257239fdc2048e7"
-    cert-arn              = ""
+    cert-arn              = "arn:aws:acm:eu-west-2:660545536766:certificate/5ebd84a9-26d1-463e-9e7b-fb65f68a2e9c"
+    jenkins-sg-id         = "sg-020b3bd8c951cacd2"
+    jenkins_public_ip = "3.8.212.27"
+    private_subnet_id-1 = "subnet-0fbb3b2b47a944da9"
+    private_subnet_id-2 = "subnet-003dd5e119a53d4f1"
+    private_subnet_id-3 = "subnet-0de6d592d742d5eb8"
+    public_subnet_id-1 = "subnet-045cc938efe1720ff"
+    public_subnet_id-2 = "subnet-04869f4386e356746"
+    public_subnet_id-3 = "subnet-0c57f9e86cb1639da"
+    vault_public_ip = "18.134.150.236"
+    vpc_id = "vpc-0d6c95c011b0811e2"
 }
 
 # AWS_VPC 
@@ -89,26 +89,25 @@ module "jenkins-slaves" {
 module "nexus-server" {
   source                  = "./modules/nexus-server"
   redhat-ami-id           = var.redhat-ami-id
-  public-subnets          = var.public-subnets
+  public-subnets          = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id]
   domain-name             = var.domain-name
   instance-type           = var.instance-type
-  key-name                = var.key-name
+  key-name                = module.keypair.infra-pub-key
   subnet-id               = data.aws_subnet.public-subnet-1.id
   nexus-sg-id             = module.security-groups.nexus-sg-id
   nr-region               = var.nr-region
   nr-acc-id               = var.nr-acc-id
   nr-key                  = var.nr-key
-  nexus-ip                = var.nexus-ip
-  ssl-cert-id             = var.ssl-cert-id 
+  ssl-cert-id             = data.aws_acm_certificate.cert-arn.arn
 }
 
 module "bastion-host" {
   source                  = "./modules/bastion-host"
   redhat-ami-id           = var.redhat-ami-id
   instance-type           = var.instance-type
-  key-name                = var.key-name
-  bastion-sg              = var.bastion-sg
-  private-key-name        = var.private-key-name
+  key-name                = module.keypair.infra-pub-key
+  bastion-sg              = module.security-groups.ansible-bastion-sg-id
+  private-key-name        = module.keypair.infra-private-key
   bastion-subnet          = data.aws_subnet.public-subnet-2.id
   nr-key                  = var.nr-key
   nr-acc-id               = var.nr-acc-id
@@ -119,43 +118,45 @@ module "ansible-server" {
   source                  = "./modules/ansible-server"
   redhat-ami-id           = var.redhat-ami-id
   instance-type           = var.instance-type
-  ssh-key-name            = var.ssh-key-name
+  ssh-key-name            = module.keypair.infra-pub-key
   public-subnet-id        = data.aws_subnet.private-subnet-1.id
   ansible-sg              = module.security-groups.ansible-sg-id
   stage-playbook          = "${path.root}/modules/ansible-server/stage-playbook.yaml"
   prod-playbook           = "${path.root}/modules/ansible-server/prod-playbook.yaml"
   stage-discovery-script  = "${path.root}/modules/ansible-server/stage-autodiscovery.sh"
   prod-discovery-script   = "${path.root}/modules/ansible-server/prod-autodiscovery.sh"
-  private-key             = var.private-key
+  private-key             = module.keypair.infra-private-key
   nexus-ip                = module.nexus-server.public_ip
   nr-key                  = var.nr-key
   nr-acc-id               = var.nr-acc-id
   nr-region               = var.nr-region
 }
 
+data "vault_generic_secret" "db-secret" {
+  path = "secret/database"
+}
 
 module "rds-database" {
   source                  = "./modules/rds-database"
   db-subnet-id            = [data.aws_subnet.private-subnet-1.id, data.aws_subnet.private-subnet-2.id, data.aws_subnet.private-subnet-3.id]
   db-name                 = var.db-name
-  db-username             = var.db-username
-  db-password             = var.db-password
+  db-username             = data.vault_generic_secret.db-secret.data["username"]
+  db-password             = data.vault_generic_secret.db-secret.data["password"]
   vpc-sg-id               = module.security-groups.rds-sg-id
 }
 
 module "sonarqube-server" {
   source                  = "./modules/sonarqube-server"
   ubuntu-ami-id           = var.ubuntu-ami-id
-  public-subnets          = var.public-subnets
+  public-subnets          = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id]
   instance-type           = var.instance-type
-  key-name                = var.key-name
+  key-name                = module.keypair.infra-pub-key
   subnet-id               = data.aws_subnet.public-subnet-3.id
   sonarqube-sg            = module.security-groups.sonarqube-sg-id
   nr-key                  = var.nr-key
   nr-acc-id               = var.nr-acc-id
   nr-region               = var.nr-region
-  elb-subnets             = var.elb-subnets
-  cert-arn                = var.cert-arn
+  cert-arn                = data.aws_acm_certificate.cert-arn.arn
   sonar-postgress-pwd     = var.sonar-postgress-pwd
   sonar-psqldb-pwd        = var.sonar-psqldb-pwd
 }
@@ -165,8 +166,8 @@ module "stage-alb" {
   alb-name-stage          = "${local.name}-stage-alb"
   asg-sg                  =  module.security-groups.asg-sg-id
   public-subnets          = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
-  cert-arn                = var.cert-arn
-  vpc-id                  = data.aws_vpc.vpc
+  cert-arn                = data.aws_acm_certificate.cert-arn.arn
+  vpc-id                  = data.aws_vpc.vpc.id
 }
 
 module "prod-alb" {
@@ -174,23 +175,52 @@ module "prod-alb" {
   alb-name-prod           = "${local.name}-prod-alb"
   asg-sg                  =  module.security-groups.asg-sg-id
   public-subnets          = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
-  cert-arn                = var.cert-arn
-  vpc-id                  = data.aws_vpc.vpc
+  cert-arn                = data.aws_acm_certificate.cert-arn.arn
+  vpc-id                  = data.aws_vpc.vpc.id
 }
 
 module "records" {
   source                  = "./modules/records"
   domain-name             = var.domain-name
   prod-domain-name        = var.prod-domain-name
-  prod-dns-name           = var.prod-dns-name
-  prod-zone-id            = var.prod-zone-id
+  prod-dns-name           = module.prod-alb.prod_lb_dns_name
+  prod-zone-id            = module.prod-alb.prod_lb_zone_id
   stage-domain-name       = var.stage-domain-name
-  stage-dns-name          = var.stage-dns-name
-  stage-zone-id           = var.stage-zone-id
+  stage-dns-name          = module.stage-alb.stage_lb_dns_name
+  stage-zone-id           = module.stage-alb.stage_lb_zone_id
   sonarqube-domain-name   = var.sonarqube-domain-name
-  sonarqube-dns-name      = var.sonarqube-dns-name
-  sonarqube-zone-id       = var.sonarqube-zone-id
+  sonarqube-dns-name      = module.sonarqube-server.sonarqube_lb_dns_name
+  sonarqube-zone-id       = module.sonarqube-server.sonarqube_lb_zone_id
   nexus-domain-name       = var.nexus-domain-name
-  nexus-dns-name          = var.nexus-dns-name
-  nexus-zone-id           = var.nexus-zone-id
+  nexus-dns-name          = module.nexus-server.nexus_lb_dns_name
+  nexus-zone-id           = module.nexus-server.nexus_lb_zone_id
+}
+
+
+module "prod-asg" {
+  source              = "./modules/prod-asg"
+  pub-key             = module.networking.public_key
+  nexus-ip-prd        = module.nexus.nexus_public_ip
+  nr-acc-id           = var.nr-acc-id
+  nr-key              = var.nr-key
+  nr-region           = var.nr-region
+  asg-prd-name        = "${local.name}-prod-asg"
+  vpc-zone-identifier = [module.networking.private_sub1, module.networking.private_sub2]
+  tg-prod             = module.prod-lb.prod-tg
+  redhat              = var.redhat-ami-id
+  prod-sg             = [module.security.asg-sg]
+}
+
+module "stage-asg" {
+  source              = "./modules/stage-asg"
+  pub-key             = module.networking.public_key
+  nexus-ip-stage      = module.nexus.nexus_public_ip
+  nr-acc-id           = var.nr-acc-id
+  nr-key              = var.nr-key
+  nr-region           = var.nr-region
+  asg-stage-name      = "${local.name}-stage-asg"
+  vpc-zone-identifier = [module.networking.private_sub1, module.networking.private_sub2]
+  tg-stage            = module.stage-lb.stage-tg
+  redhat              = var.redhat-ami-id
+  stage-sg            = [module.security.asg-sg]
 }
