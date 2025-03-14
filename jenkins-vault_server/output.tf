@@ -1,6 +1,6 @@
 # Output values
 output "vault-public-ip" {
-  value = aws_instance.vault.public_ip
+  value = aws_instance.vault-server.public_ip
 }
 
 output "jenkins-public-ip" {
