@@ -1,5 +1,5 @@
 # Create Launch Template
-resource "aws_launch_template" "production_lt" {
+resource "aws_launch_template" "production-lt" {
   name                   = "production-lt"
   image_id               = var.redhat
   instance_type          = "t2.medium"
@@ -30,7 +30,7 @@ resource "aws_autoscaling_group" "production-asg" {
   vpc_zone_identifier       = var.vpc-zone-identifier
   target_group_arns         = [var.tg-prod]
   launch_template {
-    id = aws_launch_template.production_lt.id
+    id = aws_launch_template.production-lt.id
   }
   tag {
     key                 = "Name"

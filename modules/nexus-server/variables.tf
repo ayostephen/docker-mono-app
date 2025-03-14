@@ -7,6 +7,5 @@ variable "nexus-sg-id" {}
 variable "nr-region" {}
 variable "nr-key" {}
 variable "nr-acc-id" {}
-variable "nexus-ip" {}
 variable "public-subnets" {}
 variable "ssl-cert-id" {}

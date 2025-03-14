@@ -24,7 +24,7 @@ resource "aws_instance" "sonarqube_instance" {
 }
 
 
-# Create a new load balancer
+# Creating the ELB for the SonarQube server
 resource "aws_elb" "elb-sonar" {
   name            = "elb-sonar"
   subnets         = var.public-subnets

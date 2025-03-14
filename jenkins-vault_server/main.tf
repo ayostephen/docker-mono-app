@@ -1,5 +1,4 @@
 # Provider configuration
-
 locals {
   name = "auto-discovery-mono-app"
 }
@@ -26,12 +25,12 @@ module "vpc" {
   #checkov:skip=CKV_TF_1: commit hashing will be enfored on the stage/production environment
   source = "terraform-aws-modules/vpc/aws"
 
-  name = var.vpc_name
-  cidr = var.vpc_cidr
+  name = var.vpc-name
+  cidr = var.vpc-cidr
 
   azs                = var.azs
-  private_subnets    = var.private_subnets
-  public_subnets     = var.public_subnets
+  private_subnets    = var.private-subnets
+  public_subnets     = var.public-subnets
   enable_nat_gateway = true
   enable_vpn_gateway = true
 
@@ -42,12 +41,10 @@ module "vpc" {
 }
 
 
-
-
 # Security group for Vault
-resource "aws_security_group" "vault" {
+resource "aws_security_group" "vault-sg" {
   #checkov:skip=CKV_AWS_260: port is open to allow traffic
-  name_prefix = "vault-sg-"
+  name_prefix = "vault-sg"
   vpc_id      = module.vpc.vpc_id
   description = "Security group for Vault server"
 
@@ -65,7 +62,7 @@ resource "aws_security_group" "vault" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.allowed_ssh_ips
+    cidr_blocks = var.allowed-ssh-ips
     description = "SSH access"
   }
   # Http access
@@ -110,7 +107,7 @@ resource "aws_security_group" "jenkins-sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = var.allowed_ssh_ips
+    cidr_blocks = var.allowed-ssh-ips
   }
   ingress {
     description = "allow http access"
@@ -145,7 +142,7 @@ resource "aws_security_group" "jenkins-sg" {
 
 
 # Create a Key Pair to SSH into EC2 instance
-resource "tls_private_key" "vault_key" {
+resource "tls_private_key" "vault-key" {
   algorithm = "RSA"
   rsa_bits  = 4096
 }
@@ -153,25 +150,25 @@ resource "tls_private_key" "vault_key" {
 # Store the private key locally
 resource "local_file" "vault-pri-key" {
   filename        = "vault-pri-key.pem"
-  content         = tls_private_key.vault_key.private_key_pem
+  content         = tls_private_key.vault-key.private_key_pem
   file_permission = "600"
 }
 
 # Store the public key locally
 resource "aws_key_pair" "vault-key-pub" {
   key_name   = "vault-pub-key"
-  public_key = tls_private_key.vault_key.public_key_openssh
+  public_key = tls_private_key.vault-key.public_key_openssh
 }
 
 # EC2 instance for Vault
-resource "aws_instance" "vault" {
+resource "aws_instance" "vault-server" {
   #checkov:skip=CKV_AWS_135: Optimazation will be enfored on the stage/production environment
   #checkov:skip=CKV_AWS_126: detailed monitoring will be enfored on the stage/production environment
   #checkov:skip=CKV_AWS_88: Access  control  will be enfored on the stage/production environment
   ami                         = var.ami-ubuntu
   instance_type               = "t3.micro"
   key_name                    = aws_key_pair.vault-key-pub.key_name
-  vpc_security_group_ids      = [aws_security_group.vault.id]
+  vpc_security_group_ids      = [aws_security_group.vault-sg.id]
   associate_public_ip_address = true
   subnet_id                   = module.vpc.public_subnets[2]
   iam_instance_profile        = aws_iam_instance_profile.vault_kms_profile.id
@@ -233,9 +230,9 @@ resource "aws_kms_key" "vault" {
 }
 
 resource "aws_elb" "vault-elb" {
-  name               = "vault-lb"
-  security_groups    = [aws_security_group.vault.id]
-  availability_zones = ["eu-west-2a", "eu-west-2b"]
+  name            = "vault-lb"
+  security_groups = [aws_security_group.vault-sg.id]
+  subnets         = [module.vpc.public_subnets[2], module.vpc.public_subnets[1]]
   listener {
     instance_port      = 8200
     instance_protocol  = "http"
@@ -265,9 +262,9 @@ resource "aws_elb" "vault-elb" {
 }
 
 resource "aws_elb" "jenkins-server-elb" {
-  name               = "jenkins-server-elb"
-  security_groups    = [aws_security_group.jenkins-sg.id]
-  availability_zones = ["eu-west-2a", "eu-west-2b"]
+  name            = "jenkins-server-elb"
+  security_groups = [aws_security_group.jenkins-sg.id]
+  subnets         = [module.vpc.public_subnets[0], module.vpc.public_subnets[1]]
   listener {
     instance_port      = 8080
     instance_protocol  = "http"
@@ -297,13 +294,13 @@ resource "aws_elb" "jenkins-server-elb" {
 }
 
 
-data "aws_route53_zone" "route53_zone" {
+data "aws_route53_zone" "route53-zone" {
   name         = var.domain-name
   private_zone = false
 }
 
-resource "aws_route53_record" "vault_record" {
-  zone_id = data.aws_route53_zone.route53_zone.zone_id
+resource "aws_route53_record" "vault-record" {
+  zone_id = data.aws_route53_zone.route53-zone.zone_id
   name    = var.vault-domain-name
   type    = "A"
   alias {
@@ -313,8 +310,8 @@ resource "aws_route53_record" "vault_record" {
   }
 }
 
-resource "aws_route53_record" "jenkins_record" {
-  zone_id = data.aws_route53_zone.route53_zone.zone_id
+resource "aws_route53_record" "jenkins-record" {
+  zone_id = data.aws_route53_zone.route53-zone.zone_id
   name    = var.jenkins-domain-name
   type    = "A"
   alias {
@@ -350,11 +347,11 @@ resource "aws_route53_record" "cert-record" {
   records         = [each.value.record]
   ttl             = 60
   type            = each.value.type
-  zone_id         = data.aws_route53_zone.route53_zone.zone_id
+  zone_id         = data.aws_route53_zone.route53-zone.zone_id
 }
 
 # SIGN THE CERTIFICATE
-resource "aws_acm_certificate_validation" "sign_cert" {
+resource "aws_acm_certificate_validation" "sign-cert" {
   certificate_arn         = aws_acm_certificate.cert.arn
   validation_record_fqdns = [for record in aws_route53_record.cert-record : record.fqdn]
 }

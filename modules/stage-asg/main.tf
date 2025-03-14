@@ -1,4 +1,4 @@
-resource "aws_launch_template" "stage_lt" {
+resource "aws_launch_template" "stage-lt" {
   name                   = "stage-lt"
   image_id               = var.redhat
   instance_type          = "t2.medium"
@@ -29,7 +29,7 @@ resource "aws_autoscaling_group" "stage-asg" {
   vpc_zone_identifier       = var.vpc-zone-identifier
   target_group_arns         = [var.tg-stage]
   launch_template {
-    id = aws_launch_template.stage_lt.id
+    id = aws_launch_template.stage-lt.id
   }
   tag {
     key                 = "Name"
