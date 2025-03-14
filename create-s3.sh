@@ -9,16 +9,6 @@ TABLE_NAME="${LOCAL_NAME}-dynamodb"
 AWS_REGION="eu-west-2"
 AWS_PROFILE="petproject"
 
-# Function to check command success
-# check_success() {
-#     if [ $? -eq 0 ]; then
-#         echo "$1 succeeded."
-#     else
-#         echo "$1 failed." >&2
-#         exit 1
-#     fi
-# }
-
 check_bucket_exists() {
     BUCKET_NAME=$1
     
@@ -59,6 +49,24 @@ check_dynamodb_table() {
 # Call function
 check_dynamodb_table "$TABLE_NAME" "$AWS_REGION" "$AWS_PROFILE"
 
+## Create a Jenkins server
+cd ./jenkins-vault_server
+terraform init
+terraform fmt --recursive
+terraform validate
+terraform apply -auto-approve
+
+
+
+# Function to check command success
+# check_success() {
+#     if [ $? -eq 0 ]; then
+#         echo "$1 succeeded."
+#     else
+#         echo "$1 failed." >&2
+#         exit 1
+#     fi
+# }
 
 # # Create S3 bucket
 # echo "Creating S3 bucket: $S3_BUCKET_NAME ..."
@@ -79,10 +87,3 @@ check_dynamodb_table "$TABLE_NAME" "$AWS_REGION" "$AWS_PROFILE"
 #     --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 \
 #     --region "$AWS_REGION" --profile "$AWS_PROFILE"
 # check_success "DynamoDB table creation"
-
-## Create a Jenkins server
-cd ./jenkins-vault_server
-terraform init
-terraform fmt --recursive
-terraform validate
-terraform apply -auto-approve

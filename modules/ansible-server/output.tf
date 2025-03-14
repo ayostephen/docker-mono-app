@@ -1,4 +1,4 @@
-output "ansible_server_private_ip" {
+output "ansible-server-private-ip" {
   description = "Private IP of the Ansible server"
-  value       = aws_instance.ansible_server.private_ip
+  value       = aws_instance.ansible-server.private_ip
 }

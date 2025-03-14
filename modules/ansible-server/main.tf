@@ -1,5 +1,5 @@
 # Create Ansible Server (EC2 Instance)
-resource "aws_instance" "ansible_server" {
+resource "aws_instance" "ansible-server" {
   #checkov:skip=CKV_AWS_135: Optimazation will be enfored on the stage/production environment
   #checkov:skip=CKV_AWS_126: detailed monitoring will be enfored on the stage/production environment
   #checkov:skip=CKV_AWS_273: Access  control  will be enfored on the stage/production environment

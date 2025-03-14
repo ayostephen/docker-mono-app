@@ -2,44 +2,44 @@ locals {
   name                    = "auto-discovery-mono-app"
     cert-arn              = "arn:aws:acm:eu-west-2:660545536766:certificate/5ebd84a9-26d1-463e-9e7b-fb65f68a2e9c"
     jenkins-sg-id         = "sg-020b3bd8c951cacd2"
-    jenkins_public_ip = "3.8.212.27"
-    private_subnet_id-1 = "subnet-0fbb3b2b47a944da9"
-    private_subnet_id-2 = "subnet-003dd5e119a53d4f1"
-    private_subnet_id-3 = "subnet-0de6d592d742d5eb8"
-    public_subnet_id-1 = "subnet-045cc938efe1720ff"
-    public_subnet_id-2 = "subnet-04869f4386e356746"
-    public_subnet_id-3 = "subnet-0c57f9e86cb1639da"
-    vault_public_ip = "18.134.150.236"
-    vpc_id = "vpc-0d6c95c011b0811e2"
+    jenkins-public-ip     = "3.8.212.27"
+    private-subnet-id-1   = "subnet-0fbb3b2b47a944da9"
+    private-subnet-id-2   = "subnet-003dd5e119a53d4f1"
+    private-subnet-id-3   = "subnet-0de6d592d742d5eb8"
+    public-subnet-id-1    = "subnet-045cc938efe1720ff"
+    public-subnet-id-2    = "subnet-04869f4386e356746"
+    public-subnet-id-3    = "subnet-0c57f9e86cb1639da"
+    vault-public-ip       = "18.134.150.236"
+    vpc-id                = "vpc-0d6c95c011b0811e2"
 }
 
 # AWS_VPC 
 data "aws_vpc" "vpc" {
-  id = local.vpc_id
+  id = local.vpc-id
 }
 
 data "aws_subnet" "public-subnet-1" {
-  id = local.public_subnet_id-1
+  id = local.public-subnet-id-1
 }
 
 data "aws_subnet" "public-subnet-2" {
-  id = local.public_subnet_id-2
+  id = local.public-subnet-id-2
 }
 
-data "aws_subnet" "public_subnet-3" {
-  id = local.public_subnet_id-3
+data "aws_subnet" "public-subnet-3" {
+  id = local.public-subnet-id-3
 }
 
 data "aws_subnet" "private-subnet-1" {
-  id = local.private_subnet_id-1
+  id = local.private-subnet-id-1
 }
 
 data "aws_subnet" "private-subnet-2" {
-  id = local.private_subnet_id-2
+  id = local.private-subnet-id-2
 }
 
 data "aws_subnet" "private-subnet-3" {
-  id = local.private_subnet_id-3
+  id = local.private-subnet-id-3
 }
 
 data "aws_security_group" "jenkins-sg" {
@@ -83,8 +83,6 @@ module "jenkins-slaves" {
   nr-acc-id               = var.nr-acc-id
   nr-key                  = var.nr-key
 }
-
-
 
 module "nexus-server" {
   source                  = "./modules/nexus-server"
