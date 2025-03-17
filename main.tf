@@ -1,15 +1,16 @@
 locals {
   name                = "auto-discovery-mono-app"
-  cert-arn            = "arn:aws:acm:eu-west-2:660545536766:certificate/dd4c1b2e-0be3-406c-9e59-aa97659ce263"
-  jenkins-sg-id       = "sg-04b096bbd9ddc8ee9"
-  private-subnet-id-1 = "subnet-0e462aee2b4d4f091"
-  private-subnet-id-2 = "subnet-0e4a9eca16d0b3767"
-  private-subnet-id-3 = "subnet-0bd74d924edd2b010"
-  public-subnet-id-1  = "subnet-0fd9d07c0e9284e2e"
-  public-subnet-id-2  = "subnet-0834966172307c565"
-  public-subnet-id-3  = "subnet-0618a7705bb2ef630"
-  vpc-id              = "vpc-05fd14c467856552f"
-  jenkins-public-ip = "18.175.118.64"
+    cert-arn = "arn:aws:acm:eu-west-2:660545536766:certificate/021e275e-9cf4-4a1b-b6f0-07608474cfac"
+    jenkins-public-ip = "18.130.215.54"
+    jenkins-sg-id = "sg-0c159e401d0d7caae"
+    private-subnet-id-1 = "subnet-0c3ce6d59b44ff128"
+    private-subnet-id-2 = "subnet-03323dd6ed1a2ef81"
+    private-subnet-id-3 = "subnet-06ba1a600d45a1a08"
+    public-subnet-id-1 = "subnet-0e533c11ab5a102d3"
+    public-subnet-id-2 = "subnet-00c7a098bc817bb6c"
+    public-subnet-id-3 = "subnet-0ef6e77a77d09caec"
+    vault-public-ip = "18.130.223.120"
+    vpc-id = "vpc-094d05d7a7df53c2e"
 }
 
 # AWS_VPC 
@@ -89,7 +90,6 @@ module "nexus-server" {
   source         = "./modules/nexus-server"
   redhat-ami-id  = var.redhat-ami-id
   public-subnets = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id]
-  domain-name    = var.domain-name
   instance-type  = var.instance-type
   key-name       = module.keypair.infra-pub-key
   subnet-id      = data.aws_subnet.public-subnet-1.id
@@ -147,10 +147,10 @@ module "rds-database" {
 module "sonarqube-server" {
   source              = "./modules/sonarqube-server"
   ubuntu-ami-id       = var.ubuntu-ami-id
-  public-subnets      = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id]
+  public-subnets      = [data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
   instance-type       = var.instance-type
   key-name            = module.keypair.infra-pub-key
-  subnet-id           = data.aws_subnet.public-subnet-3.id
+  subnet-id           = data.aws_subnet.public-subnet-2.id
   sonarqube-sg        = module.security-groups.sonarqube-id
   nr-key              = var.nr-key
   nr-acc-id           = var.nr-acc-id
