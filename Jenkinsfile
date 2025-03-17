@@ -21,7 +21,7 @@ pipeline {
         }
         stage ('terraform plan') {
             steps {
-                sh 'terraform plan -var-file="iac.tfvars"
+                sh 'terraform plan -var-file="iac.tfvars"'
             }
         }
         stage('Request Approval to apply') {
