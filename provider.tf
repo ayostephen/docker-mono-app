@@ -4,6 +4,6 @@ provider "aws" {
 }
 
 provider "vault" {
-  token   = "s.D9M5pWOnzhJyk4fWdXNBNOkl"
+  token   = "s.6KCI59JlvCnRQCFcsdfo6IBF"
   address = "https://vault.hullerdata.com/"
 }

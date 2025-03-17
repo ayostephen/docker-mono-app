@@ -9,18 +9,9 @@ TABLE_NAME="${LOCAL_NAME}-dynamodb"
 AWS_REGION="eu-west-2"
 AWS_PROFILE="petproject"
 
-aws s3api create-bucket --bucket "$BUCKET_NAME" --region "$AWS_REGION" --create-bucket-configuration LocationConstraint="$AWS_REGION"
-# check_bucket_exists() {
-#     BUCKET_NAME=$1
-    
-#     if aws s3 ls "s3://$BUCKET_NAME" 2>/dev/null; then
-#         echo "Bucket '$BUCKET_NAME' already exists. Skipping creation."
-#     else
-#         echo "Bucket '$BUCKET_NAME' does not exist. Proceeding with creation..."
-#         aws s3api create-bucket --bucket "$BUCKET_NAME" --region "$AWS_REGION" --create-bucket-configuration LocationConstraint="$AWS_REGION"
-#         echo "Bucket '$BUCKET_NAME' created successfully."
-#     fi
-# }
+echo "Creating S3 bucket: $BUCKET_NAME ..."
+aws s3api create-bucket --bucket "$BUCKET_NAME" --region "$AWS_REGION" --profile "$AWS_PROFILE" --create-bucket-configuration LocationConstraint="$AWS_REGION" 
+check_success "S3 bucket creation"
 
 # Function to check if a DynamoDB table exists
 check_dynamodb_table() {
