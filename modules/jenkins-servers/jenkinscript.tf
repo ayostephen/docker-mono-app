@@ -30,9 +30,9 @@ sudo systemctl restart docker
 sudo mkdir /opt/build
 sudo chmod 777 /opt/build
 
-curl -sO https://jenkins.hullerdata.com/jnlpJars/agent.jar
-sudo mv ~/agent.jar /opt && cd /opt
-java -jar agent.jar -url http://jenkins.hullerdata.com/ -secret 5bdcd3aafaf20eb6a30aafd1e1c713f23983ef2a8e14bf7046253a3214251ef7 -name "jenkins-node" -webSocket -workDir "/opt/build"
+# curl -sO https://jenkins.hullerdata.com/jnlpJars/agent.jar
+# sudo mv ~/agent.jar /opt && cd /opt
+# java -jar agent.jar -url http://jenkins.hullerdata.com/ -secret 5bdcd3aafaf20eb6a30aafd1e1c713f23983ef2a8e14bf7046253a3214251ef7 -name "jenkins-node" -webSocket -workDir "/opt/build"
 
 curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo NEW_RELIC_API_KEY="${var.nr-key}" NEW_RELIC_ACCOUNT_ID="${var.nr-acc-id}" NEW_RELIC_REGION="${var.nr-region}" /usr/local/bin/newrelic install -y
 
