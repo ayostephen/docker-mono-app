@@ -24,9 +24,25 @@ sudo systemctl enable docker
 sudo usermod -aG docker ec2-user
 sudo usermod -aG docker jenkins
 sudo chmod 777 /var/run/docker.sock
-
+######
+sudo cat <<EOT>> /etc/docker/daemon.json
+{
+  "insecure-registries" : ["${var.nexus-ip}:8085"]
+}
+# EOT
 sudo systemctl restart docker
 
+# Install trivy for container scanning
+RELEASE_VERSION=$(grep -Po '(?<=VERSION_ID=")[0-9]' /etc/os-release)
+cat << EOT | sudo tee -a /etc/yum.repos.d/trivy.repo
+[trivy]
+name=Trivy repository
+baseurl=https://aquasecurity.github.io/trivy-repo/rpm/releases/$RELEASE_VERSION/\$basearch/
+gpgcheck=0
+enabled=1
+EOT
+sudo yum -y update
+sudo yum -y install trivy
 sudo mkdir /opt/build
 sudo chmod 777 /opt/build
 
@@ -41,9 +57,3 @@ EOF
 }
 
 
-######
-# sudo cat <<EOT>> /etc/docker/daemon.json
-# {
-#   "insecure-registries" : ["${var.nexus-ip}:8085"]
-# }
-# EOT
