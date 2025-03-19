@@ -205,7 +205,7 @@ module "prod-asg" {
   nr-key              = var.nr-key
   nr-region           = var.nr-region
   asg-prd-name        = "${local.name}-prod-asg"
-  vpc-zone-identifier = [data.aws_subnet.public-subnet-1.id,  data.aws_subnet.public-subnet-2.id]
+  vpc-zone-identifier = [data.aws_subnet.private-subnet-2.id, data.aws_subnet.private-subnet-3.id]
   tg-prod             = module.prod-alb.prod-tg-arn
   redhat              = var.redhat-ami-id
   prod-sg             = [module.security-groups.asg-sg-id]
@@ -219,7 +219,7 @@ module "stage-asg" {
   nr-key              = var.nr-key
   nr-region           = var.nr-region
   asg-stage-name      = "${local.name}-stage-asg"
-  vpc-zone-identifier = [data.aws_subnet.public-subnet-1.id,  data.aws_subnet.public-subnet-2.id]
+  vpc-zone-identifier = [data.aws_subnet.private-subnet-1.id, data.aws_subnet.private-subnet-2.id]
   tg-stage            = module.stage-alb.stage-tg-arn
   redhat              = var.redhat-ami-id
   stage-sg            = [module.security-groups.asg-sg-id]
