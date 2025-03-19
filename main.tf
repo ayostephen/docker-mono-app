@@ -1,7 +1,7 @@
 locals {
   name                = "auto-discovery-mono-app" 
   cert-arn = "arn:aws:acm:eu-west-2:660545536766:certificate/a8c1656f-89e8-4f64-9af1-3db01d60b4f0"
-  jenkins-public-ip = "3.8.118.171"
+  jenkins-public-ip = "52.56.141.63"
   jenkins-sg-id = "sg-0a12ca81d609fb95f"
   private-subnet-id-1 = "subnet-0f28596c69f4eb3ed"
   private-subnet-id-2 = "subnet-043ce06aada582204"
@@ -81,7 +81,7 @@ module "jenkins-slaves" {
   key-name      = module.keypair.infra-pub-key
   subnet-id     = data.aws_subnet.public-subnet-1.id
   jenkins-sg    = data.aws_security_group.jenkins-sg.id
-  nexus-ip               = module.nexus-server.nexus-server-public-ip
+  nexus-ip      = module.nexus-server.nexus-server-public-ip
   nr-region     = var.nr-region
   nr-acc-id     = var.nr-acc-id
   nr-key        = var.nr-key

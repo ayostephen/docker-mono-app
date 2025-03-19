@@ -46,13 +46,13 @@ sudo yum -y install trivy
 sudo mkdir /opt/build
 sudo chmod 777 /opt/build
 
-curl -sO http://3.8.118.171:8080/jnlpJars/agent.jar
+curl -sO http://18.169.158.136:8080/jnlpJars/agent.jar
 sudo mv ~/agent.jar /opt && cd /opt
-java -jar agent.jar -url http://3.8.118.171:8080/ -secret 7b0837763f5735a017a2be09fced99a177dd68b1b3443f1bebefab939600da00 -name "jenkins-node" -webSocket -workDir "/opt/build"
+java -jar agent.jar -url http://18.169.158.136:8080/ -secret 7b0837763f5735a017a2be09fced99a177dd68b1b3443f1bebefab939600da00 -name "jenkins-node" -webSocket -workDir "/opt/build"
 
 curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo NEW_RELIC_API_KEY="${var.nr-key}" NEW_RELIC_ACCOUNT_ID="${var.nr-acc-id}" NEW_RELIC_REGION="${var.nr-region}" /usr/local/bin/newrelic install -y
 
-sudo hostnamectl set-hostname jenkins
+sudo hostnamectl set-hostname jenkins-node
 EOF  
 }
 
