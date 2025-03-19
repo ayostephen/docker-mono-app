@@ -29,7 +29,7 @@ sudo cat <<EOT>> /etc/docker/daemon.json
 {
   "insecure-registries" : ["${var.nexus-ip}:8085"]
 }
-# EOT
+EOT
 sudo systemctl restart docker
 
 # Install trivy for container scanning
