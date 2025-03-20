@@ -6,7 +6,7 @@ set -x
 AWS_CLI_PATH='/usr/local/bin/aws'
 INVENTORY_FILE='/etc/ansible/prod-hosts'
 IPS_FILE='/etc/ansible/prod-ips.list'
-ASG_NAME='auto-discovery-prod-asg'
+ASG_NAME='auto-discovery-mono-app-prod-asg'
 SSH_KEY_PATH="~/.ssh/id_rsa"
 WAIT_TIME=20
 

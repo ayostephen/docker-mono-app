@@ -1,9 +1,9 @@
 provider "aws" {
   region  = var.region
-  profile = var.profile
+  #profile = var.profile
 }
 
 provider "vault" {
-  token   = "s.6KCI59JlvCnRQCFcsdfo6IBF"
+  token   = "s.Tqey2CbX1Qci6gKwwmmSKLJt"
   address = "https://vault.hullerdata.com/"
 }

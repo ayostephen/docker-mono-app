@@ -1,16 +1,16 @@
 locals {
-  name                = "auto-discovery-mono-app"
-    cert-arn = "arn:aws:acm:eu-west-2:660545536766:certificate/021e275e-9cf4-4a1b-b6f0-07608474cfac"
-    jenkins-public-ip = "18.130.215.54"
-    jenkins-sg-id = "sg-0c159e401d0d7caae"
-    private-subnet-id-1 = "subnet-0c3ce6d59b44ff128"
-    private-subnet-id-2 = "subnet-03323dd6ed1a2ef81"
-    private-subnet-id-3 = "subnet-06ba1a600d45a1a08"
-    public-subnet-id-1 = "subnet-0e533c11ab5a102d3"
-    public-subnet-id-2 = "subnet-00c7a098bc817bb6c"
-    public-subnet-id-3 = "subnet-0ef6e77a77d09caec"
-    vault-public-ip = "18.130.223.120"
-    vpc-id = "vpc-094d05d7a7df53c2e"
+  name                = "auto-discovery-mono-app" 
+  cert-arn = "arn:aws:acm:eu-west-2:660545536766:certificate/a8c1656f-89e8-4f64-9af1-3db01d60b4f0"
+  jenkins-public-ip = "52.56.141.63"
+  jenkins-sg-id = "sg-0a12ca81d609fb95f"
+  private-subnet-id-1 = "subnet-0f28596c69f4eb3ed"
+  private-subnet-id-2 = "subnet-043ce06aada582204"
+  private-subnet-id-3 = "subnet-09847165ecebd7ca1"
+  public-subnet-id-1 = "subnet-05ff7fe4d8441e0ae"
+  public-subnet-id-2 = "subnet-0c4e99fb5ce83cd99"
+  public-subnet-id-3 = "subnet-03bdc6d55a3b5b1bb"
+  vault-public-ip = "18.171.188.175"
+  vpc-id = "vpc-0b3d1285a3f34e1b0"
 }
 
 # AWS_VPC 
@@ -81,6 +81,7 @@ module "jenkins-slaves" {
   key-name      = module.keypair.infra-pub-key
   subnet-id     = data.aws_subnet.public-subnet-1.id
   jenkins-sg    = data.aws_security_group.jenkins-sg.id
+  nexus-ip      = module.nexus-server.nexus-server-public-ip
   nr-region     = var.nr-region
   nr-acc-id     = var.nr-acc-id
   nr-key        = var.nr-key
@@ -204,7 +205,7 @@ module "prod-asg" {
   nr-key              = var.nr-key
   nr-region           = var.nr-region
   asg-prd-name        = "${local.name}-prod-asg"
-  vpc-zone-identifier = [data.aws_subnet.public-subnet-1.id,  data.aws_subnet.public-subnet-2.id]
+  vpc-zone-identifier = [data.aws_subnet.private-subnet-2.id, data.aws_subnet.private-subnet-3.id]
   tg-prod             = module.prod-alb.prod-tg-arn
   redhat              = var.redhat-ami-id
   prod-sg             = [module.security-groups.asg-sg-id]
@@ -218,7 +219,7 @@ module "stage-asg" {
   nr-key              = var.nr-key
   nr-region           = var.nr-region
   asg-stage-name      = "${local.name}-stage-asg"
-  vpc-zone-identifier = [data.aws_subnet.public-subnet-1.id,  data.aws_subnet.public-subnet-2.id]
+  vpc-zone-identifier = [data.aws_subnet.private-subnet-1.id, data.aws_subnet.private-subnet-2.id]
   tg-stage            = module.stage-alb.stage-tg-arn
   redhat              = var.redhat-ami-id
   stage-sg            = [module.security-groups.asg-sg-id]
