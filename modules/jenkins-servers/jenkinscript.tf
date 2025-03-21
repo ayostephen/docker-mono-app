@@ -24,26 +24,37 @@ sudo systemctl enable docker
 sudo usermod -aG docker ec2-user
 sudo usermod -aG docker jenkins
 sudo chmod 777 /var/run/docker.sock
-
+######
+sudo cat <<EOT>> /etc/docker/daemon.json
+{
+  "insecure-registries" : ["${var.nexus-ip}:8085"]
+}
+EOT
 sudo systemctl restart docker
 
+# Install trivy for container scanning
+RELEASE_VERSION=$(grep -Po '(?<=VERSION_ID=")[0-9]' /etc/os-release)
+cat << EOT | sudo tee -a /etc/yum.repos.d/trivy.repo
+[trivy]
+name=Trivy repository
+baseurl=https://aquasecurity.github.io/trivy-repo/rpm/releases/$RELEASE_VERSION/\$basearch/
+gpgcheck=0
+enabled=1
+EOT
+sudo yum -y update
+sudo yum -y install trivy
 sudo mkdir /opt/build
 sudo chmod 777 /opt/build
 
-# curl -sO https://jenkins.hullerdata.com/jnlpJars/agent.jar
+
+# curl -sO http://18.169.158.136:8080/jnlpJars/agent.jar
 # sudo mv ~/agent.jar /opt && cd /opt
-# java -jar agent.jar -url http://jenkins.hullerdata.com/ -secret 5bdcd3aafaf20eb6a30aafd1e1c713f23983ef2a8e14bf7046253a3214251ef7 -name "jenkins-node" -webSocket -workDir "/opt/build"
+# java -jar agent.jar -url http://18.169.158.136:8080/ -secret 7b0837763f5735a017a2be09fced99a177dd68b1b3443f1bebefab939600da00 -name "jenkins-node" -webSocket -workDir "/opt/build"
 
 curl -Ls https://download.newrelic.com/install/newrelic-cli/scripts/install.sh | bash && sudo NEW_RELIC_API_KEY="${var.nr-key}" NEW_RELIC_ACCOUNT_ID="${var.nr-acc-id}" NEW_RELIC_REGION="${var.nr-region}" /usr/local/bin/newrelic install -y
 
-sudo hostnamectl set-hostname jenkins
+sudo hostnamectl set-hostname jenkins-node
 EOF  
 }
 
 
-######
-# sudo cat <<EOT>> /etc/docker/daemon.json
-# {
-#   "insecure-registries" : ["${var.nexus-ip}:8085"]
-# }
-# EOT
