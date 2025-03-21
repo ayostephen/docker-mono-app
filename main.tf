@@ -1,16 +1,6 @@
 locals {
   name                = "auto-discovery-mono-app" 
-  cert-arn = "arn:aws:acm:eu-west-2:660545536766:certificate/a8c1656f-89e8-4f64-9af1-3db01d60b4f0"
-  jenkins-public-ip = "52.56.141.63"
-  jenkins-sg-id = "sg-0a12ca81d609fb95f"
-  private-subnet-id-1 = "subnet-0f28596c69f4eb3ed"
-  private-subnet-id-2 = "subnet-043ce06aada582204"
-  private-subnet-id-3 = "subnet-09847165ecebd7ca1"
-  public-subnet-id-1 = "subnet-05ff7fe4d8441e0ae"
-  public-subnet-id-2 = "subnet-0c4e99fb5ce83cd99"
-  public-subnet-id-3 = "subnet-03bdc6d55a3b5b1bb"
-  vault-public-ip = "18.171.188.175"
-  vpc-id = "vpc-0b3d1285a3f34e1b0"
+
 }
 
 # AWS_VPC 
@@ -140,7 +130,7 @@ module "rds-database" {
   source       = "./modules/rds-database"
   db-subnet-id = [data.aws_subnet.private-subnet-1.id, data.aws_subnet.private-subnet-2.id, data.aws_subnet.private-subnet-3.id]
   db-name      = var.db-name
-  db-username  = data.vault_generic_secret.db-secret.data["username"]
+  db-username  = data.vault_generic_secret.db-secret.data["username"] 
   db-password  = data.vault_generic_secret.db-secret.data["password"]
   vpc-sg-id    = [module.security-groups.rds-sg-id]
 }
