@@ -46,7 +46,7 @@ cd ./jenkins-vault_server
 terraform init
 terraform fmt --recursive
 terraform validate
-terraform apply -auto-approve
+terraform apply -auto-approve -lock=false
 
 ids_output=$(terraform output)
 printf '%s\n' "$ids_output" | awk '{print "  " $0}' | sed '3r /dev/stdin' ../main.tf > tmpfile && mv tmpfile ../main.tf
