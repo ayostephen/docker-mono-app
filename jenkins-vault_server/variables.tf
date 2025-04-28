@@ -5,25 +5,25 @@ variable "region" {
 }
 
 variable "profile" {
-  default = ""
+  default = "mchall"
 }
 variable "ami-ubuntu" {
-  default = "" #Ubuntu ami for Vault server
+  default = "ami-04da26f654d3383cf" #Ubuntu 22.04 ami for Vault server
 }
 variable "domain-name" {
-  default = ""
+  default = "sternwatch.com"
 }
 variable "domain-names" {
-  default = ""
+  default = "*.sternwatch.com"
 }
 variable "vault-domain-name" {
-  default = ""
+  default = "vault.sternwatch.com"
 }
 variable "jenkins-domain-name" {
-  default = ""
+  default = "jenkins.sternwatch.com"
 }
-variable "ami_id" {
-  default = "" #Redhat ami for jenkins server
+variable "redhat_ami_id" {
+  default = "ami-0727cf12519cc2b5b" #Redhat Linux 9 ami for jenkins server
 }
 
 variable "instance_type" {
@@ -35,7 +35,7 @@ variable "instance_type" {
 variable "vpc-name" {
   description = "The name of the VPC"
   type        = string
-  default     = ""
+  default     = "auto-discovery-vpc"
 }
 
 variable "vpc-cidr" {
@@ -65,19 +65,19 @@ variable "public-subnets" {
 variable "allowed-ssh-ips" {
   description = "A list of IP addresses that are allowed to SSH into the Vault server"
   type        = list(string)
-  default     = ["51.182.0.0/16", "10.0.0.0/16", "2.121.0.0/16"]
+  default     = ["82.219.0.0/16", "10.0.0.0/16",]
 }
 
 variable "nr-key" {
   description = "New Relic API key"
   type        = string
-  default     = ""
+  default     = "NRAK-B8R254VSC3TQ1DH7FTZURMJ57HO"
 }
 
 variable "nr-acc-id" {
   description = "New Relic account ID"
   type        = string
-  default     = ""
+  default     = "6700591"
 }
 variable "nr-region" {
   description = "New Relic region"

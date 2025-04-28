@@ -14,7 +14,7 @@ terraform {
     key            = "vault-remote/tfstate"
     dynamodb_table = "auto-discovery-mono-app-dynamodb"
     region         = "eu-west-2"
-    profile        = "petproject"
+    profile        = "mchall"
   }
 }
 
@@ -199,7 +199,7 @@ resource "aws_instance" "jenkins-server" {
   #checkov:skip=CKV_AWS_135: Optimazation will be enfored on the stage/production environment
   #checkov:skip=CKV_AWS_126: detailed monitoring will be enfored on the stage/production environment
   #checkov:skip=CKV_AWS_88: Access  control  will be enfored on the stage/production environment
-  ami                         = var.ami_id
+  ami                         = var.redhat_ami_id
   instance_type               = "t3.medium"
   key_name                    = aws_key_pair.vault-key-pub.key_name
   vpc_security_group_ids      = [aws_security_group.jenkins-sg.id]
