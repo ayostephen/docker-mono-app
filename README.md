@@ -1,5 +1,10 @@
 # 24th-february-auto-discovery-project
 # To be added to jenkins master server after infrastructure provisioning
+<!-- #sudo cat <<EOT>> /etc/docker/daemon.json
+{
+  "insecure-registries" : ["${var.nexus-ip}:8085"]
+}
+EOT -->
 
 Step 1: 
 - Set up Jenkins and Vault Server

@@ -65,7 +65,7 @@ variable "public-subnets" {
 variable "allowed-ssh-ips" {
   description = "A list of IP addresses that are allowed to SSH into the Vault server"
   type        = list(string)
-  default     = ["82.219.0.0/16", "10.0.0.0/16", ]
+  default     = ["10.0.0.0/16", "94.9.0.0/16" ]
 }
 
 variable "nr-key" {
