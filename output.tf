@@ -1,9 +1,9 @@
 output "jenkins-node-public-ip" {
-  value = module.jenkins-slaves.jenkins-public-ip
+  value = module.jenkins-slaves.jenkins-node-public-ip
 }
 
 output "jenkins-cloud-public-ip" {
-  value = module.jenkins-slaves.jenkins-docker-public-ip
+  value = module.jenkins-slaves.jenkins-cloud-public-ip
 }
 
 output "nexus-public-ip" {
@@ -18,7 +18,7 @@ output "ansible-private-ip" {
 }
 
 output "bastion-host-ip" {
-  value = module.bastion-host.bastion-host-ip
+  value = module.bastion-host.bastion-host-public-ip
 }
 
 output "rds-endpoint" {
