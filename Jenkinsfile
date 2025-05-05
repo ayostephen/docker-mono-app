@@ -6,7 +6,8 @@ pipeline {
     }
 
     environment {
-        TFVARS_FILE = 'iac.tfvars'
+        // TFVARS_FILE points to the copied file in the tmp directory
+        TFVARS_FILE = '/tmp/iac.tfvars'
     }
 
     parameters {
@@ -17,8 +18,8 @@ pipeline {
         stage('Load tfvars from Jenkins Credentials') {
             steps {
                 withCredentials([file(credentialsId: 'iac-tfvars', variable: 'TFVARS')]) {
-                    sh 'chmod 644 $TFVARS'  // Ensure permissions are correct
-                    sh 'cp "$TFVARS" "$TFVARS_FILE"'
+                    // Copy the file from the credential store to the tmp directory
+                    sh 'cp $TFVARS /tmp/iac.tfvars'
                 }
             }
         }
@@ -46,6 +47,7 @@ pipeline {
                 expression { params.action == 'plan' }
             }
             steps {
+                // Reference the tfvars file from the tmp directory
                 sh "terraform plan -var-file=\"$TFVARS_FILE\""
             }
         }
@@ -66,11 +68,13 @@ pipeline {
                 expression { params.action == 'apply' || params.action == 'destroy' }
             }
             steps {
+                // Reference the tfvars file from the tmp directory
                 sh "terraform ${params.action} -var-file=\"$TFVARS_FILE\" -auto-approve"
             }
         }
     }
 }
+
 
 
 // pipeline {
