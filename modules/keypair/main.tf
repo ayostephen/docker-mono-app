@@ -12,7 +12,7 @@ resource "local_file" "infra-pri-key" {
 }
 
 # Store the public key locally
-resource "aws_key_pair" "infra-key-pub" {
+resource "aws_key_pair" "infra-pub-key" {
   key_name   = "infra-pub-key"
   public_key = tls_private_key.infra-key.public_key_openssh
 }
