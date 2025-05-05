@@ -17,6 +17,7 @@ pipeline {
         stage('Load tfvars from Jenkins Credentials') {
             steps {
                 withCredentials([file(credentialsId: 'iac-tfvars', variable: 'TFVARS')]) {
+                    sh 'chmod 644 $TFVARS'  // Ensure permissions are correct
                     sh 'cp "$TFVARS" "$TFVARS_FILE"'
                 }
             }
