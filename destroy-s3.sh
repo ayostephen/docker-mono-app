@@ -1,8 +1,8 @@
-!/bin/bash
+# #!/bin/bash
 
-## Destroy a Jenkins server
-cd ./jenkins-vault_server
-terraform destroy -auto-approve
+# ## Destroy a Jenkins server
+# cd ./jenkins-vault_server
+# terraform destroy -auto-approve
 
 # Defining a local name
 LOCAL_NAME="auto-discovery-mono-app"

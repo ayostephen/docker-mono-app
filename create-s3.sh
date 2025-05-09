@@ -31,7 +31,7 @@ aws s3api create-bucket \
 
 check_success "S3 bucket creation"
 
-# === Function to create DynamoDB table if not exists ===
+# === Function to create DynamoDB table if it does not exist ===
 check_dynamodb_table() {
   echo "Checking if DynamoDB table '$TABLE_NAME' exists..."
 
@@ -53,12 +53,12 @@ check_dynamodb_table() {
 # Call function
 check_dynamodb_table
 
-# Create a Jenkins server
-cd ./jenkins-vault_server
-terraform init
-terraform fmt --recursive
-terraform validate
-terraform apply -auto-approve -lock=false
+# # Create a Jenkins server
+# cd ./jenkins-vault_server
+# terraform init
+# terraform fmt --recursive
+# terraform validate
+# terraform apply -auto-approve -lock=false
 
-ids_output=$(terraform output)
-printf '%s\n' "$ids_output" | awk '{print "  " $0}' | sed '3r /dev/stdin' ../main.tf > tmpfile && mv tmpfile ../main.tf
+# ids_output=$(terraform output)
+# printf '%s\n' "$ids_output" | awk '{print "  " $0}' | sed '3r /dev/stdin' ../main.tf > tmpfile && mv tmpfile ../main.tf
