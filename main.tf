@@ -1,17 +1,18 @@
 locals {
   name                = "auto-discovery-mono-app" 
 
+  
     cert-arn = "arn:aws:acm:eu-west-2:288761743690:certificate/0b509f4e-7447-4c9b-b186-672a8d9dc1e7"
-    jenkins-public-ip = "18.133.232.252"
-    jenkins-sg-id = "sg-0b770be01deffef94"
-    private-subnet-id-1 = "subnet-0bbeecfeb79245d82"
-    private-subnet-id-2 = "subnet-0cdc08bdb3213b9db"
-    private-subnet-id-3 = "subnet-0084c5085c9c5e9c8"
-    public-subnet-id-1 = "subnet-09dc8ffaed57f7b56"
-    public-subnet-id-2 = "subnet-0ea5993b6b0b4147c"
-    public-subnet-id-3 = "subnet-0a0ccafcc523c8742"
-    vault-public-ip = "18.133.186.38"
-    vpc-id = "vpc-0b9b05258a160c310"
+    jenkins-public-ip = 35.179.112.14
+    jenkins-sg-id = sg-0c0e4f60b3e068e58
+    private-subnet-id-1 = subnet-0b512c64a5815690c
+    private-subnet-id-2 = subnet-066bcf94cd1497b6c
+    private-subnet-id-3 = subnet-0ee2619bd3bf84949
+    public-subnet-id-1 = subnet-0b6ac8c7550b24ab0
+    public-subnet-id-2 = subnet-0a7eeb50e09488232
+    public-subnet-id-3 = subnet-08958868679bd4868
+    vault-public-ip = 18.171.249.24
+    vpc-id = vpc-07667c7f28cb9bbd2
   
 }
 
@@ -60,7 +61,7 @@ data "aws_acm_certificate" "cert-arn" {
 
 module "security-groups" {
   source            = "./modules/security-groups"
-  vpc-id            = data.aws_vpc.vpc.id
+  vpc-id            = vpc-07667c7f28cb9bbd2
   allowed-ssh-ips   = var.allowed-ssh-ips
   project-name      = var.project-name
   asg-port          = var.asg-port
@@ -169,7 +170,7 @@ module "stage-alb" {
   asg-sg         = [module.security-groups.asg-sg-id]
   public-subnets = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
   cert-arn       = data.aws_acm_certificate.cert-arn.arn
-  vpc-id         = data.aws_vpc.vpc.id
+  vpc-id         = vpc-07667c7f28cb9bbd2
 }
 
 module "prod-alb" {
@@ -178,7 +179,7 @@ module "prod-alb" {
   asg-sg         = [module.security-groups.asg-sg-id]
   public-subnets = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
   cert-arn       = data.aws_acm_certificate.cert-arn.arn
-  vpc-id         = data.aws_vpc.vpc.id
+  vpc-id         = vpc-07667c7f28cb9bbd2
 }
 
 module "records" {

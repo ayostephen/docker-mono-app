@@ -23,13 +23,19 @@ check_success() {
   fi
 }
 
-# === Create S3 bucket ===
-echo "Creating S3 bucket: $BUCKET_NAME ..."
-aws s3api create-bucket \
-  --bucket "$BUCKET_NAME" \
-  --create-bucket-configuration LocationConstraint="$AWS_REGION"
+# === Create S3 bucket if it does not exist ===
+echo "Checking if S3 bucket '$BUCKET_NAME' exists..."
 
-check_success "S3 bucket creation"
+if aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
+  echo "S3 bucket '$BUCKET_NAME' already exists. Skipping creation."
+else
+  echo "S3 bucket '$BUCKET_NAME' does not exist. Creating..."
+  aws s3api create-bucket \
+    --bucket "$BUCKET_NAME" \
+    --create-bucket-configuration LocationConstraint="$AWS_REGION"
+
+  check_success "S3 bucket creation"
+fi
 
 # === Function to create DynamoDB table if it does not exist ===
 check_dynamodb_table() {
