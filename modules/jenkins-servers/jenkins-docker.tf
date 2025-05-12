@@ -37,3 +37,5 @@ EOF
 #   "insecure-registries" : ["${var.nexus-ip}:8085"]
 # }
 # EOT
+
+# sudo systemctl daemon-reload
