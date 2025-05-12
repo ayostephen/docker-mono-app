@@ -2,7 +2,7 @@ locals {
   name                = "auto-discovery-mono-app" 
 
   
-    cert-arn = "arn:aws:acm:eu-west-2:288761743690:certificate/0b509f4e-7447-4c9b-b186-672a8d9dc1e7"
+    cert-arn = arn:aws:acm:eu-west-2:288761743690:certificate/254d69e0-dc17-488d-b6a1-a28ccb7d3323
     jenkins-public-ip = 35.179.112.14
     jenkins-sg-id = sg-0c0e4f60b3e068e58
     private-subnet-id-1 = subnet-0b512c64a5815690c
@@ -159,7 +159,7 @@ module "sonarqube-server" {
   nr-key              = var.nr-key
   nr-acc-id           = var.nr-acc-id
   nr-region           = var.nr-region
-  cert-arn            = data.aws_acm_certificate.cert-arn.arn
+  cert-arn            = arn:aws:acm:eu-west-2:288761743690:certificate/254d69e0-dc17-488d-b6a1-a28ccb7d3323
   sonar-postgress-pwd = var.sonar-postgress-pwd
   sonar-psqldb-pwd    = var.sonar-psqldb-pwd
 }
@@ -169,7 +169,7 @@ module "stage-alb" {
   alb-name-stage = "stage-alb"
   asg-sg         = [module.security-groups.asg-sg-id]
   public-subnets = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
-  cert-arn       = data.aws_acm_certificate.cert-arn.arn
+  cert-arn       = arn:aws:acm:eu-west-2:288761743690:certificate/254d69e0-dc17-488d-b6a1-a28ccb7d3323
   vpc-id         = vpc-07667c7f28cb9bbd2
 }
 
@@ -178,7 +178,7 @@ module "prod-alb" {
   alb-name-prod  = "prod-alb"
   asg-sg         = [module.security-groups.asg-sg-id]
   public-subnets = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
-  cert-arn       = data.aws_acm_certificate.cert-arn.arn
+  cert-arn       = arn:aws:acm:eu-west-2:288761743690:certificate/254d69e0-dc17-488d-b6a1-a28ccb7d3323
   vpc-id         = vpc-07667c7f28cb9bbd2
 }
 
