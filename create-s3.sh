@@ -66,14 +66,22 @@ terraform fmt --recursive
 terraform validate
 terraform apply -auto-approve -lock=false
 
-# === Update ../main.tf values based on terraform output ===
-ids_output=$(terraform output)
+# Get formatted output from terraform output
+ids_output=$(terraform output -json | jq -r 'to_entries[] | "  \(.key) = \"\(.value.value)\""')
 
-while IFS='=' read -r key value; do
-  key=$(echo "$key" | xargs)       # Trim spaces from key
-  value=$(echo "$value" | xargs)   # Trim spaces from value
-  sed -i "s|^\(\s*$key\s*=\s*\).*|\1$value|" ../main.tf
-done <<< "$ids_output"
+# Replace the entire locals block in main.tf
+awk -v data="$ids_output" '
+  BEGIN { in_block=0 }
+  /^locals[ \t]*{/ {
+    print "locals {"
+    print data
+    in_block=1
+    next
+  }
+  in_block && /^\}/ { print "}"; in_block=0; next }
+  !in_block { print }
+' ../main.tf > tmpfile && mv tmpfile ../main.tf
+
 
 # ids_output=$(terraform output)
 # printf '%s\n' "$ids_output" | awk '{print "  " $0}' | sed '3r /dev/stdin' ../main.tf > tmpfile && mv tmpfile ../main.tf
