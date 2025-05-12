@@ -1,6 +1,6 @@
 region              = "eu-west-2"
 profile             = "mchall"
-allowed-ssh-ips     = ["10.0.0.0/16", "94.9.0.0/16",]
+allowed-ssh-ips     = ["10.0.0.0/16", "94.9.0.0/16", "82.219.0.0/16"]
 project-name        = "auto-discover-app"
 asg-port            = "8080"
 nexus-port-1        = "8081"
