@@ -1,19 +1,5 @@
 locals {
-  name                = "auto-discovery-mono-app" 
 
-  
-    cert-arn = arn:aws:acm:eu-west-2:288761743690:certificate/254d69e0-dc17-488d-b6a1-a28ccb7d3323
-    jenkins-public-ip = 35.179.112.14
-    jenkins-sg-id = sg-0c0e4f60b3e068e58
-    private-subnet-id-1 = subnet-0b512c64a5815690c
-    private-subnet-id-2 = subnet-066bcf94cd1497b6c
-    private-subnet-id-3 = subnet-0ee2619bd3bf84949
-    public-subnet-id-1 = subnet-0b6ac8c7550b24ab0
-    public-subnet-id-2 = subnet-0a7eeb50e09488232
-    public-subnet-id-3 = subnet-08958868679bd4868
-    vault-public-ip = 18.171.249.24
-    vpc-id = vpc-07667c7f28cb9bbd2
-  
 }
 
 # AWS_VPC 
