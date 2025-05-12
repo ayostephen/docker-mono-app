@@ -4,6 +4,6 @@ provider "aws" {
 }
 
 provider "vault" {
-  token   = "s.k2ds08Z9cselU1adJvlqrdXk"
+  token   = "s.xLONlih2O3pf18K12q4gKxxQ"
   address = "https://vault.sternwatch.com/"
 }
