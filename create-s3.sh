@@ -10,6 +10,13 @@ AWS_REGION="eu-west-2"
 AWS_PROFILE="mchall"
 
 
+check_success() {
+  if [ $1 -ne 0 ]; then
+    echo "❌ $2"
+    exit 1
+  fi
+}
+
 # === Create S3 bucket if it does not exist ===
 echo "Checking if S3 bucket '$BUCKET_NAME' exists..."
 
@@ -17,20 +24,13 @@ if aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
   echo "S3 bucket '$BUCKET_NAME' already exists. Skipping creation."
 else
   aws s3api create-bucket \
-  --bucket auto-discovery-mono-app-s3 \
-  --region eu-west-2 \
-  --create-bucket-configuration LocationConstraint=eu-west-2
+    --bucket "$BUCKET_NAME" \
+    --region "$AWS_REGION" \
+    --create-bucket-configuration LocationConstraint="$AWS_REGION"
 
-  check_success() {
-  if [ $1 -ne 0 ]; then
-    echo "❌ $2"
-    exit 1
-  fi
-}
-
-
-  check_success "S3 bucket creation"
+  check_success $? "S3 bucket creation"
 fi
+
 
 # Function to check if a DynamoDB table exists
 check_dynamodb_table() {

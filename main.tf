@@ -1,19 +1,19 @@
 locals {
-  name                = "auto-discovery-mono-app" 
-  
-  
-  
-  cert-arn = "arn:aws:acm:eu-west-2:288761743690:certificate/0a986824-b8d4-4d89-8bf6-58e93eb8355c"
-jenkins-public-ip = "3.10.180.77"
-jenkins-sg-id = "sg-0022521c7f8750947"
-private-subnet-id-1 = "subnet-0b0916997c78c84e4"
-private-subnet-id-2 = "subnet-031272536183a44e8"
-private-subnet-id-3 = "subnet-084629e3752e1cec3"
-public-subnet-id-1 = "subnet-0b74bec4c54f83d76"
-public-subnet-id-2 = "subnet-0661e33428ce67d8b"
-public-subnet-id-3 = "subnet-05a41bcb77f1469c2"
-vault-public-ip = "18.133.171.210"
-vpc-id = "vpc-05d32f3badb99d35a"
+
+  name                = "auto-discovery-mono-app" # Name of the project
+
+  cert-arn = "arn:aws:acm:eu-west-2:288761743690:certificate/fcd1ce17-c0ab-48b2-af14-6d3526fe7ab8"
+  jenkins-public-ip = "18.171.176.64"
+  jenkins-sg-id = "sg-07a55905f13f90042"
+  private-subnet-id-1 = "subnet-0b37c3b64d4cee9d6"
+  private-subnet-id-2 = "subnet-045d3b6d9dcacd86e"
+  private-subnet-id-3 = "subnet-0ae44ec2addc45941"
+  public-subnet-id-1 = "subnet-0b9a0b7e5066c69a5"
+  public-subnet-id-2 = "subnet-0cfa607cdc35e50da"
+  public-subnet-id-3 = "subnet-0ecade2b9e9b1f797"
+  vault-public-ip = "13.40.109.204"
+  vpc-id = "vpc-082091e5ca13855de"
+
 }
 
 # AWS_VPC 
