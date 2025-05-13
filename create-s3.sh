@@ -16,10 +16,18 @@ echo "Checking if S3 bucket '$BUCKET_NAME' exists..."
 if aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
   echo "S3 bucket '$BUCKET_NAME' already exists. Skipping creation."
 else
-  echo "S3 bucket '$BUCKET_NAME' does not exist. Creating..."
   aws s3api create-bucket \
-    --bucket "$BUCKET_NAME" \
-    --create-bucket-configuration LocationConstraint="$AWS_REGION"
+  --bucket auto-discovery-mono-app-s3 \
+  --region eu-west-2 \
+  --create-bucket-configuration LocationConstraint=eu-west-2
+
+  check_success() {
+  if [ $1 -ne 0 ]; then
+    echo "❌ $2"
+    exit 1
+  fi
+}
+
 
   check_success "S3 bucket creation"
 fi
@@ -59,5 +67,23 @@ terraform fmt --recursive
 terraform validate
 terraform apply -auto-approve -lock=false
 
-ids_output=$(terraform output)
-printf '%s\n' "$ids_output" | awk '{print "  " $0}' | sed '3r /dev/stdin' ../main.tf > tmpfile && mv tmpfile ../main.tf
+# Get outputs in JSON and generate valid HCL lines
+ids_output=$(terraform output -json | jq -r 'to_entries[] | "  \(.key) = \"\(.value.value)\""')
+
+# Replace existing locals block in main.tf (if exists)
+awk -v data="$ids_output" '
+  BEGIN { in_block=0 }
+  /^locals[ \t]*{/ {
+    print "locals {"
+    print data
+    in_block=1
+    next
+  }
+  in_block && /^\}/ { print "}"; in_block=0; next }
+  !in_block { print }
+' ../main.tf > tmpfile && mv tmpfile ../main.tf
+
+
+
+# ids_output=$(terraform output)
+# printf '%s\n' "$ids_output" | awk '{print "  " $0}' | sed '3r /dev/stdin' ../main.tf > tmpfile && mv tmpfile ../main.tf

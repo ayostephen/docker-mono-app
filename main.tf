@@ -2,6 +2,7 @@ locals {
   name                = "auto-discovery-mono-app" 
   
   
+  
   cert-arn = "arn:aws:acm:eu-west-2:288761743690:certificate/0a986824-b8d4-4d89-8bf6-58e93eb8355c"
 jenkins-public-ip = "3.10.180.77"
 jenkins-sg-id = "sg-0022521c7f8750947"
