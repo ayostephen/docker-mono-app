@@ -7,11 +7,22 @@ LOCAL_NAME="auto-discovery-mono-app"
 BUCKET_NAME="${LOCAL_NAME}-s3"
 TABLE_NAME="${LOCAL_NAME}-dynamodb"
 AWS_REGION="eu-west-2"
-AWS_PROFILE="petproject"
+AWS_PROFILE="mchall"
 
-echo "Creating S3 bucket: $BUCKET_NAME ..."
-aws s3api create-bucket --bucket "$BUCKET_NAME" --region "$AWS_REGION" --profile "$AWS_PROFILE" --create-bucket-configuration LocationConstraint="$AWS_REGION" 
-check_success "S3 bucket creation"
+
+# === Create S3 bucket if it does not exist ===
+echo "Checking if S3 bucket '$BUCKET_NAME' exists..."
+
+if aws s3api head-bucket --bucket "$BUCKET_NAME" 2>/dev/null; then
+  echo "S3 bucket '$BUCKET_NAME' already exists. Skipping creation."
+else
+  echo "S3 bucket '$BUCKET_NAME' does not exist. Creating..."
+  aws s3api create-bucket \
+    --bucket "$BUCKET_NAME" \
+    --create-bucket-configuration LocationConstraint="$AWS_REGION"
+
+  check_success "S3 bucket creation"
+fi
 
 # Function to check if a DynamoDB table exists
 check_dynamodb_table() {

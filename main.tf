@@ -1,39 +1,19 @@
 locals {
-
+  name                = "auto-discovery-mono-app" 
+  
+  
+  cert-arn = "arn:aws:acm:eu-west-2:288761743690:certificate/0a986824-b8d4-4d89-8bf6-58e93eb8355c"
+jenkins-public-ip = "3.10.180.77"
+jenkins-sg-id = "sg-0022521c7f8750947"
+private-subnet-id-1 = "subnet-0b0916997c78c84e4"
+private-subnet-id-2 = "subnet-031272536183a44e8"
+private-subnet-id-3 = "subnet-084629e3752e1cec3"
+public-subnet-id-1 = "subnet-0b74bec4c54f83d76"
+public-subnet-id-2 = "subnet-0661e33428ce67d8b"
+public-subnet-id-3 = "subnet-05a41bcb77f1469c2"
+vault-public-ip = "18.133.171.210"
+vpc-id = "vpc-05d32f3badb99d35a"
 }
-  cert-arn = "arn:aws:acm:eu-west-2:288761743690:certificate/0a986824-b8d4-4d89-8bf6-58e93eb8355c"
-  jenkins-public-ip = "3.10.180.77"
-  jenkins-sg-id = "sg-0022521c7f8750947"
-  private-subnet-id-1 = "subnet-0b0916997c78c84e4"
-  private-subnet-id-2 = "subnet-031272536183a44e8"
-  private-subnet-id-3 = "subnet-084629e3752e1cec3"
-  public-subnet-id-1 = "subnet-0b74bec4c54f83d76"
-  public-subnet-id-2 = "subnet-0661e33428ce67d8b"
-  public-subnet-id-3 = "subnet-05a41bcb77f1469c2"
-  vault-public-ip = "18.133.171.210"
-  vpc-id = "vpc-05d32f3badb99d35a"
-  cert-arn = "arn:aws:acm:eu-west-2:288761743690:certificate/0a986824-b8d4-4d89-8bf6-58e93eb8355c"
-  jenkins-public-ip = "3.10.180.77"
-  jenkins-sg-id = "sg-0022521c7f8750947"
-  private-subnet-id-1 = "subnet-0b0916997c78c84e4"
-  private-subnet-id-2 = "subnet-031272536183a44e8"
-  private-subnet-id-3 = "subnet-084629e3752e1cec3"
-  public-subnet-id-1 = "subnet-0b74bec4c54f83d76"
-  public-subnet-id-2 = "subnet-0661e33428ce67d8b"
-  public-subnet-id-3 = "subnet-05a41bcb77f1469c2"
-  vault-public-ip = "18.133.171.210"
-  vpc-id = "vpc-05d32f3badb99d35a"
-  cert-arn = "arn:aws:acm:eu-west-2:288761743690:certificate/0a986824-b8d4-4d89-8bf6-58e93eb8355c"
-  jenkins-public-ip = "3.10.180.77"
-  jenkins-sg-id = "sg-0022521c7f8750947"
-  private-subnet-id-1 = "subnet-0b0916997c78c84e4"
-  private-subnet-id-2 = "subnet-031272536183a44e8"
-  private-subnet-id-3 = "subnet-084629e3752e1cec3"
-  public-subnet-id-1 = "subnet-0b74bec4c54f83d76"
-  public-subnet-id-2 = "subnet-0661e33428ce67d8b"
-  public-subnet-id-3 = "subnet-05a41bcb77f1469c2"
-  vault-public-ip = "18.133.171.210"
-  vpc-id = "vpc-05d32f3badb99d35a"
 
 # AWS_VPC 
 data "aws_vpc" "vpc" {
@@ -80,7 +60,7 @@ data "aws_acm_certificate" "cert-arn" {
 
 module "security-groups" {
   source            = "./modules/security-groups"
-  vpc-id            = vpc-07667c7f28cb9bbd2
+  vpc-id            = data.aws_vpc.vpc.id
   allowed-ssh-ips   = var.allowed-ssh-ips
   project-name      = var.project-name
   asg-port          = var.asg-port
@@ -162,7 +142,7 @@ module "rds-database" {
   source       = "./modules/rds-database"
   db-subnet-id = [data.aws_subnet.private-subnet-1.id, data.aws_subnet.private-subnet-2.id, data.aws_subnet.private-subnet-3.id]
   db-name      = var.db-name
-  db-username  = data.vault_generic_secret.db-secret.data["username"] 
+  db-username  = data.vault_generic_secret.db-secret.data["username"]
   db-password  = data.vault_generic_secret.db-secret.data["password"]
   vpc-sg-id    = [module.security-groups.rds-sg-id]
 }
@@ -178,7 +158,7 @@ module "sonarqube-server" {
   nr-key              = var.nr-key
   nr-acc-id           = var.nr-acc-id
   nr-region           = var.nr-region
-  cert-arn            = arn:aws:acm:eu-west-2:288761743690:certificate/254d69e0-dc17-488d-b6a1-a28ccb7d3323
+  cert-arn            = data.aws_acm_certificate.cert-arn.arn
   sonar-postgress-pwd = var.sonar-postgress-pwd
   sonar-psqldb-pwd    = var.sonar-psqldb-pwd
 }
@@ -188,8 +168,8 @@ module "stage-alb" {
   alb-name-stage = "stage-alb"
   asg-sg         = [module.security-groups.asg-sg-id]
   public-subnets = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
-  cert-arn       = arn:aws:acm:eu-west-2:288761743690:certificate/254d69e0-dc17-488d-b6a1-a28ccb7d3323
-  vpc-id         = vpc-07667c7f28cb9bbd2
+  cert-arn       = data.aws_acm_certificate.cert-arn.arn
+  vpc-id         = data.aws_vpc.vpc.id
 }
 
 module "prod-alb" {
@@ -197,8 +177,8 @@ module "prod-alb" {
   alb-name-prod  = "prod-alb"
   asg-sg         = [module.security-groups.asg-sg-id]
   public-subnets = [data.aws_subnet.public-subnet-1.id, data.aws_subnet.public-subnet-2.id, data.aws_subnet.public-subnet-3.id]
-  cert-arn       = arn:aws:acm:eu-west-2:288761743690:certificate/254d69e0-dc17-488d-b6a1-a28ccb7d3323
-  vpc-id         = vpc-07667c7f28cb9bbd2
+  cert-arn       = data.aws_acm_certificate.cert-arn.arn
+  vpc-id         = data.aws_vpc.vpc.id
 }
 
 module "records" {
