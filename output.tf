@@ -9,6 +9,11 @@ output "jenkins-cloud-public-ip" {
 output "nexus-public-ip" {
   value = module.nexus-server.nexus-server-public-ip
 }
+
+output "nexus-server-private-ip" {
+  value = module.nexus-server.nexus-server-private-ip
+}
+
 output "sonarqube-public-ip" {
   value = module.sonarqube-server.sonarqube-public-ip
 }

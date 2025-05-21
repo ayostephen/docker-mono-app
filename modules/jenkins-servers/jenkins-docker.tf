@@ -15,6 +15,14 @@ hostnamectl set-hostname Docker
 systemctl start docker
 systemctl enable docker
 systemctl status docker
+
+# Allow Docker over TCP and bind insecure registry
+cat <<EOT > /etc/docker/daemon.json
+{
+  "insecure-registries": ["${var.nexus-pri-ip}:8085"]
+}
+EOT
+
 sed -i  -e '14aExecStart=/usr/bin/dockerd -H fd:// -H tcp://0.0.0.0:4243' -e '14d' /lib/systemd/system/docker.service
 systemctl daemon-reload
 service docker restart

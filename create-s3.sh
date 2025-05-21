@@ -60,30 +60,30 @@ check_dynamodb_table() {
 # Call function
 check_dynamodb_table "$TABLE_NAME" "$AWS_REGION" "$AWS_PROFILE"
 
-## Create a Jenkins server
-cd ./jenkins-vault_server
-terraform init
-terraform fmt --recursive
-terraform validate
-terraform apply -auto-approve -lock=false
+# ## Create a Jenkins server
+# cd ./jenkins-vault_server
+# terraform init
+# terraform fmt --recursive
+# terraform validate
+# terraform apply -auto-approve -lock=false
 
-# Get outputs in JSON and generate valid HCL lines
-ids_output=$(terraform output -json | jq -r 'to_entries[] | "  \(.key) = \"\(.value.value)\""')
+# # Get outputs in JSON and generate valid HCL lines
+# ids_output=$(terraform output -json | jq -r 'to_entries[] | "  \(.key) = \"\(.value.value)\""')
 
-# Replace existing locals block in main.tf (if exists)
-awk -v data="$ids_output" '
-  BEGIN { in_block=0 }
-  /^locals[ \t]*{/ {
-    print "locals {"
-    print data
-    in_block=1
-    next
-  }
-  in_block && /^\}/ { print "}"; in_block=0; next }
-  !in_block { print }
-' ../main.tf > tmpfile && mv tmpfile ../main.tf
+# # Replace existing locals block in main.tf (if exists)
+# awk -v data="$ids_output" '
+#   BEGIN { in_block=0 }
+#   /^locals[ \t]*{/ {
+#     print "locals {"
+#     print data
+#     in_block=1
+#     next
+#   }
+#   in_block && /^\}/ { print "}"; in_block=0; next }
+#   !in_block { print }
+# ' ../main.tf > tmpfile && mv tmpfile ../main.tf
 
 
 
-# ids_output=$(terraform output)
-# printf '%s\n' "$ids_output" | awk '{print "  " $0}' | sed '3r /dev/stdin' ../main.tf > tmpfile && mv tmpfile ../main.tf
+ids_output=$(terraform output)
+printf '%s\n' "$ids_output" | awk '{print "  " $0}' | sed '3r /dev/stdin' ../main.tf > tmpfile && mv tmpfile ../main.tf

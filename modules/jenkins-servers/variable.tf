@@ -11,3 +11,8 @@ variable "nr-key" {}
 variable "nr-acc-id" {}
 # variable "subnet-elb" {}
 # variable "cert-arn" {}
+
+variable "nexus-pri-ip" {
+  type        = string
+  description = "The IP address of the Nexus server"
+}

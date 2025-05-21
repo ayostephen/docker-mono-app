@@ -2,17 +2,17 @@ locals {
 
   name                = "auto-discovery-mono-app" # Name of the project
 
-  cert-arn = "arn:aws:acm:eu-west-2:288761743690:certificate/fcd1ce17-c0ab-48b2-af14-6d3526fe7ab8"
-  jenkins-public-ip = "18.171.176.64"
-  jenkins-sg-id = "sg-07a55905f13f90042"
-  private-subnet-id-1 = "subnet-0b37c3b64d4cee9d6"
-  private-subnet-id-2 = "subnet-045d3b6d9dcacd86e"
-  private-subnet-id-3 = "subnet-0ae44ec2addc45941"
-  public-subnet-id-1 = "subnet-0b9a0b7e5066c69a5"
-  public-subnet-id-2 = "subnet-0cfa607cdc35e50da"
-  public-subnet-id-3 = "subnet-0ecade2b9e9b1f797"
-  vault-public-ip = "13.40.109.204"
-  vpc-id = "vpc-082091e5ca13855de"
+  cert-arn = "arn:aws:acm:eu-west-2:288761743690:certificate/26d00495-d752-4284-a8f2-00a6403c68ac"
+  jenkins-public-ip = "18.130.225.172"
+  jenkins-sg-id = "sg-075e243c9643ab993"
+  private-subnet-id-1 = "subnet-052d26b63c114a07d"
+  private-subnet-id-2 = "subnet-01af2a5abd774df0b"
+  private-subnet-id-3 = "subnet-0187a3bc3daaba1f5"
+  public-subnet-id-1 = "subnet-0ec775aa24f5427e4"
+  public-subnet-id-2 = "subnet-009be4dcd38dbea3f"
+  public-subnet-id-3 = "subnet-05a8b6ee9c5699f6b"
+  vault-public-ip = "13.40.168.221"
+  vpc-id = "vpc-0654a34ab5632236a"
 
 }
 
@@ -88,6 +88,7 @@ module "jenkins-slaves" {
   nr-region     = var.nr-region
   nr-acc-id     = var.nr-acc-id
   nr-key        = var.nr-key
+  nexus-pri-ip  = module.nexus-server.nexus-server-private-ip
 }
 
 module "nexus-server" {

@@ -2,6 +2,10 @@ output "nexus-server-public-ip" {
   value = aws_instance.nexus-server.public_ip
 }
 
+output "nexus-server-private-ip" {
+  value = aws_instance.nexus-server.private_ip
+}
+
 output "nexus-lb-dns-name" {
   description = "DNS of the nexus host"
   value       = aws_elb.nexus-server-elb.dns_name
