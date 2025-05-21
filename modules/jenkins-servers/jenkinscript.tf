@@ -27,7 +27,7 @@ sudo chmod 777 /var/run/docker.sock
 ######
 sudo cat <<EOT>> /etc/docker/daemon.json
 {
-  "insecure-registries" : ["${var.nexus-pri-ip}:8085"]
+  "insecure-registries" : ["${var.nexus-ip}:8085"]
 }
 EOT
 sudo systemctl restart docker
